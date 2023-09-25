@@ -47,7 +47,7 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     super.initState();
-  
+
     loadAlarms();
     subscription ??= Alarm.ringStream.stream.listen(
       (alarmSettings) => navigateToRingScreen(alarmSettings),
@@ -71,12 +71,41 @@ class _HomeScreenState extends State<HomeScreen> {
     loadAlarms();
   }
 
-  setListen(int second) async{
-    if(second == 110){
-  final player = AudioPlayer();                   // Create a player
-final duration = await player.setAsset(           // Load a URL
-    'assets/images/-154921.mp3');                 // Schemes: (https: | file: | asset: )
-player.play(); 
+  // flashtimer(int second) async {
+  //   if (second == 6) {
+  //     _enableTorch(context);
+  //      Future.delayed(Duration(seconds: 2), () {
+  //     _disableTorch(context);
+  //   });
+  //   }
+
+  // }
+
+  void _handleFlashlight() {
+    _enableTorch(context); // Turn on the flashlight
+    // Turn off the flashlight after a delay (e.g., 2 seconds)
+    Future.delayed(Duration(seconds: 2), () {
+      _disableTorch(context);
+    });
+  }
+
+  Timer?  timerCr ;
+  // Function to start the timer
+  void _startFlashlightTimer() {
+   Timer.periodic(Duration(seconds: 6), (timer) {
+    setState(() {
+      timerCr = timer;
+    });
+      _handleFlashlight();
+    });
+  }
+
+  setListen(int second) async {
+    if (second == 110) {
+      final player = AudioPlayer(); // Create a player
+      final duration = await player.setAsset(// Load a URL
+          'assets/images/-154921.mp3'); // Schemes: (https: | file: | asset: )
+      player.play();
     }
   }
 
@@ -178,6 +207,7 @@ player.play();
                       });
                       _controller2.start();
                       _controller.start();
+                      _startFlashlightTimer();
                     },
                     child: Container(
                       height: 40,
@@ -389,7 +419,8 @@ player.play();
                                         child: Icon(
                                           Icons.pause,
                                           color: Colors.blue,
-                                        ))
+                                        ),
+                                      )
                                     : GestureDetector(
                                         onTap: () {
                                           setState(() {
@@ -518,7 +549,6 @@ player.play();
                                   // Here, do whatever you want
                                   debugPrint('Countdown Started');
                                 },
-                                
 
                                 // This Callback will execute when the Countdown Ends.
                                 onComplete: () async {
@@ -547,20 +577,16 @@ player.play();
                                     //     alarmSettings:
                                     //         alarmSettings);
 
-                                  
-
                                     // await player.play(AssetSource(
                                     //     'assets/images/-154921.mp3'));
                                   }
                                 },
 
                                 // This Callback will execute when the Countdown Changes.
-                              
-                                onChange: (String timeStamp) async{
-                                  // Here, do whatever you want
-                                 print("--------------------->>$timeStamp");
 
-                                
+                                onChange: (String timeStamp) async {
+                                  // Here, do whatever you want
+                                  print("--------------------->>$timeStamp");
                                 },
 
                                 /* 
@@ -572,12 +598,11 @@ player.play();
                               */
                                 timeFormatterFunction:
                                     (defaultFormatterFunction, duration) {
-                                    
                                   if (duration.inSeconds == 0) {
                                     // only format for '0'
                                     return "Start";
                                   } else {
-                                       setListen(duration.inSeconds);
+                                    setListen(duration.inSeconds);
                                     // other durations by it's default format
                                     return Function.apply(
                                         defaultFormatterFunction, [duration]);
@@ -617,6 +642,10 @@ player.play();
                                                   isplay = false;
                                                 });
                                                 _controller.pause();
+                                                timerCr!.cancel();
+                                                setState(() {
+                                                  
+                                                });
                                               },
                                               child: Icon(
                                                 Icons.pause,
@@ -629,6 +658,7 @@ player.play();
                                               isplay = true;
                                             });
                                             _controller.resume();
+                                            _startFlashlightTimer();
                                             // final alarmSettings = AlarmSettings(
                                             //   id: 42,
                                             //   dateTime: DateTime.now()
