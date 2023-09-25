@@ -22,7 +22,7 @@ class ReportDetails extends StatelessWidget {
         actions: [Icon(Icons.share)],
       ),
       body: Padding(
-        padding: const EdgeInsets.all(15),
+        padding: const EdgeInsets.symmetric(horizontal: 20),
         child: Column(
           children: [
             ksizedbox10,

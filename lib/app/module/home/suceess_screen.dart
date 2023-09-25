@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_application_1/app/data/constands/constands.dart';
+import 'package:flutter_application_1/app/module/home/home_screen.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get_core/get_core.dart';
 import 'package:get/get_navigation/get_navigation.dart';
@@ -23,8 +24,8 @@ class _SuccessScreenState extends State<SuccessScreen> {
   }
 
   toHomePage() async {
-    await Future.delayed(const Duration(seconds: 2));
-    Get.offAll(OnbordingScreen1());
+    await Future.delayed(const Duration(seconds: 3));
+    Get.offAll(HomeScreen ());
   }
 
   //
