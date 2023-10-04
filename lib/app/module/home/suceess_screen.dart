@@ -6,7 +6,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:get/get_core/get_core.dart';
 import 'package:get/get_navigation/get_navigation.dart';
 
-import '../authentication/onbording/onbording_screen.dart';
+
 
 class SuccessScreen extends StatefulWidget {
   const SuccessScreen({super.key});

@@ -30,12 +30,12 @@ class OnbordingScreen1 extends StatelessWidget {
                     color: Color(0xff5B67CA),
                     fontWeight: FontWeight.bold),
               ),
-              ksizedbox30,
-              Column(
+              ksizedbox10,
+           Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Text(
-                    'Plan what you will do to be more organized for today, tomorrow and beyond',
+                    'Good CPR saves life',
                     textAlign: TextAlign.center,
                     style: TextStyle(
                       fontSize: 18,
@@ -43,7 +43,7 @@ class OnbordingScreen1 extends StatelessWidget {
                     ),
                   ),
                 ],
-              ),
+              ), 
               ksizedbox40,
               ksizedbox30,
               InkWell(onTap: (){Get.to(HomeScreen());},

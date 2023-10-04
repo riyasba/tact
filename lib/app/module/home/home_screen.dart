@@ -1,9 +1,13 @@
+
+
+
+
 import 'dart:async';
 import 'package:alarm/alarm.dart';
 import 'package:alarm/model/alarm_settings.dart';
 // import 'package:audioplayers/audioplayers.dart';
+// import 'package:audioplayers/audioplayers.dart';
 import 'package:just_audio/just_audio.dart';
-
 import 'package:circular_countdown_timer/circular_countdown_timer.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -14,6 +18,13 @@ import 'package:flutter_application_1/app/module/home/suceess_screen.dart';
 import 'package:get/get.dart';
 import 'package:get/get_state_manager/src/simple/get_controllers.dart';
 import 'package:torch_light/torch_light.dart';
+import 'package:audioplayers/audioplayers.dart' as audio;
+
+
+
+
+
+
 
 class HomeScreen extends StatefulWidget {
   HomeScreen({super.key});
@@ -21,6 +32,7 @@ class HomeScreen extends StatefulWidget {
   @override
   State<HomeScreen> createState() => _HomeScreenState();
 }
+
 
 class _HomeScreenState extends State<HomeScreen> {
 //  final _controller = CountDownController();
@@ -35,6 +47,7 @@ class _HomeScreenState extends State<HomeScreen> {
   bool isplay1 = false;
   bool isplay = false;
   bool isreaload = false;
+  bool showPlayButtom = false;
   final _controller = CountDownController();
   final _controller2 = CountDownController();
 
@@ -81,33 +94,82 @@ class _HomeScreenState extends State<HomeScreen> {
 
   // }
 
+
+
+  final List<String> items = List.generate(101, (index) => "$index");
+
   void _handleFlashlight() {
     _enableTorch(context); // Turn on the flashlight
     // Turn off the flashlight after a delay (e.g., 2 seconds)
     Future.delayed(Duration(seconds: 2), () {
       _disableTorch(context);
     });
+
+
   }
 
-  Timer?  timerCr ;
+
+
+  Timer? timerCr;
   // Function to start the timer
   void _startFlashlightTimer() {
-   Timer.periodic(Duration(seconds: 6), (timer) {
-    setState(() {
-      timerCr = timer;
-    });
-      _handleFlashlight();
-    });
+    Timer.periodic(
+      Duration(seconds: 6),
+      (timer) {
+        setState(
+          () {
+            timerCr = timer;
+          },
+        );
+        _handleFlashlight();
+      },
+    );
   }
+
+
+
+  final player = AudioPlayer();
+
+ audio. AudioPlayer audioPlayer = audio.AudioPlayer();
+
+
+
 
   setListen(int second) async {
     if (second == 110) {
-      final player = AudioPlayer(); // Create a player
-      final duration = await player.setAsset(// Load a URL
-          'assets/images/-154921.mp3'); // Schemes: (https: | file: | asset: )
+      final duration = await player.setAsset('assets/images/-154921.mp3');
       player.play();
+    } else {
+      // timesound();
     }
+    // await Future.delayed(const Duration(seconds: 2));
+    
   }
+
+
+  void loop() {
+    audioPlayer.setReleaseMode(audio.ReleaseMode.loop);
+}
+
+  // timesound() async {
+
+
+
+
+  //   final duration =
+  //       await player.setAsset('assets/images/tick-tock-clock-01-84927.mp3');
+  //   player.play();
+  // }
+
+
+  void playAudio() async {
+  String audioPath = 'images/tick-tock-clock-01-84927.mp3'; // Replace with your audio file path
+
+ await audioPlayer.play(
+    audio.AssetSource(audioPath),
+    volume:100 
+  );
+}
 
   // Future<void> navigateToAlarmScreen(AlarmSettings? settings) async {
   //   final res = await showModalBottomSheet<bool?>(
@@ -125,13 +187,14 @@ class _HomeScreenState extends State<HomeScreen> {
 
   //   if (res != null && res == true) loadAlarms();
   // }
-  final player = AudioPlayer();
+
   @override
   void dispose() {
     subscription?.cancel();
     super.dispose();
   }
 
+  double _currentSliderValue = 20;
   late List<AlarmSettings> alarms;
   static StreamSubscription? subscription;
 
@@ -208,6 +271,8 @@ class _HomeScreenState extends State<HomeScreen> {
                       _controller2.start();
                       _controller.start();
                       _startFlashlightTimer();
+                      playAudio();
+                      loop();
                     },
                     child: Container(
                       height: 40,
@@ -399,6 +464,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                   // only format for '0'
                                   return "Start";
                                 } else {
+                                  // timesound(duration.inSeconds);
                                   // other durations by it's default format
                                   return Function.apply(
                                       defaultFormatterFunction, [duration]);
@@ -408,31 +474,37 @@ class _HomeScreenState extends State<HomeScreen> {
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                               children: [
-                                isplay1 == true
-                                    ? GestureDetector(
-                                        onTap: () {
-                                          setState(() {
-                                            isplay1 = false;
-                                          });
-                                          _controller2.pause();
-                                        },
-                                        child: Icon(
-                                          Icons.pause,
-                                          color: Colors.blue,
-                                        ),
-                                      )
-                                    : GestureDetector(
-                                        onTap: () {
-                                          setState(() {
-                                            isplay1 = true;
-                                          });
-                                          _controller2.resume();
-                                        },
-                                        child: Icon(
-                                          Icons.play_arrow,
-                                          color: Colors.blue,
-                                        ),
-                                      ),
+                                if (showPlayButtom)
+                                  GestureDetector(
+                                    onTap: () {
+                                      setState(() {
+                                        isplay1 = false;
+                                        isplay = false;
+                                      });
+                                      _controller2.pause();
+                                      _controller.pause();
+                                      timerCr!.cancel();
+                                    },
+                                    child: Icon(
+                                      Icons.pause,
+                                      color: Colors.blue,
+                                    ),
+                                  ),
+                                if (isplay1 == false)
+                                  GestureDetector(
+                                    onTap: () {
+                                      setState(() {
+                                        isplay1 = true;
+                                        isplay = true;
+                                      });
+                                      _controller2.resume();
+                                      _controller.resume();
+                                    },
+                                    child: Icon(
+                                      Icons.play_arrow,
+                                      color: Colors.blue,
+                                    ),
+                                  ),
                                 // GestureDetector(
                                 //     onTap: () =>
                                 //         _controller2.restart(duration: 200),
@@ -558,11 +630,12 @@ class _HomeScreenState extends State<HomeScreen> {
                                       'Countdown ${_controller.getTime()}');
 
                                   if (_controller.getTime() == "00:02:00") {
-                                    // setState(() {
-                                    //   isreaload = true;
-                                    //});
-                                    isreaload = false;
-                                    _controller.restart();
+                                    setState(() {
+                                      showPlayButtom = true;
+                                      isreaload = true;
+                                    });
+                                    
+                                    // _controller.restart();
                                     // final alarmSettings =
                                     //     AlarmSettings(
                                     //   id: 42,
@@ -619,6 +692,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                               onTap: () {
                                                 isreaload = false;
                                                 _controller.restart();
+                                                playAudio();
+                                                loop();
                                                 // final alarmSettings =
                                                 //     AlarmSettings(
                                                 //   id: 42,
@@ -641,11 +716,10 @@ class _HomeScreenState extends State<HomeScreen> {
                                                 setState(() {
                                                   isplay = false;
                                                 });
+                                                audioPlayer.stop();
                                                 _controller.pause();
                                                 timerCr!.cancel();
-                                                setState(() {
-                                                  
-                                                });
+                                                setState(() {});
                                               },
                                               child: Icon(
                                                 Icons.pause,
@@ -659,6 +733,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                             });
                                             _controller.resume();
                                             _startFlashlightTimer();
+                                            playAudio();
+                                           loop();
                                             // final alarmSettings = AlarmSettings(
                                             //   id: 42,
                                             //   dateTime: DateTime.now()
@@ -689,27 +765,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   ],
                 ),
                 ksizedbox20,
-                // Row(
-                //   mainAxisAlignment: MainAxisAlignment.spaceAround,
-                //   children: [
-                //     _button(
-                //       title: "Start",
-                //       onPressed: () => _controller.start(),
-                //     ),
-                //     _button(
-                //       title: "Pause",
-                //       onPressed: () => _controller.pause(),
-                //     ),
-                //     _button(
-                //       title: "Resume",
-                //       onPressed: () => _controller.resume(),
-                //     ),
-                //     _button(
-                //       title: "Restart",
-                //       onPressed: () => _controller.restart(duration: 200),
-                //     ),
-                //   ],
-                // ),
+
                 ksizedbox30,
                 GestureDetector(
                   onTap: () {
@@ -718,7 +774,6 @@ class _HomeScreenState extends State<HomeScreen> {
                     } else {
                       controller.ecgindex(0);
                     }
-                    ;
                   },
                   child: controller.ecgindex.value == 0
                       ? Container(
@@ -859,6 +914,8 @@ class _HomeScreenState extends State<HomeScreen> {
                           ),
                         ),
                 ),
+                // ksizedbox20,
+
                 ksizedbox20,
                 InkWell(
                   onTap: () {
@@ -1136,7 +1193,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                     ),
                                   ),
                                 ),
-                                ksizedbox10
+                                ksizedbox10,
                               ],
                             ),
                           ),
@@ -1249,7 +1306,174 @@ class _HomeScreenState extends State<HomeScreen> {
                                                   controller.cprList[index]
                                                       .toString(),
                                                   style: minfont),
-                                              value: 'v${index}',
+                                              value: 'e${index}',
+                                              groupValue: selectedOption,
+                                              onChanged:
+                                                  handleRadioValueChanged,
+                                            ),
+                                            kwidth5,
+                                            ksizedbox10,
+                                            if (selectedOption == "e0" &&
+                                                index == 0)
+                                              Slider(
+                                                value: _currentSliderValue,
+                                                max: 100,
+                                                divisions: 5,
+                                                label: _currentSliderValue
+                                                    .round()
+                                                    .toString(),
+                                                onChanged: (double value) {
+                                                  setState(() {
+                                                    _currentSliderValue = value;
+                                                  });
+                                                },
+                                              ),
+                                            ksizedbox10,
+                                            Divider(
+                                              height: 1,
+                                            ),
+                                          ],
+                                        ),
+                                      );
+                                    }),
+                                Padding(
+                                  padding: const EdgeInsets.all(12.0),
+                                  child: GestureDetector(
+                                    onTap: () {
+                                      var txtControllerCPR =
+                                          TextEditingController();
+                                      _showTextFieldDialog(
+                                          context,
+                                          "QUALITY CPR",
+                                          "Enter",
+                                          txtControllerCPR);
+                                    },
+                                    child: Row(
+                                      children: [
+                                        Icon(
+                                          Icons.edit_square,
+                                          color: kgrey,
+                                        ),
+                                        kwidth5,
+                                        Text('Customize', style: minfont)
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                                ksizedbox10
+                              ],
+                            ),
+                          ),
+                          width: double.infinity,
+                          decoration: BoxDecoration(
+                            color: kwhite,
+                            borderRadius: BorderRadius.circular(18),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.grey.withOpacity(0.5),
+                                spreadRadius: 5,
+                                blurRadius: 7,
+                                offset:
+                                    Offset(0, 3), // changes position of shadow
+                              ),
+                            ],
+                          ),
+                        ),
+                ),
+                ksizedbox20,
+                GestureDetector(
+                  onTap: () {
+                    if (controller.procedureindex.value == 0) {
+                      controller.procedureindex(1);
+                    } else {
+                      controller.procedureindex(0);
+                    }
+                  },
+                  child: controller.procedureindex.value == 0
+                      ? Container(
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Column(
+                              children: [
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Text('Other Procedure', style: maxfont),
+                                    Icon(Icons.arrow_drop_down_rounded)
+                                  ],
+                                ),
+                                ksizedbox10,
+                                GestureDetector(
+                                  onTap: () {
+                                    var txtControllerrythem =
+                                        TextEditingController();
+                                    _showTextFieldDialog(context, "Procedure",
+                                        "Enter Procedure", txtControllerrythem);
+                                  },
+                                  child: Row(
+                                    children: [
+                                      Icon(
+                                        Icons.edit_square,
+                                        color: kgrey,
+                                      ),
+                                      kwidth5,
+                                      Text('Customize', style: minfont)
+                                    ],
+                                  ),
+                                ),
+                                ksizedbox10
+                              ],
+                            ),
+                          ),
+                          width: double.infinity,
+                          //  height: 300,
+                          decoration: BoxDecoration(
+                            color: kwhite,
+                            borderRadius: BorderRadius.circular(18),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.grey.withOpacity(0.5),
+                                spreadRadius: 5,
+                                blurRadius: 7,
+                                offset:
+                                    Offset(0, 3), // changes position of shadow
+                              ),
+                            ],
+                          ),
+                        )
+                      : Container(
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Column(
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.all(12.0),
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Text('Choose Procedure', style: maxfont),
+                                      Icon(Icons.arrow_drop_up_rounded)
+                                    ],
+                                  ),
+                                ),
+                                ListView.builder(
+                                    physics: NeverScrollableScrollPhysics(),
+                                    shrinkWrap: true,
+                                    itemCount: controller.procedurelist.length,
+                                    itemBuilder: (context, index) {
+                                      // The itemBuilder callback is called for each item in the list.
+                                      return Container(
+                                        child: Column(
+                                          children: [
+                                            RadioListTile(
+                                              title: Text(
+                                                  controller
+                                                      .procedurelist[index]
+                                                      .toString(),
+                                                  style: minfont),
+                                              value: 'd${index}',
                                               groupValue: selectedOption,
                                               onChanged:
                                                   handleRadioValueChanged,
@@ -1267,13 +1491,13 @@ class _HomeScreenState extends State<HomeScreen> {
                                   padding: const EdgeInsets.all(12.0),
                                   child: GestureDetector(
                                     onTap: () {
-                                      var txtControllerCPR =
+                                      var txtControllerrythem =
                                           TextEditingController();
                                       _showTextFieldDialog(
                                           context,
-                                          "QUALITY CPR",
-                                          "Enter",
-                                          txtControllerCPR);
+                                          "Procedure",
+                                          "Enter Procedure",
+                                          txtControllerrythem);
                                     },
                                     child: Row(
                                       children: [
@@ -1639,6 +1863,7 @@ class counterController extends GetxController {
   decrement() => count.value--;
   reset() => count.value = 0;
 
+  RxInt procedureindex = 0.obs;
   RxInt ecgindex = 0.obs;
   RxInt quality = 0.obs;
   RxInt cpr = 0.obs;
@@ -1646,13 +1871,33 @@ class counterController extends GetxController {
   RxInt shock = 0.obs;
 
   List shockList = [
-    'ASYSTOLE',
-    '360/200/0(Non-Shockable)',
+    '360',
+    '200',
+    '0(Non-Shockable)',
   ];
-
-  List rythmList = ['VF', 'pVTPEA', 'ASYSTOLE', 'pp'];
-  List drugList = ['150mg/300mg', 'Epinephrine 1mgAmiodarone', 'ASYSTOLE'];
-  List cprList = ['CPP(0-100)', 'VF'];
+  List procedurelist = [
+    'IV Access',
+    'IO Access',
+    'Advanced Airway',
+    'Blood Investigation',
+    'Reversible Causes Disussion',
+  ];
+  List rythmList = [
+    'VF',
+    'pVT',
+    'ASYSTOLE',
+    'PEA',
+  ];
+  List drugList = [
+    '150mg',
+    '300mg',
+    'Epinephrine 1mgAmiodarone',
+    'ASYSTOLE',
+  ];
+  List cprList = [
+    'CPP(0-100)',
+    'VF',
+  ];
 }
 
 Widget _button({required String title, VoidCallback? onPressed}) {
