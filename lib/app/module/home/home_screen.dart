@@ -1,10 +1,7 @@
-
-
-
-
 import 'dart:async';
 import 'package:alarm/alarm.dart';
 import 'package:alarm/model/alarm_settings.dart';
+// import 'package:audioplayers/audioplayers.dart';
 // import 'package:audioplayers/audioplayers.dart';
 // import 'package:audioplayers/audioplayers.dart';
 import 'package:just_audio/just_audio.dart';
@@ -19,12 +16,6 @@ import 'package:get/get.dart';
 import 'package:get/get_state_manager/src/simple/get_controllers.dart';
 import 'package:torch_light/torch_light.dart';
 import 'package:audioplayers/audioplayers.dart' as audio;
-
-
-
-
-
-
 
 class HomeScreen extends StatefulWidget {
   HomeScreen({super.key});
@@ -170,11 +161,11 @@ class _HomeScreenState extends State<HomeScreen> {
 
 
   void playAudio() async {
-  String audioPath = 'images/tick-tock-clock-01-84927.mp3'; // Replace with your audio file path
+  String audioPath = 'images/tic-tic-tic.mp3'; // Replace with your audio file path
 
  await audioPlayer.play(
     audio.AssetSource(audioPath),
-    volume:100 
+    volume:100,
   );
 }
 
@@ -199,6 +190,40 @@ class _HomeScreenState extends State<HomeScreen> {
   void dispose() {
     subscription?.cancel();
     super.dispose();
+  }
+
+  audioSoundManage() async {
+     if(controller.count > 120){
+         await audioPlayer.setPlaybackRate(1);
+         await audioPlayer.setVolume(1);
+     } else if(controller.count > 118) {
+         await audioPlayer.setPlaybackRate(0.9);
+         await audioPlayer.setVolume(0.9);
+    } else if(controller.count > 116) {
+         await audioPlayer.setPlaybackRate(0.8);
+         await audioPlayer.setVolume(0.8);
+    } else if(controller.count > 114) {
+         await audioPlayer.setPlaybackRate(0.7);
+         await audioPlayer.setVolume(0.7);
+    } else if(controller.count > 112) {
+         await audioPlayer.setPlaybackRate(0.6);
+         await audioPlayer.setVolume(0.6);
+    } else if(controller.count > 110) {
+         await audioPlayer.setPlaybackRate(0.5);
+         await audioPlayer.setVolume(0.5);
+    } else if(controller.count > 108) {
+         await audioPlayer.setPlaybackRate(0.4);
+         await audioPlayer.setVolume(0.4);
+    } else if(controller.count > 106) {
+         await audioPlayer.setPlaybackRate(0.3);
+         await audioPlayer.setVolume(0.3);
+    } else if(controller.count > 104) {
+         await audioPlayer.setPlaybackRate(0.2);
+         await audioPlayer.setVolume(0.2);
+    } else if(controller.count < 102) {
+         await audioPlayer.setPlaybackRate(0.1);
+         await audioPlayer.setVolume(0.1);
+    } 
   }
 
   double _currentSliderValue = 20;
@@ -232,6 +257,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             onTap: () {
                               if (controller.count != 100) {
                                 controller.decrement();
+                                audioSoundManage();
                               }
                             },
                             child:const Icon(
@@ -254,9 +280,12 @@ class _HomeScreenState extends State<HomeScreen> {
                             ],
                           ),
                           GestureDetector(
-                              onTap: () {
-                                if (controller.count != 120)
-                                  controller.increment();
+                              onTap: () async {
+                                if (controller.count != 120){
+                                    controller.increment();
+                                    audioSoundManage();
+                                }
+                                  
                               },
                               child:const Icon(Icons.add_circle_outline, size: 25)),
                         ],
@@ -279,21 +308,13 @@ class _HomeScreenState extends State<HomeScreen> {
                       _controller.start();
                       _startFlashlightTimer();
                       playAudio();
+                      audioSoundManage();
                       loop();
                     },
                     child: Container(
                       height: 40,
                       width: 100,
-                      child: Center(
-                        child: Text(
-                          'Start',
-                          style: TextStyle(
-                              color: Color(0xff12175E),
-                              fontSize: 17,
-                              fontWeight: FontWeight.w700),
-                        ),
-                      ),
-                      decoration: BoxDecoration(
+                       decoration: BoxDecoration(
                         color: kOrange,
                         borderRadius: BorderRadius.circular(16),
                         gradient: const LinearGradient(
@@ -305,6 +326,16 @@ class _HomeScreenState extends State<HomeScreen> {
                           ],
                         ),
                       ),
+                      child:const Center(
+                        child: Text(
+                          'Start',
+                          style: TextStyle(
+                              color: Color(0xff12175E),
+                              fontSize: 17,
+                              fontWeight: FontWeight.w700),
+                        ),
+                      ),
+                     
                     ),
                   ),
                   kwidth5,
@@ -481,7 +512,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                               children: [
-                                if (showPlayButtom)
+                                if (showPlayButtom && isplay1 == true)
                                   GestureDetector(
                                     onTap: () {
                                       setState(() {
@@ -714,15 +745,17 @@ class _HomeScreenState extends State<HomeScreen> {
 
                                                 //  Alarm.stop(alarmSettings.id);
                                               },
-                                              child: Icon(Icons.restore_rounded,
+                                              child: Icon(Icons.play_arrow,
                                                   color: Colors.amber[700]))
                                           : GestureDetector(
                                               onTap: () {
                                                 setState(() {
                                                   isplay = false;
+                                                  isplay1 = false;
                                                 });
                                                 audioPlayer.stop();
                                                 _controller.pause();
+                                                _controller2.pause();
                                                 timerCr!.cancel();
                                                 setState(() {});
                                               },
@@ -735,7 +768,9 @@ class _HomeScreenState extends State<HomeScreen> {
                                           onTap: () {
                                             setState(() {
                                               isplay = true;
+                                              isplay1 = true;
                                             });
+                                            _controller2.resume();
                                             _controller.resume();
                                             _startFlashlightTimer();
                                             playAudio();
@@ -1187,7 +1222,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                                  Column(
                                                    children: [
                                                      RadioListTile(
-                                              title: Text("100mg",
+                                              title: Text("150mg",
                                                       style: minfont),
                                               value: 'a1',
                                               groupValue: selectedOption2,
