@@ -12,6 +12,7 @@ class OnbordingScreen1 extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       body: Center(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 20),
@@ -19,11 +20,9 @@ class OnbordingScreen1 extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Container(
-                child: SvgPicture.asset('assets/images/vector 1 1.svg'),
-              ),
+              const Image(image: AssetImage("assets/images/tact.jpeg")),
               ksizedbox30,
-              Text(
+              const Text(
                 'TACT',
                 style: TextStyle(
                     fontSize: 32,
@@ -31,7 +30,7 @@ class OnbordingScreen1 extends StatelessWidget {
                     fontWeight: FontWeight.bold),
               ),
               ksizedbox10,
-           Column(
+           const Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Text(

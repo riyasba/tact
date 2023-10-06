@@ -42,6 +42,7 @@ class _HomeScreenState extends State<HomeScreen> {
 //  final int duration = 120;
   // final _controller2 = CountDownController();
   String selectedOption = 'Option 1';
+  String selectedOption2 = 'Option 2';
   bool _isRunning = true;
   bool isflashon = false;
   bool isplay1 = false;
@@ -54,6 +55,12 @@ class _HomeScreenState extends State<HomeScreen> {
   void handleRadioValueChanged(String? value) {
     setState(() {
       selectedOption = value!;
+    });
+  }
+
+  void handleRadioValueChanged2(String? value) {
+    setState(() {
+      selectedOption2 = value!;
     });
   }
 
@@ -204,7 +211,7 @@ class _HomeScreenState extends State<HomeScreen> {
     return Scaffold(
       backgroundColor: kwhite,
       appBar: PreferredSize(
-        preferredSize: Size.fromHeight(90.0),
+        preferredSize:const Size.fromHeight(90.0),
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 20),
           child: Column(
@@ -227,7 +234,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                 controller.decrement();
                               }
                             },
-                            child: Icon(
+                            child:const Icon(
                               Icons.remove_circle_outline,
                               size: 25,
                             ),
@@ -238,7 +245,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               Obx(
                                 () => Text(
                                   '${controller.count}',
-                                  style: TextStyle(
+                                  style:const TextStyle(
                                       color: Color(0xffF61212),
                                       fontWeight: FontWeight.w700,
                                       fontSize: 16),
@@ -251,10 +258,10 @@ class _HomeScreenState extends State<HomeScreen> {
                                 if (controller.count != 120)
                                   controller.increment();
                               },
-                              child: Icon(Icons.add_circle_outline, size: 25)),
+                              child:const Icon(Icons.add_circle_outline, size: 25)),
                         ],
                       ),
-                      Text(
+                      const Text(
                         'Metronome',
                         style: TextStyle(
                           color: Color(0xffF61212),
@@ -320,9 +327,9 @@ class _HomeScreenState extends State<HomeScreen> {
                             _disableTorch(context);
                           }
                         },
-                        child: Icon(Icons.flash_on_rounded),
+                        child:const Icon(Icons.flash_on_rounded),
                       ),
-                      Text('Flash'),
+                      const Text('Flash'),
                     ],
                   )
                 ],
@@ -332,7 +339,7 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
       ),
       body: SingleChildScrollView(
-        physics: BouncingScrollPhysics(),
+        physics:const BouncingScrollPhysics(),
         child: Padding(
           padding: const EdgeInsets.all(8.0),
           child: Obx(
@@ -344,7 +351,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   children: [
                     Container(
                       width: size.width * 0.43,
-                      height: size.height * 0.34,
+                      height: size.height * 0.35,
                       decoration: BoxDecoration(
                         color: kwhite,
                         borderRadius: BorderRadius.circular(18),
@@ -353,7 +360,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             color: Colors.grey.withOpacity(0.5),
                             spreadRadius: 5,
                             blurRadius: 7,
-                            offset: Offset(0, 3), // changes position of shadow
+                            offset:const Offset(0, 3), // changes position of shadow
                           ),
                         ],
                       ),
@@ -361,7 +368,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         padding: const EdgeInsets.all(15.0),
                         child: Column(
                           children: [
-                            Text(
+                            const Text(
                               'Actual Time',
                               style: TextStyle(
                                 fontSize: 20,
@@ -400,7 +407,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
                               // Background Color for Countdown Widget.
                               backgroundColor:
-                                  Color.fromARGB(255, 255, 255, 255),
+                                const  Color.fromARGB(255, 255, 255, 255),
 
                               // Background Gradient for Countdown Widget.
                               backgroundGradient: null,
@@ -485,7 +492,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                       _controller.pause();
                                       timerCr!.cancel();
                                     },
-                                    child: Icon(
+                                    child:const Icon(
                                       Icons.pause,
                                       color: Colors.blue,
                                     ),
@@ -500,7 +507,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                       _controller2.resume();
                                       _controller.resume();
                                     },
-                                    child: Icon(
+                                    child:const Icon(
                                       Icons.play_arrow,
                                       color: Colors.blue,
                                     ),
@@ -527,7 +534,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       },
                       child: Container(
                         width: size.width * 0.43,
-                        height: size.height * 0.34,
+                        height: size.height * 0.35,
                         decoration: BoxDecoration(
                           color: kwhite,
                           borderRadius: BorderRadius.circular(18),
@@ -536,8 +543,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               color: Colors.grey.withOpacity(0.5),
                               spreadRadius: 5,
                               blurRadius: 7,
-                              offset:
-                                  Offset(0, 3), // changes position of shadow
+                              offset: const Offset(0, 3), // changes position of shadow
                             ),
                           ],
                         ),
@@ -582,8 +588,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                 fillGradient: null,
 
                                 // Background Color for Countdown Widget.
-                                backgroundColor:
-                                    Color.fromARGB(255, 255, 255, 255),
+                                backgroundColor:const  Color.fromARGB(255, 255, 255, 255),
 
                                 // Background Gradient for Countdown Widget.
                                 backgroundGradient: null,
@@ -778,7 +783,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   child: controller.ecgindex.value == 0
                       ? Container(
                           child: Padding(
-                            padding: const EdgeInsets.all(8.0),
+                            padding: EdgeInsets.all(8.0),
                             child: Column(
                               children: [
                                 Row(
@@ -840,7 +845,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                         MainAxisAlignment.spaceBetween,
                                     children: [
                                       Text('Choose Rhythm', style: maxfont),
-                                      Icon(Icons.arrow_drop_up_rounded)
+                                      const Icon(Icons.arrow_drop_up_rounded)
                                     ],
                                   ),
                                 ),
@@ -1077,6 +1082,20 @@ class _HomeScreenState extends State<HomeScreen> {
                   },
                   child: controller.quality.value == 0
                       ? Container(
+                         width: double.infinity,
+                          //  height: 300,
+                          decoration: BoxDecoration(
+                            color: kwhite,
+                            borderRadius: BorderRadius.circular(18),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.grey.withOpacity(0.5),
+                                spreadRadius: 5,
+                                blurRadius: 7,
+                                offset:const Offset(0, 3), // changes position of shadow
+                              ),
+                            ],
+                          ),
                           child: Padding(
                             padding: const EdgeInsets.all(8.0),
                             child: Column(
@@ -1086,7 +1105,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                       MainAxisAlignment.spaceBetween,
                                   children: [
                                     Text('Drug/Dose', style: maxfont),
-                                    Icon(Icons.arrow_drop_down_rounded)
+                                    const Icon(Icons.arrow_drop_down_rounded)
                                   ],
                                 ),
                                 ksizedbox10,
@@ -1112,7 +1131,10 @@ class _HomeScreenState extends State<HomeScreen> {
                               ],
                             ),
                           ),
-                          width: double.infinity,
+                         
+                        )
+                      : Container(
+                        width: double.infinity,
                           //  height: 300,
                           decoration: BoxDecoration(
                             color: kwhite,
@@ -1122,13 +1144,10 @@ class _HomeScreenState extends State<HomeScreen> {
                                 color: Colors.grey.withOpacity(0.5),
                                 spreadRadius: 5,
                                 blurRadius: 7,
-                                offset:
-                                    Offset(0, 3), // changes position of shadow
+                                offset:const  Offset(0, 3), // changes position of shadow
                               ),
                             ],
                           ),
-                        )
-                      : Container(
                           child: Padding(
                             padding: const EdgeInsets.all(8.0),
                             child: Column(
@@ -1140,12 +1159,12 @@ class _HomeScreenState extends State<HomeScreen> {
                                         MainAxisAlignment.spaceBetween,
                                     children: [
                                       Text('Drug / Dose', style: maxfont),
-                                      Icon(Icons.arrow_drop_up_rounded)
+                                      const Icon(Icons.arrow_drop_up_rounded)
                                     ],
                                   ),
                                 ),
                                 ListView.builder(
-                                    physics: NeverScrollableScrollPhysics(),
+                                    physics:const NeverScrollableScrollPhysics(),
                                     shrinkWrap: true,
                                     itemCount: controller.drugList.length,
                                     itemBuilder: (context, index) {
@@ -1163,8 +1182,28 @@ class _HomeScreenState extends State<HomeScreen> {
                                               onChanged:
                                                   handleRadioValueChanged,
                                             ),
+                                            ksizedbox10,
+                                            if (index == 1 && selectedOption == "v1")
+                                                 Column(
+                                                   children: [
+                                                     RadioListTile(
+                                              title: Text("100mg",
+                                                      style: minfont),
+                                              value: 'a1',
+                                              groupValue: selectedOption2,
+                                              onChanged: handleRadioValueChanged2,
+                                                    ),
+                                                    RadioListTile(
+                                              title: Text("300mg",
+                                                      style: minfont),
+                                              value: 'a2',
+                                              groupValue: selectedOption2,
+                                              onChanged: handleRadioValueChanged2,
+                                                    ),
+                                                   ],
+                                                 ),
                                             kwidth5,
-                                            Divider(
+                                            const Divider(
                                               height: 1,
                                             ),
                                             ksizedbox10,
@@ -1197,21 +1236,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               ],
                             ),
                           ),
-                          width: double.infinity,
-                          //  height: 300,
-                          decoration: BoxDecoration(
-                            color: kwhite,
-                            borderRadius: BorderRadius.circular(18),
-                            boxShadow: [
-                              BoxShadow(
-                                color: Colors.grey.withOpacity(0.5),
-                                spreadRadius: 5,
-                                blurRadius: 7,
-                                offset:
-                                    Offset(0, 3), // changes position of shadow
-                              ),
-                            ],
-                          ),
+                          
                         ),
                 ),
                 ksizedbox20,
@@ -1308,7 +1333,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                                   style: minfont),
                                               value: 'e${index}',
                                               groupValue: selectedOption,
-                                              onChanged:
+                                              onChanged: 
                                                   handleRadioValueChanged,
                                             ),
                                             kwidth5,
@@ -1889,10 +1914,16 @@ class counterController extends GetxController {
     'PEA',
   ];
   List drugList = [
+    // '150mg',
+    // '300mg',
+    'Epinephrine 1mg',
+    'Amiodarone',
+    'ASYSTOLE',
+    
+  ];
+  List amiodarone = [
     '150mg',
     '300mg',
-    'Epinephrine 1mgAmiodarone',
-    'ASYSTOLE',
   ];
   List cprList = [
     'CPP(0-100)',
