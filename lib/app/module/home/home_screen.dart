@@ -372,7 +372,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                 _disableTorch(context);
                               }
                             },
-                            child:const Icon(Icons.flash_on_rounded),
+                            child:const Icon(Icons.flash_on),
                           ),
                           const Text('Flash'),
                         ],
@@ -536,7 +536,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                 Row(
                                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                   children: [
-                                    if (showPlayButtom && isplay1 == true)
+                                    if (showPlayButtom && isplay1 == true && _controller.getTime() == "00:02:00")
                                       GestureDetector(
                                         onTap: () {
                                           setState(() {
@@ -552,7 +552,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                           color: Colors.blue,
                                         ),
                                       ),
-                                    if (isplay1 == false)
+                                    if (isplay1 == false && _controller.getTime() == "00:02:00")
                                       GestureDetector(
                                         onTap: () {
                                           setState(() {
@@ -754,20 +754,6 @@ class _HomeScreenState extends State<HomeScreen> {
                                                     _controller.restart();
                                                     playAudio();
                                                     loop();
-                                                    // final alarmSettings =
-                                                    //     AlarmSettings(
-                                                    //   id: 42,
-                                                    //   dateTime: DateTime.now().add(
-                                                    //      const Duration(minutes: 2)),
-                                                    //   assetAudioPath:
-                                                    //       'assets/images/marimba.mp3',
-                                                    //   volumeMax: false,
-                                                    // );
-                                                    // Alarm.set(
-                                                    //     alarmSettings:
-                                                    //         alarmSettings);
-
-                                                    //  Alarm.stop(alarmSettings.id);
                                                   },
                                                   child: Icon(Icons.play_arrow,
                                                       color: Colors.amber[700]))
@@ -841,8 +827,22 @@ class _HomeScreenState extends State<HomeScreen> {
                       },
                       child: controller.ecgindex.value == 0
                           ? Container(
+                            width: double.infinity,
+                              //  height: 300,
+                              decoration: BoxDecoration(
+                                color: kwhite,
+                                borderRadius: BorderRadius.circular(18),
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: Colors.grey.withOpacity(0.5),
+                                    spreadRadius: 5,
+                                    blurRadius: 7,
+                                    offset:const Offset(0, 3), // changes position of shadow
+                                  ),
+                                ],
+                              ),
                               child: Padding(
-                                padding: EdgeInsets.all(8.0),
+                                padding:const EdgeInsets.all(8.0),
                                 child: Column(
                                   children: [
                                     Row(
@@ -850,7 +850,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                           MainAxisAlignment.spaceBetween,
                                       children: [
                                         Text('Choose Rhythm', style: maxfont),
-                                        Icon(Icons.arrow_drop_down_rounded)
+                                        const Icon(Icons.arrow_drop_down_rounded)
                                       ],
                                     ),
                                     ksizedbox10,
@@ -876,7 +876,10 @@ class _HomeScreenState extends State<HomeScreen> {
                                   ],
                                 ),
                               ),
-                              width: double.infinity,
+                              
+                            )
+                          : Container(
+                            width: double.infinity,
                               //  height: 300,
                               decoration: BoxDecoration(
                                 color: kwhite,
@@ -891,8 +894,6 @@ class _HomeScreenState extends State<HomeScreen> {
                                   ),
                                 ],
                               ),
-                            )
-                          : Container(
                               child: Padding(
                                 padding: const EdgeInsets.all(8.0),
                                 child: Column(
@@ -961,21 +962,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                   ],
                                 ),
                               ),
-                              width: double.infinity,
-                              //  height: 300,
-                              decoration: BoxDecoration(
-                                color: kwhite,
-                                borderRadius: BorderRadius.circular(18),
-                                boxShadow: [
-                                  BoxShadow(
-                                    color: Colors.grey.withOpacity(0.5),
-                                    spreadRadius: 5,
-                                    blurRadius: 7,
-                                    offset:
-                                        Offset(0, 3), // changes position of shadow
-                                  ),
-                                ],
-                              ),
+                              
                             ),
                     ),
                     // ksizedbox20,
@@ -1243,23 +1230,26 @@ class _HomeScreenState extends State<HomeScreen> {
                                                 ),
                                                 ksizedbox10,
                                                 if (index == 1 && selectedOption == "v1")
-                                                     Column(
-                                                       children: [
-                                                         RadioListTile(
-                                                  title: Text("150mg",
-                                                          style: minfont),
-                                                  value: 'a1',
-                                                  groupValue: selectedOption2,
-                                                  onChanged: handleRadioValueChanged2,
-                                                        ),
-                                                        RadioListTile(
-                                                  title: Text("300mg",
-                                                          style: minfont),
-                                                  value: 'a2',
-                                                  groupValue: selectedOption2,
-                                                  onChanged: handleRadioValueChanged2,
-                                                        ),
-                                                       ],
+                                                     Padding(
+                                                       padding: const EdgeInsets.only(left: 40),
+                                                       child: Column(
+                                                         children: [
+                                                           RadioListTile(
+                                                            title: Text("150mg",
+                                                            style: minfont),
+                                                              value: 'a1',
+                                                               groupValue: selectedOption2,
+                                                                onChanged: handleRadioValueChanged2,
+                                                          ),
+                                                          RadioListTile(
+                                                                 title: Text("300mg",
+                                                            style: minfont),
+                                                                   value: 'a2',
+                                                                    groupValue: selectedOption2,
+                                                                    onChanged: handleRadioValueChanged2,
+                                                          ),
+                                                         ],
+                                                       ),
                                                      ),
                                                 kwidth5,
                                                 const Divider(
@@ -1402,7 +1392,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                                   Slider(
                                                     value: _currentSliderValue,
                                                     max: 100,
-                                                    divisions: 5,
+                                                    divisions: 100,
                                                     label: _currentSliderValue
                                                         .round()
                                                         .toString(),
