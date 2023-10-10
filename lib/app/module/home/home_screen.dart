@@ -135,14 +135,13 @@ class _HomeScreenState extends State<HomeScreen> {
 
 
   setListen(int second) async {
-    if (second == 110) {
-      final duration = await player.setAsset('assets/images/-154921.mp3');
+    if (second == 104) {
+      final duration = await player.setAsset('assets/images/1.45sec-alarm.mp3');
       player.play();
-    } else {
-      // timesound();
+    } else if(second == 120){
+      final duration = await player.setAsset('assets/images/2min-alarm.mp3');
+      player.play();
     }
-    // await Future.delayed(const Duration(seconds: 2));
-    
   }
 
 
@@ -162,7 +161,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
 
   void playAudio() async {
-  String audioPath = 'images/tic-tic-tic.mp3'; // Replace with your audio file path
+  String audioPath = 'images/ringtone-58761.mp3'; // Replace with your audio file path
 
  await audioPlayer.play(
     audio.AssetSource(audioPath),
@@ -432,94 +431,40 @@ class _HomeScreenState extends State<HomeScreen> {
                                   ),
                                 ),
                                 CircularCountDownTimer(
-                                  // Countdown duration in Seconds.
                                   duration: 3000,
-
-                                  // Countdown initial elapsed Duration in Seconds.
                                   initialDuration: 0,
-
-                                  // Controls (i.e Start, Pause, Resume, Restart) the Countdown Timer.
                                   controller: _controller2,
-
-                                  // Width of the Countdown Widget.
                                   width: MediaQuery.of(context).size.width / 3,
-
-                                  // Height of the Countdown Widget.
                                   height: MediaQuery.of(context).size.height / 4,
-
-                                  // Ring Color for Countdown Widget.
                                   ringColor: Colors.grey[300]!,
-
-                                  // Ring Gradient for Countdown Widget.
                                   ringGradient: null,
-
-                                  // Filling Color for Countdown Widget.
-                                  fillColor:
-                                      const Color.fromARGB(255, 128, 182, 252)!,
-
-                                  // Filling Gradient for Countdown Widget.
+                                  fillColor: const Color.fromARGB(255, 128, 182, 252)!,
                                   fillGradient: null,
-
-                                  // Background Color for Countdown Widget.
-                                  backgroundColor:
-                                    const  Color.fromARGB(255, 255, 255, 255),
-
-                                  // Background Gradient for Countdown Widget.
+                                  backgroundColor: const  Color.fromARGB(255, 255, 255, 255),
                                   backgroundGradient: null,
-
-                                  // Border Thickness of the Countdown Ring.
                                   strokeWidth: 20.0,
-
-                                  // Begin and end contours with a flat edge and no extension.
                                   strokeCap: StrokeCap.round,
-
-                                  // Text Style for Countdown Text.
                                   textStyle: const TextStyle(
                                     fontSize: 25.0,
                                     //  color: Colors.white,
                                     fontWeight: FontWeight.bold,
                                   ),
-
-                                  // Format for the Countdown Text.
                                   textFormat: CountdownTextFormat.HH_MM_SS,
-
-                                  // Handles Countdown Timer (true for Reverse Countdown (max to 0), false for Forward Countdown (0 to max)).
                                   isReverse: false,
-
-                                  // Handles Animation Direction (true for Reverse Animation, false for Forward Animation).
                                   isReverseAnimation: false,
-
-                                  // Handles visibility of the Countdown Text.
                                   isTimerTextShown: true,
-
-                                  // Handles the timer start.
                                   autoStart: false,
-
-                                  // This Callback will execute when the Countdown Starts.
                                   onStart: () {
-                                    // Here, do whatever you want
                                     debugPrint('Countdown Started');
                                   },
-
-                                  // This Callback will execute when the Countdown Ends.
                                   onComplete: () {
                                     // Here, do whatever you want
                                     debugPrint('Countdown Ended');
                                   },
-
-                                  // This Callback will execute when the Countdown Changes.
                                   onChange: (String timeStamp) {
                                     // Here, do whatever you want
                                     debugPrint('Countdown Changed $timeStamp');
                                   },
-
-                                  /* 
-              * Function to format the text.
-              * Allows you to format the current duration to any String.
-              * It also provides the default function in case you want to format specific moments
-                as in reverse when reaching '0' show 'GO', and for the rest of the instances follow 
-                the default behavior.
-            */
                                   timeFormatterFunction:
                                       (defaultFormatterFunction, duration) {
                                     if (duration.inSeconds == 0) {
@@ -615,79 +560,37 @@ class _HomeScreenState extends State<HomeScreen> {
                                     ),
                                   ),
                                   CircularCountDownTimer(
-                                    // Countdown duration in Seconds.
                                     duration: 120,
-
-                                    // Countdown initial elapsed Duration in Seconds.
                                     initialDuration: 0,
-
-                                    // Controls (i.e Start, Pause, Resume, Restart) the Countdown Timer.
                                     controller: _controller,
-
-                                    // Width of the Countdown Widget.
                                     width: MediaQuery.of(context).size.width / 3,
-
-                                    // Height of the Countdown Widget.
                                     height: MediaQuery.of(context).size.height / 4,
-
-                                    // Ring Color for Countdown Widget.
                                     ringColor: Colors.grey[300]!,
-
-                                    // Ring Gradient for Countdown Widget.
                                     ringGradient: null,
-
-                                    // Filling Color for Countdown Widget.
                                     fillColor: Colors.orange,
-
-                                    // Filling Gradient for Countdown Widget.
                                     fillGradient: null,
-
-                                    // Background Color for Countdown Widget.
                                     backgroundColor:const  Color.fromARGB(255, 255, 255, 255),
-
-                                    // Background Gradient for Countdown Widget.
                                     backgroundGradient: null,
-
-                                    // Border Thickness of the Countdown Ring.
                                     strokeWidth: 20.0,
-
-                                    // Begin and end contours with a flat edge and no extension.
                                     strokeCap: StrokeCap.round,
-
-                                    // Text Style for Countdown Text.
                                     textStyle: const TextStyle(
                                       fontSize: 25.0,
                                       //  color: Colors.white,
                                       fontWeight: FontWeight.bold,
                                     ),
-
-                                    // Format for the Countdown Text.
                                     textFormat: CountdownTextFormat.HH_MM_SS,
-
-                                    // Handles Countdown Timer (true for Reverse Countdown (max to 0), false for Forward Countdown (0 to max)).
                                     isReverse: false,
-
-                                    // Handles Animation Direction (true for Reverse Animation, false for Forward Animation).
                                     isReverseAnimation: false,
-
-                                    // Handles visibility of the Countdown Text.
                                     isTimerTextShown: true,
-
-                                    // Handles the timer start.
                                     autoStart: false,
-
-                                    // This Callback will execute when the Countdown Starts.
                                     onStart: () {
                                       // Here, do whatever you want
                                       debugPrint('Countdown Started');
                                     },
-
-                                    // This Callback will execute when the Countdown Ends.
                                     onComplete: () async {
                                       // Here, do whatever you want
                                       debugPrint('Countdown Ended');
-                                      debugPrint(
-                                          'Countdown ${_controller.getTime()}');
+                                      debugPrint( 'Countdown ${_controller.getTime()}');
 
                                       if (_controller.getTime() == "00:02:00") {
                                         setState(() {
@@ -714,21 +617,10 @@ class _HomeScreenState extends State<HomeScreen> {
                                         //     'assets/images/-154921.mp3'));
                                       }
                                     },
-
-                                    // This Callback will execute when the Countdown Changes.
-
                                     onChange: (String timeStamp) async {
                                       // Here, do whatever you want
                                       print("--------------------->>$timeStamp");
                                     },
-
-                                    /* 
-                                    * Function to format the text.
-                                    * Allows you to format the current duration to any String.
-                                    * It also provides the default function in case you want to format specific moments
-                                      as in reverse when reaching '0' show 'GO', and for the rest of the instances follow 
-                                      the default behavior.
-                                  */
                                     timeFormatterFunction:
                                         (defaultFormatterFunction, duration) {
                                       if (duration.inSeconds == 0) {
@@ -746,12 +638,15 @@ class _HomeScreenState extends State<HomeScreen> {
                                     mainAxisAlignment:
                                         MainAxisAlignment.spaceEvenly,
                                     children: [
-                                      isplay == true
+                                      isplay == true 
                                           ? _controller.getTime() == "00:02:00"
                                               ? InkWell(
                                                   onTap: () {
-                                                    isreaload = false;
+                                                     setState(() {
+                                                      isreaload = false;
+                                                    });
                                                     _controller.restart();
+                                                    player.stop();
                                                     playAudio();
                                                     loop();
                                                   },
@@ -865,7 +760,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                         children: [
                                           Icon(
                                             Icons.edit_square,
-                                            color: kgrey,
+                                            color: kblue,
                                           ),
                                           kwidth5,
                                           Text('Customize', style: minfont)
@@ -950,7 +845,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                           children: [
                                             Icon(
                                               Icons.edit_square,
-                                              color: kgrey,
+                                              color: kblue,
                                             ),
                                             kwidth5,
                                             Text('Customize', style: minfont)
@@ -1003,7 +898,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                         children: [
                                           Icon(
                                             Icons.edit_square,
-                                            color: kgrey,
+                                            color: kblue,
                                           ),
                                           kwidth5,
                                           Text('Customize', style: minfont)
@@ -1102,7 +997,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                           children: [
                                             Icon(
                                               Icons.edit_square,
-                                              color: kgrey,
+                                              color: kblue,
                                             ),
                                             kwidth5,
                                             Text('Customize', style: minfont)
@@ -1166,7 +1061,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                         children: [
                                           Icon(
                                             Icons.edit_square,
-                                            color: kgrey,
+                                            color: kblue,
                                           ),
                                           kwidth5,
                                           Text('Customize', style: minfont)
@@ -1273,7 +1168,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                           children: [
                                             Icon(
                                               Icons.edit_square,
-                                              color: kgrey,
+                                              color: kblue,
                                             ),
                                             kwidth5,
                                             Text('Customize', style: minfont)
@@ -1323,7 +1218,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                         children: [
                                           Icon(
                                             Icons.edit_square,
-                                            color: kgrey,
+                                            color: kblue,
                                           ),
                                           kwidth5,
                                           Text('Customize', style: minfont)
@@ -1426,7 +1321,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                           children: [
                                             Icon(
                                               Icons.edit_square,
-                                              color: kgrey,
+                                              color: kblue,
                                             ),
                                             kwidth5,
                                             Text('Customize', style: minfont)
@@ -1489,7 +1384,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                         children: [
                                           Icon(
                                             Icons.edit_square,
-                                            color: kgrey,
+                                            color: kblue,
                                           ),
                                           kwidth5,
                                           Text('Customize', style: minfont)
@@ -1577,7 +1472,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                           children: [
                                             Icon(
                                               Icons.edit_square,
-                                              color: kgrey,
+                                              color: kblue,
                                             ),
                                             kwidth5,
                                             Text('Customize', style: minfont)
