@@ -161,7 +161,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
 
   void playAudio() async {
-  String audioPath = 'images/ringtone-58761.mp3'; // Replace with your audio file path
+  String audioPath = 'images/120BPMMetronome.mp3'; // Replace with your audio file path
 
  await audioPlayer.play(
     audio.AssetSource(audioPath),
@@ -481,15 +481,15 @@ class _HomeScreenState extends State<HomeScreen> {
                                 Row(
                                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                   children: [
-                                    if (showPlayButtom && isplay1 == true && _controller.getTime() == "00:02:00")
+                                    if (isplay1 == true)
                                       GestureDetector(
                                         onTap: () {
                                           setState(() {
                                             isplay1 = false;
-                                            isplay = false;
+                                            //isplay = false;
                                           });
                                           _controller2.pause();
-                                          _controller.pause();
+                                          //_controller.pause();
                                           timerCr!.cancel();
                                         },
                                         child:const Icon(
@@ -497,15 +497,15 @@ class _HomeScreenState extends State<HomeScreen> {
                                           color: Colors.blue,
                                         ),
                                       ),
-                                    if (isplay1 == false && _controller.getTime() == "00:02:00")
+                                    if (isplay1 == false)
                                       GestureDetector(
                                         onTap: () {
                                           setState(() {
                                             isplay1 = true;
-                                            isplay = true;
+                                            //isplay = true;
                                           });
                                           _controller2.resume();
-                                          _controller.resume();
+                                          //_controller.resume();
                                         },
                                         child:const Icon(
                                           Icons.play_arrow,
@@ -650,17 +650,17 @@ class _HomeScreenState extends State<HomeScreen> {
                                                     playAudio();
                                                     loop();
                                                   },
-                                                  child: Icon(Icons.play_arrow,
+                                                  child: Icon(Icons.restart_alt,
                                                       color: Colors.amber[700]))
                                               : GestureDetector(
                                                   onTap: () {
                                                     setState(() {
                                                       isplay = false;
-                                                      isplay1 = false;
+                                                      //isplay1 = false;
                                                     });
                                                     audioPlayer.stop();
                                                     _controller.pause();
-                                                    _controller2.pause();
+                                                    //_controller2.pause();
                                                     timerCr!.cancel();
                                                     setState(() {});
                                                   },
@@ -673,9 +673,9 @@ class _HomeScreenState extends State<HomeScreen> {
                                               onTap: () {
                                                 setState(() {
                                                   isplay = true;
-                                                  isplay1 = true;
+                                                  //isplay1 = true;
                                                 });
-                                                _controller2.resume();
+                                                //_controller2.resume();
                                                 _controller.resume();
                                                 _startFlashlightTimer();
                                                 playAudio();
