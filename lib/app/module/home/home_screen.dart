@@ -24,7 +24,6 @@ class HomeScreen extends StatefulWidget {
   State<HomeScreen> createState() => _HomeScreenState();
 }
 
-
 class _HomeScreenState extends State<HomeScreen> {
 //  final _controller = CountDownController();
 
@@ -93,21 +92,17 @@ class _HomeScreenState extends State<HomeScreen> {
 
   // }
 
-
-
   final List<String> items = List.generate(101, (index) => "$index");
 
   void _handleFlashlight() {
+     playFLASHAudio();
     _enableTorch(context); // Turn on the flashlight
+   
     // Turn off the flashlight after a delay (e.g., 2 seconds)
     Future.delayed(Duration(seconds: 2), () {
       _disableTorch(context);
     });
-
-
   }
-
-
 
   Timer? timerCr;
   // Function to start the timer
@@ -124,50 +119,57 @@ class _HomeScreenState extends State<HomeScreen> {
       },
     );
   }
+   audio.AudioPlayer audioPlayer2 = audio.AudioPlayer();
+ void playFLASHAudio() async {
+    String audioPath =
+        'images/flashaudio.mp3'; // Replace with your audio file path
 
-
+    await audioPlayer2.play(
+      audio.AssetSource(audioPath),
+      volume: 100,
+    );
+  }
 
   final player = AudioPlayer();
 
- audio. AudioPlayer audioPlayer = audio.AudioPlayer();
-
-
-
+  audio.AudioPlayer audioPlayer = audio.AudioPlayer();
 
   setListen(int second) async {
     if (second == 104) {
       final duration = await player.setAsset('assets/images/1.45sec-alarm.mp3');
       player.play();
-    } else if(second == 120){
-      final duration = await player.setAsset('assets/images/2min-alarm.mp3');
+    } else if (second == 119) {
+      final duration = await player.setAsset('assets/images/1.45sec-alarm.mp3');
       player.play();
+
+      await Future.delayed(Duration(seconds: 3));
+      player.stop();
     }
   }
 
-
   void loop() {
     audioPlayer.setReleaseMode(audio.ReleaseMode.loop);
-}
+  }
+
+
+  
 
   // timesound() async {
-
-
-
 
   //   final duration =
   //       await player.setAsset('assets/images/tick-tock-clock-01-84927.mp3');
   //   player.play();
   // }
 
-
   void playAudio() async {
-  String audioPath = 'images/120BPMMetronome.mp3'; // Replace with your audio file path
+    String audioPath =
+        'images/120BPMMetronome.mp3'; // Replace with your audio file path
 
- await audioPlayer.play(
-    audio.AssetSource(audioPath),
-    volume:100,
-  );
-}
+    await audioPlayer.play(
+      audio.AssetSource(audioPath),
+      volume: 100,
+    );
+  }
 
   // Future<void> navigateToAlarmScreen(AlarmSettings? settings) async {
   //   final res = await showModalBottomSheet<bool?>(
@@ -189,41 +191,43 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void dispose() {
     subscription?.cancel();
+    audioPlayer.stop();
+    player.stop();
     super.dispose();
   }
 
   audioSoundManage() async {
-     if(controller.count > 120){
-         await audioPlayer.setPlaybackRate(1);
-         await audioPlayer.setVolume(1);
-     } else if(controller.count > 118) {
-         await audioPlayer.setPlaybackRate(0.9);
-         await audioPlayer.setVolume(0.9);
-    } else if(controller.count > 116) {
-         await audioPlayer.setPlaybackRate(0.8);
-         await audioPlayer.setVolume(0.8);
-    } else if(controller.count > 114) {
-         await audioPlayer.setPlaybackRate(0.7);
-         await audioPlayer.setVolume(0.7);
-    } else if(controller.count > 112) {
-         await audioPlayer.setPlaybackRate(0.6);
-         await audioPlayer.setVolume(0.6);
-    } else if(controller.count > 110) {
-         await audioPlayer.setPlaybackRate(0.5);
-         await audioPlayer.setVolume(0.5);
-    } else if(controller.count > 108) {
-         await audioPlayer.setPlaybackRate(0.4);
-         await audioPlayer.setVolume(0.4);
-    } else if(controller.count > 106) {
-         await audioPlayer.setPlaybackRate(0.3);
-         await audioPlayer.setVolume(0.3);
-    } else if(controller.count > 104) {
-         await audioPlayer.setPlaybackRate(0.2);
-         await audioPlayer.setVolume(0.2);
-    } else if(controller.count < 102) {
-         await audioPlayer.setPlaybackRate(0.1);
-         await audioPlayer.setVolume(0.1);
-    } 
+    if (controller.count > 120) {
+      await audioPlayer.setPlaybackRate(1);
+      await audioPlayer.setVolume(1);
+    } else if (controller.count > 118) {
+      await audioPlayer.setPlaybackRate(0.9);
+      await audioPlayer.setVolume(0.9);
+    } else if (controller.count > 116) {
+      await audioPlayer.setPlaybackRate(0.8);
+      await audioPlayer.setVolume(0.8);
+    } else if (controller.count > 114) {
+      await audioPlayer.setPlaybackRate(0.7);
+      await audioPlayer.setVolume(0.7);
+    } else if (controller.count > 112) {
+      await audioPlayer.setPlaybackRate(0.6);
+      await audioPlayer.setVolume(0.6);
+    } else if (controller.count > 110) {
+      await audioPlayer.setPlaybackRate(0.5);
+      await audioPlayer.setVolume(0.5);
+    } else if (controller.count > 108) {
+      await audioPlayer.setPlaybackRate(0.4);
+      await audioPlayer.setVolume(0.4);
+    } else if (controller.count > 106) {
+      await audioPlayer.setPlaybackRate(0.3);
+      await audioPlayer.setVolume(0.3);
+    } else if (controller.count > 104) {
+      await audioPlayer.setPlaybackRate(0.2);
+      await audioPlayer.setVolume(0.2);
+    } else if (controller.count < 102) {
+      await audioPlayer.setPlaybackRate(0.1);
+      await audioPlayer.setVolume(0.1);
+    }
   }
 
   double _currentSliderValue = 20;
@@ -236,7 +240,7 @@ class _HomeScreenState extends State<HomeScreen> {
     return Scaffold(
       backgroundColor: kwhite,
       appBar: PreferredSize(
-        preferredSize:const Size.fromHeight(90.0),
+        preferredSize: const Size.fromHeight(90.0),
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 20),
           child: Column(
@@ -262,7 +266,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                     audioSoundManage();
                                   }
                                 },
-                                child:const Icon(
+                                child: const Icon(
                                   Icons.remove_circle_outline,
                                   size: 25,
                                 ),
@@ -273,7 +277,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                   Obx(
                                     () => Text(
                                       '${controller.count}',
-                                      style:const TextStyle(
+                                      style: const TextStyle(
                                           color: Color(0xffF61212),
                                           fontWeight: FontWeight.w700,
                                           fontSize: 16),
@@ -283,13 +287,13 @@ class _HomeScreenState extends State<HomeScreen> {
                               ),
                               GestureDetector(
                                   onTap: () async {
-                                    if (controller.count != 120){
-                                        controller.increment();
-                                        audioSoundManage();
+                                    if (controller.count != 120) {
+                                      controller.increment();
+                                      audioSoundManage();
                                     }
-                                      
                                   },
-                                  child:const Icon(Icons.add_circle_outline, size: 25)),
+                                  child: const Icon(Icons.add_circle_outline,
+                                      size: 25)),
                             ],
                           ),
                           const Text(
@@ -297,15 +301,16 @@ class _HomeScreenState extends State<HomeScreen> {
                             style: TextStyle(
                               color: Color(0xffF61212),
                             ),
-                          ),
+             
+             ),
                         ],
                       ),
-                      if(isEnable == false)
-                      Container(
-                        height: 50,
-                        width: 80,
-                        color: Colors.white.withOpacity(0.7),
-                      ),
+                      if (isEnable == false)
+                        Container(
+                          height: 50,
+                          width: 80,
+                          color: Colors.white.withOpacity(0.7),
+                        ),
                     ],
                   ),
                   GestureDetector(
@@ -325,7 +330,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     child: Container(
                       height: 40,
                       width: 100,
-                       decoration: BoxDecoration(
+                      decoration: BoxDecoration(
                         color: kOrange,
                         borderRadius: BorderRadius.circular(16),
                         gradient: const LinearGradient(
@@ -337,7 +342,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           ],
                         ),
                       ),
-                      child:const Center(
+                      child: const Center(
                         child: Text(
                           'Start',
                           style: TextStyle(
@@ -346,7 +351,6 @@ class _HomeScreenState extends State<HomeScreen> {
                               fontWeight: FontWeight.w700),
                         ),
                       ),
-                     
                     ),
                   ),
                   kwidth5,
@@ -371,17 +375,17 @@ class _HomeScreenState extends State<HomeScreen> {
                                 _disableTorch(context);
                               }
                             },
-                            child:const Icon(Icons.flash_on),
+                            child: const Icon(Icons.flash_on),
                           ),
                           const Text('Flash'),
                         ],
                       ),
-                      if(isEnable == false)
-                      Container(
-                        height: 50,
-                        width: 40,
-                        color: Colors.white.withOpacity(0.7),
-                      ),
+                      if (isEnable == false)
+                        Container(
+                          height: 50,
+                          width: 40,
+                          color: Colors.white.withOpacity(0.7),
+                        ),
                     ],
                   )
                 ],
@@ -393,7 +397,7 @@ class _HomeScreenState extends State<HomeScreen> {
       body: Stack(
         children: [
           SingleChildScrollView(
-            physics:const BouncingScrollPhysics(),
+            physics: const BouncingScrollPhysics(),
             child: Padding(
               padding: const EdgeInsets.all(8.0),
               child: Obx(
@@ -414,7 +418,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                 color: Colors.grey.withOpacity(0.5),
                                 spreadRadius: 5,
                                 blurRadius: 7,
-                                offset:const Offset(0, 3), // changes position of shadow
+                                offset: const Offset(
+                                    0, 3), // changes position of shadow
                               ),
                             ],
                           ),
@@ -435,12 +440,15 @@ class _HomeScreenState extends State<HomeScreen> {
                                   initialDuration: 0,
                                   controller: _controller2,
                                   width: MediaQuery.of(context).size.width / 3,
-                                  height: MediaQuery.of(context).size.height / 4,
+                                  height:
+                                      MediaQuery.of(context).size.height / 4,
                                   ringColor: Colors.grey[300]!,
                                   ringGradient: null,
-                                  fillColor: const Color.fromARGB(255, 128, 182, 252)!,
+                                  fillColor:
+                                      const Color.fromARGB(255, 128, 182, 252)!,
                                   fillGradient: null,
-                                  backgroundColor: const  Color.fromARGB(255, 255, 255, 255),
+                                  backgroundColor:
+                                      const Color.fromARGB(255, 255, 255, 255),
                                   backgroundGradient: null,
                                   strokeWidth: 20.0,
                                   strokeCap: StrokeCap.round,
@@ -479,7 +487,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                   },
                                 ),
                                 Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceEvenly,
                                   children: [
                                     if (isplay1 == true)
                                       GestureDetector(
@@ -490,9 +499,9 @@ class _HomeScreenState extends State<HomeScreen> {
                                           });
                                           _controller2.pause();
                                           //_controller.pause();
-                                          timerCr!.cancel();
+                                          // timerCr!.cancel();
                                         },
-                                        child:const Icon(
+                                        child: const Icon(
                                           Icons.pause,
                                           color: Colors.blue,
                                         ),
@@ -507,7 +516,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                           _controller2.resume();
                                           //_controller.resume();
                                         },
-                                        child:const Icon(
+                                        child: const Icon(
                                           Icons.play_arrow,
                                           color: Colors.blue,
                                         ),
@@ -543,7 +552,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                   color: Colors.grey.withOpacity(0.5),
                                   spreadRadius: 5,
                                   blurRadius: 7,
-                                  offset: const Offset(0, 3), // changes position of shadow
+                                  offset: const Offset(
+                                      0, 3), // changes position of shadow
                                 ),
                               ],
                             ),
@@ -563,13 +573,16 @@ class _HomeScreenState extends State<HomeScreen> {
                                     duration: 120,
                                     initialDuration: 0,
                                     controller: _controller,
-                                    width: MediaQuery.of(context).size.width / 3,
-                                    height: MediaQuery.of(context).size.height / 4,
+                                    width:
+                                        MediaQuery.of(context).size.width / 3,
+                                    height:
+                                        MediaQuery.of(context).size.height / 4,
                                     ringColor: Colors.grey[300]!,
                                     ringGradient: null,
                                     fillColor: Colors.orange,
                                     fillGradient: null,
-                                    backgroundColor:const  Color.fromARGB(255, 255, 255, 255),
+                                    backgroundColor: const Color.fromARGB(
+                                        255, 255, 255, 255),
                                     backgroundGradient: null,
                                     strokeWidth: 20.0,
                                     strokeCap: StrokeCap.round,
@@ -590,14 +603,15 @@ class _HomeScreenState extends State<HomeScreen> {
                                     onComplete: () async {
                                       // Here, do whatever you want
                                       debugPrint('Countdown Ended');
-                                      debugPrint( 'Countdown ${_controller.getTime()}');
+                                      debugPrint(
+                                          'Countdown ${_controller.getTime()}');
 
                                       if (_controller.getTime() == "00:02:00") {
                                         setState(() {
                                           showPlayButtom = true;
                                           isreaload = true;
                                         });
-                                        
+
                                         // _controller.restart();
                                         // final alarmSettings =
                                         //     AlarmSettings(
@@ -619,7 +633,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                     },
                                     onChange: (String timeStamp) async {
                                       // Here, do whatever you want
-                                      print("--------------------->>$timeStamp");
+                                      print(
+                                          "--------------------->>$timeStamp");
                                     },
                                     timeFormatterFunction:
                                         (defaultFormatterFunction, duration) {
@@ -630,38 +645,42 @@ class _HomeScreenState extends State<HomeScreen> {
                                         setListen(duration.inSeconds);
                                         // other durations by it's default format
                                         return Function.apply(
-                                            defaultFormatterFunction, [duration]);
+                                            defaultFormatterFunction,
+                                            [duration]);
                                       }
                                     },
                                   ),
                                   Row(
                                     mainAxisAlignment:
-                                        MainAxisAlignment.spaceEvenly,
+                                        MainAxisAlignment.center,
                                     children: [
-                                      isplay == true 
+                                      isplay == true
                                           ? _controller.getTime() == "00:02:00"
                                               ? InkWell(
                                                   onTap: () {
-                                                     setState(() {
+                                                    setState(() {
                                                       isreaload = false;
                                                     });
                                                     _controller.restart();
-                                                    player.stop();
-                                                    playAudio();
-                                                    loop();
+                                                    // player.stop();
+                                                    // playAudio();
+                                                    // loop();
                                                   },
-                                                  child: Icon(Icons.restart_alt,
-                                                      color: Colors.amber[700]))
+                                                  child: Icon(
+                                                    Icons.restart_alt,
+                                                    color: Colors.amber[700],
+                                                  ),
+                                                )
                                               : GestureDetector(
                                                   onTap: () {
                                                     setState(() {
                                                       isplay = false;
                                                       //isplay1 = false;
                                                     });
-                                                    audioPlayer.stop();
+                                                    //audioPlayer.stop();
                                                     _controller.pause();
                                                     //_controller2.pause();
-                                                    timerCr!.cancel();
+                                                    // timerCr!.cancel();
                                                     setState(() {});
                                                   },
                                                   child: Icon(
@@ -677,9 +696,9 @@ class _HomeScreenState extends State<HomeScreen> {
                                                 });
                                                 //_controller2.resume();
                                                 _controller.resume();
-                                                _startFlashlightTimer();
-                                                playAudio();
-                                               loop();
+                                                // _startFlashlightTimer();
+                                                // playAudio();
+                                                // loop();
                                                 // final alarmSettings = AlarmSettings(
                                                 //   id: 42,
                                                 //   dateTime: DateTime.now()
@@ -696,10 +715,26 @@ class _HomeScreenState extends State<HomeScreen> {
                                                 color: Colors.amber[700],
                                               ),
                                             ),
-                                      // GestureDetector(
-                                      //     onTap: () =>
-                                      //         _controller.restart(duration: 200),
-                                      //     child: Icon(Icons.restart_alt)),
+                                             isplay == true
+                                          ? Container()
+                                          : Padding(
+                                            padding: const EdgeInsets.symmetric(horizontal:5 ),
+                                            child: GestureDetector(
+                                              
+                                                onTap: () {
+                                                  setState(() {
+                                                    isplay=true;
+                                                  });
+                                                  _controller.restart(
+                                                      duration: 200);
+                                                //  _startFlashlightTimer();
+                                                },
+                                                child: Icon(
+                                                  Icons.restart_alt,
+                                                  color: Colors.amber[700],
+                                                ),
+                                              ),
+                                          ),
                                     ],
                                   ),
                                 ],
@@ -722,7 +757,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       },
                       child: controller.ecgindex.value == 0
                           ? Container(
-                            width: double.infinity,
+                              width: double.infinity,
                               //  height: 300,
                               decoration: BoxDecoration(
                                 color: kwhite,
@@ -732,12 +767,13 @@ class _HomeScreenState extends State<HomeScreen> {
                                     color: Colors.grey.withOpacity(0.5),
                                     spreadRadius: 5,
                                     blurRadius: 7,
-                                    offset:const Offset(0, 3), // changes position of shadow
+                                    offset: const Offset(
+                                        0, 3), // changes position of shadow
                                   ),
                                 ],
                               ),
                               child: Padding(
-                                padding:const EdgeInsets.all(8.0),
+                                padding: const EdgeInsets.all(8.0),
                                 child: Column(
                                   children: [
                                     Row(
@@ -745,7 +781,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                           MainAxisAlignment.spaceBetween,
                                       children: [
                                         Text('Choose Rhythm', style: maxfont),
-                                        const Icon(Icons.arrow_drop_down_rounded)
+                                        const Icon(
+                                            Icons.arrow_drop_down_rounded)
                                       ],
                                     ),
                                     ksizedbox10,
@@ -753,8 +790,11 @@ class _HomeScreenState extends State<HomeScreen> {
                                       onTap: () {
                                         var txtControllerrythem =
                                             TextEditingController();
-                                        _showTextFieldDialog(context, "Rhythm",
-                                            "Enter Rhythm", txtControllerrythem);
+                                        _showTextFieldDialog(
+                                            context,
+                                            "Rhythm",
+                                            "Enter Rhythm",
+                                            txtControllerrythem);
                                       },
                                       child: Row(
                                         children: [
@@ -771,10 +811,9 @@ class _HomeScreenState extends State<HomeScreen> {
                                   ],
                                 ),
                               ),
-                              
                             )
                           : Container(
-                            width: double.infinity,
+                              width: double.infinity,
                               //  height: 300,
                               decoration: BoxDecoration(
                                 color: kwhite,
@@ -784,8 +823,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                     color: Colors.grey.withOpacity(0.5),
                                     spreadRadius: 5,
                                     blurRadius: 7,
-                                    offset:
-                                        Offset(0, 3), // changes position of shadow
+                                    offset: Offset(
+                                        0, 3), // changes position of shadow
                                   ),
                                 ],
                               ),
@@ -800,7 +839,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                             MainAxisAlignment.spaceBetween,
                                         children: [
                                           Text('Choose Rhythm', style: maxfont),
-                                          const Icon(Icons.arrow_drop_up_rounded)
+                                          const Icon(
+                                              Icons.arrow_drop_up_rounded)
                                         ],
                                       ),
                                     ),
@@ -815,7 +855,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                               children: [
                                                 RadioListTile(
                                                   title: Text(
-                                                      controller.rythmList[index]
+                                                      controller
+                                                          .rythmList[index]
                                                           .toString(),
                                                       style: minfont),
                                                   value: 'v${index}',
@@ -838,8 +879,11 @@ class _HomeScreenState extends State<HomeScreen> {
                                         onTap: () {
                                           var txtControllerrythem =
                                               TextEditingController();
-                                          _showTextFieldDialog(context, "Rhythm",
-                                              "Enter Rhythm", txtControllerrythem);
+                                          _showTextFieldDialog(
+                                              context,
+                                              "Rhythm",
+                                              "Enter Rhythm",
+                                              txtControllerrythem);
                                         },
                                         child: Row(
                                           children: [
@@ -857,7 +901,6 @@ class _HomeScreenState extends State<HomeScreen> {
                                   ],
                                 ),
                               ),
-                              
                             ),
                     ),
                     // ksizedbox20,
@@ -919,8 +962,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                     color: Colors.grey.withOpacity(0.5),
                                     spreadRadius: 5,
                                     blurRadius: 7,
-                                    offset:
-                                        Offset(0, 3), // changes position of shadow
+                                    offset: Offset(
+                                        0, 3), // changes position of shadow
                                   ),
                                 ],
                               ),
@@ -936,8 +979,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                     color: Colors.grey.withOpacity(0.5),
                                     spreadRadius: 5,
                                     blurRadius: 7,
-                                    offset:
-                                        Offset(0, 3), // changes position of shadow
+                                    offset: Offset(
+                                        0, 3), // changes position of shadow
                                   ),
                                 ],
                               ),
@@ -967,7 +1010,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                               children: [
                                                 RadioListTile(
                                                   title: Text(
-                                                      controller.shockList[index]
+                                                      controller
+                                                          .shockList[index]
                                                           .toString(),
                                                       style: minfont),
                                                   value: 'v${index}',
@@ -1023,7 +1067,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       },
                       child: controller.quality.value == 0
                           ? Container(
-                             width: double.infinity,
+                              width: double.infinity,
                               //  height: 300,
                               decoration: BoxDecoration(
                                 color: kwhite,
@@ -1033,7 +1077,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                     color: Colors.grey.withOpacity(0.5),
                                     spreadRadius: 5,
                                     blurRadius: 7,
-                                    offset:const Offset(0, 3), // changes position of shadow
+                                    offset: const Offset(
+                                        0, 3), // changes position of shadow
                                   ),
                                 ],
                               ),
@@ -1046,7 +1091,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                           MainAxisAlignment.spaceBetween,
                                       children: [
                                         Text('Drug/Dose', style: maxfont),
-                                        const Icon(Icons.arrow_drop_down_rounded)
+                                        const Icon(
+                                            Icons.arrow_drop_down_rounded)
                                       ],
                                     ),
                                     ksizedbox10,
@@ -1072,10 +1118,9 @@ class _HomeScreenState extends State<HomeScreen> {
                                   ],
                                 ),
                               ),
-                             
                             )
                           : Container(
-                            width: double.infinity,
+                              width: double.infinity,
                               //  height: 300,
                               decoration: BoxDecoration(
                                 color: kwhite,
@@ -1085,7 +1130,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                     color: Colors.grey.withOpacity(0.5),
                                     spreadRadius: 5,
                                     blurRadius: 7,
-                                    offset:const  Offset(0, 3), // changes position of shadow
+                                    offset: const Offset(
+                                        0, 3), // changes position of shadow
                                   ),
                                 ],
                               ),
@@ -1100,12 +1146,14 @@ class _HomeScreenState extends State<HomeScreen> {
                                             MainAxisAlignment.spaceBetween,
                                         children: [
                                           Text('Drug / Dose', style: maxfont),
-                                          const Icon(Icons.arrow_drop_up_rounded)
+                                          const Icon(
+                                              Icons.arrow_drop_up_rounded)
                                         ],
                                       ),
                                     ),
                                     ListView.builder(
-                                        physics:const NeverScrollableScrollPhysics(),
+                                        physics:
+                                            const NeverScrollableScrollPhysics(),
                                         shrinkWrap: true,
                                         itemCount: controller.drugList.length,
                                         itemBuilder: (context, index) {
@@ -1124,28 +1172,35 @@ class _HomeScreenState extends State<HomeScreen> {
                                                       handleRadioValueChanged,
                                                 ),
                                                 ksizedbox10,
-                                                if (index == 1 && selectedOption == "v1")
-                                                     Padding(
-                                                       padding: const EdgeInsets.only(left: 40),
-                                                       child: Column(
-                                                         children: [
-                                                           RadioListTile(
-                                                            title: Text("150mg",
-                                                            style: minfont),
-                                                              value: 'a1',
-                                                               groupValue: selectedOption2,
-                                                                onChanged: handleRadioValueChanged2,
-                                                          ),
-                                                          RadioListTile(
-                                                                 title: Text("300mg",
-                                                            style: minfont),
-                                                                   value: 'a2',
-                                                                    groupValue: selectedOption2,
-                                                                    onChanged: handleRadioValueChanged2,
-                                                          ),
-                                                         ],
-                                                       ),
-                                                     ),
+                                                if (index == 1 &&
+                                                    selectedOption == "v1")
+                                                  Padding(
+                                                    padding:
+                                                        const EdgeInsets.only(
+                                                            left: 40),
+                                                    child: Column(
+                                                      children: [
+                                                        RadioListTile(
+                                                          title: Text("150mg",
+                                                              style: minfont),
+                                                          value: 'a1',
+                                                          groupValue:
+                                                              selectedOption2,
+                                                          onChanged:
+                                                              handleRadioValueChanged2,
+                                                        ),
+                                                        RadioListTile(
+                                                          title: Text("300mg",
+                                                              style: minfont),
+                                                          value: 'a2',
+                                                          groupValue:
+                                                              selectedOption2,
+                                                          onChanged:
+                                                              handleRadioValueChanged2,
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  ),
                                                 kwidth5,
                                                 const Divider(
                                                   height: 1,
@@ -1180,7 +1235,6 @@ class _HomeScreenState extends State<HomeScreen> {
                                   ],
                                 ),
                               ),
-                              
                             ),
                     ),
                     ksizedbox20,
@@ -1211,8 +1265,11 @@ class _HomeScreenState extends State<HomeScreen> {
                                       onTap: () {
                                         var txtControllerCPR =
                                             TextEditingController();
-                                        _showTextFieldDialog(context, "QUALITY CPR",
-                                            "Enter", txtControllerCPR);
+                                        _showTextFieldDialog(
+                                            context,
+                                            "QUALITY CPR",
+                                            "Enter",
+                                            txtControllerCPR);
                                       },
                                       child: Row(
                                         children: [
@@ -1239,8 +1296,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                     color: Colors.grey.withOpacity(0.5),
                                     spreadRadius: 5,
                                     blurRadius: 7,
-                                    offset:
-                                        Offset(0, 3), // changes position of shadow
+                                    offset: Offset(
+                                        0, 3), // changes position of shadow
                                   ),
                                 ],
                               ),
@@ -1277,7 +1334,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                                       style: minfont),
                                                   value: 'e${index}',
                                                   groupValue: selectedOption,
-                                                  onChanged: 
+                                                  onChanged:
                                                       handleRadioValueChanged,
                                                 ),
                                                 kwidth5,
@@ -1293,7 +1350,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                                         .toString(),
                                                     onChanged: (double value) {
                                                       setState(() {
-                                                        _currentSliderValue = value;
+                                                        _currentSliderValue =
+                                                            value;
                                                       });
                                                     },
                                                   ),
@@ -1342,8 +1400,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                     color: Colors.grey.withOpacity(0.5),
                                     spreadRadius: 5,
                                     blurRadius: 7,
-                                    offset:
-                                        Offset(0, 3), // changes position of shadow
+                                    offset: Offset(
+                                        0, 3), // changes position of shadow
                                   ),
                                 ],
                               ),
@@ -1377,8 +1435,11 @@ class _HomeScreenState extends State<HomeScreen> {
                                       onTap: () {
                                         var txtControllerrythem =
                                             TextEditingController();
-                                        _showTextFieldDialog(context, "Procedure",
-                                            "Enter Procedure", txtControllerrythem);
+                                        _showTextFieldDialog(
+                                            context,
+                                            "Procedure",
+                                            "Enter Procedure",
+                                            txtControllerrythem);
                                       },
                                       child: Row(
                                         children: [
@@ -1405,8 +1466,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                     color: Colors.grey.withOpacity(0.5),
                                     spreadRadius: 5,
                                     blurRadius: 7,
-                                    offset:
-                                        Offset(0, 3), // changes position of shadow
+                                    offset: Offset(
+                                        0, 3), // changes position of shadow
                                   ),
                                 ],
                               ),
@@ -1422,7 +1483,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                         mainAxisAlignment:
                                             MainAxisAlignment.spaceBetween,
                                         children: [
-                                          Text('Choose Procedure', style: maxfont),
+                                          Text('Choose Procedure',
+                                              style: maxfont),
                                           Icon(Icons.arrow_drop_up_rounded)
                                         ],
                                       ),
@@ -1430,7 +1492,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                     ListView.builder(
                                         physics: NeverScrollableScrollPhysics(),
                                         shrinkWrap: true,
-                                        itemCount: controller.procedurelist.length,
+                                        itemCount:
+                                            controller.procedurelist.length,
                                         itemBuilder: (context, index) {
                                           // The itemBuilder callback is called for each item in the list.
                                           return Container(
@@ -1494,8 +1557,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                     color: Colors.grey.withOpacity(0.5),
                                     spreadRadius: 5,
                                     blurRadius: 7,
-                                    offset:
-                                        Offset(0, 3), // changes position of shadow
+                                    offset: Offset(
+                                        0, 3), // changes position of shadow
                                   ),
                                 ],
                               ),
@@ -1507,8 +1570,10 @@ class _HomeScreenState extends State<HomeScreen> {
                         setState(() {
                           isEnable = false;
                           audioPlayer.stop();
+                          audioPlayer2.stop();
+                          player.stop();
                         });
-                        Get.to(const SuccessScreen());
+                        Get.off(const SuccessScreen());
                       },
                       child: Container(
                         height: 50,
@@ -1737,12 +1802,12 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
             ),
           ),
-          if(isEnable == false)
-           Container(
-            height: double.infinity,
-            width: double.infinity,
-            color: Colors.white.withOpacity(0.7),
-          ),
+          if (isEnable == false)
+            Container(
+              height: double.infinity,
+              width: double.infinity,
+              color: Colors.white.withOpacity(0.7),
+            ),
         ],
       ),
     );
@@ -1875,7 +1940,6 @@ class counterController extends GetxController {
     'Epinephrine 1mg',
     'Amiodarone',
     'ASYSTOLE',
-    
   ];
   List amiodarone = [
     '150mg',

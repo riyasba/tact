@@ -45,6 +45,7 @@ dependencies:
   alarm: 
   just_audio: ^0.9.35
   audioplayers: ^5.1.0
+  dio: ^5.3.3
  
 
 dev_dependencies:

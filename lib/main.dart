@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_application_1/app/module/authentication/onbording/onbording_screen.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
 
-import 'app/module/authentication/splash/spash_screen.dart';
+
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
