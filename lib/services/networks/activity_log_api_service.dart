@@ -1,16 +1,25 @@
 import 'dart:io';
+
 import 'package:dio/dio.dart';
 import 'package:flutter_application_1/services/base_url/base_url.dart';
 
-class GetTypesApiServices extends BaseApiServices {
-  Future getvaluetype({required String typevalue}) async {
+class ActivityLogApiService extends BaseApiServices {
+  Future activitlog({
+    required String catogory,
+    required String type,
+    required String starttime,
+    required String endtime,
+  }) async {
     dynamic responseJson;
     try {
       var formData = FormData.fromMap({
-        "type": typevalue,
+        "category[]": catogory,
+        "type[]": type,
+        "start_time": starttime,
+        "end_time": endtime,
       });
       var dio = Dio();
-      var response = await dio.post(gettype,
+      var response = await dio.post(activitylogURL,
           options: Options(
               headers: {
                 'Accept': 'application/json',
@@ -21,13 +30,10 @@ class GetTypesApiServices extends BaseApiServices {
               }),
           data: formData);
 
-          responseJson = response;
+      responseJson = response;
 
-             print(
-          "::::::::<--TACT get typr api-->::::::::status code:::::::::"
-          );
-
-          print(response.data);
+      print("::::::::<--TACT activity log  api-->::::::::status code:::::::::");
+      print(response.data);
     } on SocketException {
       print("no internet");
     }

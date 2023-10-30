@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:alarm/alarm.dart';
 import 'package:alarm/model/alarm_settings.dart';
+import 'package:flutter_application_1/controller/tact_api_controller.dart';
 // import 'package:audioplayers/audioplayers.dart';
 // import 'package:audioplayers/audioplayers.dart';
 // import 'package:audioplayers/audioplayers.dart';
@@ -42,6 +43,8 @@ class _HomeScreenState extends State<HomeScreen> {
   bool showPlayButtom = false;
   final _controller = CountDownController();
   final _controller2 = CountDownController();
+  
+  var typevalue;
 
   void handleRadioValueChanged(String? value) {
     setState(() {
@@ -55,6 +58,9 @@ class _HomeScreenState extends State<HomeScreen> {
     });
   }
 
+
+
+ final tactapiController = Get.find<TactApiController>();
   @override
   void initState() {
     super.initState();
@@ -63,6 +69,9 @@ class _HomeScreenState extends State<HomeScreen> {
     subscription ??= Alarm.ringStream.stream.listen(
       (alarmSettings) => navigateToRingScreen(alarmSettings),
     );
+
+
+    tactapiController.gettype(typevalue: typevalue.toString());
   }
 
   void loadAlarms() {
@@ -847,17 +856,15 @@ class _HomeScreenState extends State<HomeScreen> {
                                     ListView.builder(
                                         physics: NeverScrollableScrollPhysics(),
                                         shrinkWrap: true,
-                                        itemCount: controller.rythmList.length,
+                                        itemCount: tactapiController.gettypelistdata.length,
                                         itemBuilder: (context, index) {
                                           // The itemBuilder callback is called for each item in the list.
                                           return Container(
                                             child: Column(
                                               children: [
                                                 RadioListTile(
-                                                  title: Text(
-                                                      controller
-                                                          .rythmList[index]
-                                                          .toString(),
+                                                  title: Text(tactapiController.gettypelistdata[index].title,
+                                        
                                                       style: minfont),
                                                   value: 'v${index}',
                                                   groupValue: selectedOption,
