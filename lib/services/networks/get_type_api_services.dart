@@ -7,7 +7,7 @@ class GetTypesApiServices extends BaseApiServices {
     dynamic responseJson;
     try {
       var formData = FormData.fromMap({
-        "type": typevalue,
+        "type":typevalue,
       });
       var dio = Dio();
       var response = await dio.post(gettype,

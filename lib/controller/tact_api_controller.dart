@@ -4,7 +4,7 @@ import 'package:flutter_application_1/app/data/constands/constands.dart';
 import 'package:flutter_application_1/models/get_activity_log.dart';
 
 import 'package:flutter_application_1/models/get_type_model.dart';
-import 'package:flutter_application_1/services/base_url/base_url.dart';
+
 import 'package:flutter_application_1/services/networks/activity_log_api_service.dart';
 
 import 'package:flutter_application_1/services/networks/get_type_api_services.dart';
@@ -17,7 +17,9 @@ import 'package:dio/dio.dart' as dio;
 class TactApiController extends GetxController {
   GetTypesApiServices gettypeapiservice = GetTypesApiServices();
 
-  List<Success> gettypelistdata = [];
+  List<Success> rythmlistdata = [];
+  List<Success> shocktypelistdata = [];
+  List<Success> druglistdata = [];
 
   gettype({required String typevalue}) async {
     dio.Response<dynamic> response =
@@ -25,12 +27,21 @@ class TactApiController extends GetxController {
 
     if (response.statusCode == 200) {
       GetTypeModel getvaluetypemodel = GetTypeModel.fromJson(response.data);
-      gettypelistdata = getvaluetypemodel.success;
+      if (typevalue == 'rhythm') {
+        rythmlistdata = getvaluetypemodel.success;
+      } else if (typevalue == 'shock') {
+        shocktypelistdata = getvaluetypemodel.success;
+      } else if (typevalue == 'drug') {
+        druglistdata = getvaluetypemodel.success;
+      }
     } else {
       Get.rawSnackbar(
-          backgroundColor: Colors.red,
-          messageText: Text("Something went wrong",
-              style: TextStyle(fontSize: 15, color: kwhite)));
+        backgroundColor: Colors.red,
+        messageText: Text(
+          "Something went wrong",
+          style: TextStyle(fontSize: 15, color: kwhite),
+        ),
+      );
     }
     update();
   }
@@ -41,8 +52,8 @@ class TactApiController extends GetxController {
   Future activitylog(
       {required String endtime,
       required String starttime,
-      required String type,
-      required String catogory}) async {
+      required var type,
+      required var catogory}) async {
     dio.Response<dynamic> response = await activitylogapiservice.activitlog(
       type: type,
       catogory: catogory,
@@ -55,9 +66,12 @@ class TactApiController extends GetxController {
       activityloglistdata = getactivitymodel.activityLogs;
     } else {
       Get.rawSnackbar(
-          backgroundColor: Colors.red,
-          messageText: Text("Something went wrong",
-              style: TextStyle(fontSize: 15, color: kwhite)));
+        backgroundColor: Colors.red,
+        messageText: Text(
+          "Something went wrong",
+          style: TextStyle(fontSize: 15, color: kwhite),
+        ),
+      );
     }
     update();
   }
@@ -69,6 +83,9 @@ class TactApiController extends GetxController {
       required String type}) async {
     dio.Response<dynamic> response = await stoetypeapiservice.storetype(
         title: title, description: description, type: type);
-    // if (response.statusCode == 200) {}
+    if (response.statusCode == 200) {
+      print('status code has sucess store type');
+      gettype(typevalue: type);
+    }
   }
 }

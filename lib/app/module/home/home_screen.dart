@@ -1,21 +1,33 @@
 import 'dart:async';
+
 import 'package:alarm/alarm.dart';
+
 import 'package:alarm/model/alarm_settings.dart';
+
 import 'package:flutter_application_1/controller/tact_api_controller.dart';
-// import 'package:audioplayers/audioplayers.dart';
-// import 'package:audioplayers/audioplayers.dart';
-// import 'package:audioplayers/audioplayers.dart';
+
 import 'package:just_audio/just_audio.dart';
+
 import 'package:circular_countdown_timer/circular_countdown_timer.dart';
+
 import 'package:flutter/cupertino.dart';
+
 import 'package:flutter/material.dart';
+
 import 'package:flutter_application_1/app/data/constands/constands.dart';
+
 import 'package:flutter_application_1/app/module/home/report_details.dart';
+
 import 'package:flutter_application_1/app/module/home/ring.dart';
+
 import 'package:flutter_application_1/app/module/home/suceess_screen.dart';
+
 import 'package:get/get.dart';
+
 import 'package:get/get_state_manager/src/simple/get_controllers.dart';
+
 import 'package:torch_light/torch_light.dart';
+
 import 'package:audioplayers/audioplayers.dart' as audio;
 
 class HomeScreen extends StatefulWidget {
@@ -32,7 +44,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
 //  final int duration = 120;
   // final _controller2 = CountDownController();
-  String selectedOption = 'Option 1';
+  String? selectedOption;
   String selectedOption2 = 'Option 2';
   bool _isRunning = true;
   bool isflashon = false;
@@ -43,12 +55,19 @@ class _HomeScreenState extends State<HomeScreen> {
   bool showPlayButtom = false;
   final _controller = CountDownController();
   final _controller2 = CountDownController();
-  
-  var typevalue;
 
-  void handleRadioValueChanged(String? value) {
+//String selectedrythem=selectedOption;
+
+  //var typevalue;
+
+  void handleRadioValueChanged(
+    String? value,
+  ) {
     setState(() {
       selectedOption = value!;
+      print('${selectedOption}');
+      var data = selectedOption;
+      print('============${data}===========');
     });
   }
 
@@ -58,9 +77,12 @@ class _HomeScreenState extends State<HomeScreen> {
     });
   }
 
+  var endtime;
+  var starttime;
+  List<dynamic> typelist = [];
+  List<dynamic> catogorylist = [];
 
-
- final tactapiController = Get.find<TactApiController>();
+  final tactapiController = Get.find<TactApiController>();
   @override
   void initState() {
     super.initState();
@@ -70,8 +92,11 @@ class _HomeScreenState extends State<HomeScreen> {
       (alarmSettings) => navigateToRingScreen(alarmSettings),
     );
 
-
-    tactapiController.gettype(typevalue: typevalue.toString());
+    tactapiController.gettype(typevalue: "rhythm");
+    tactapiController.gettype(typevalue: "shock");
+    //  tactapiController.gettype(typevalue: "drug");
+    // tactapiController.gettype(typevalue: "rythm");
+    // tactapiController.gettype(typevalue: "rythm");
   }
 
   void loadAlarms() {
@@ -104,9 +129,9 @@ class _HomeScreenState extends State<HomeScreen> {
   final List<String> items = List.generate(101, (index) => "$index");
 
   void _handleFlashlight() {
-     playFLASHAudio();
+    playFLASHAudio();
     _enableTorch(context); // Turn on the flashlight
-   
+
     // Turn off the flashlight after a delay (e.g., 2 seconds)
     Future.delayed(Duration(seconds: 2), () {
       _disableTorch(context);
@@ -128,8 +153,9 @@ class _HomeScreenState extends State<HomeScreen> {
       },
     );
   }
-   audio.AudioPlayer audioPlayer2 = audio.AudioPlayer();
- void playFLASHAudio() async {
+
+  audio.AudioPlayer audioPlayer2 = audio.AudioPlayer();
+  void playFLASHAudio() async {
     String audioPath =
         'images/flashaudio.mp3'; // Replace with your audio file path
 
@@ -159,9 +185,6 @@ class _HomeScreenState extends State<HomeScreen> {
   void loop() {
     audioPlayer.setReleaseMode(audio.ReleaseMode.loop);
   }
-
-
-  
 
   // timesound() async {
 
@@ -252,155 +275,156 @@ class _HomeScreenState extends State<HomeScreen> {
         preferredSize: const Size.fromHeight(90.0),
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 20),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              ksizedbox30,
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Stack(
-                    children: [
-                      Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          //     ksizedbox10,
-                          Row(
-                            children: [
-                              GestureDetector(
-                                onTap: () {
-                                  if (controller.count != 100) {
-                                    controller.decrement();
-                                    audioSoundManage();
-                                  }
-                                },
-                                child: const Icon(
-                                  Icons.remove_circle_outline,
-                                  size: 25,
-                                ),
-                              ),
-                              Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Obx(
-                                    () => Text(
-                                      '${controller.count}',
-                                      style: const TextStyle(
-                                          color: Color(0xffF61212),
-                                          fontWeight: FontWeight.w700,
-                                          fontSize: 16),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              GestureDetector(
-                                  onTap: () async {
-                                    if (controller.count != 120) {
-                                      controller.increment();
+          child: GetBuilder<TactApiController>(builder: (_) {
+            return Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                ksizedbox30,
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Stack(
+                      children: [
+                        Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            //     ksizedbox10,
+                            Row(
+                              children: [
+                                GestureDetector(
+                                  onTap: () {
+                                    if (controller.count != 100) {
+                                      controller.decrement();
                                       audioSoundManage();
                                     }
                                   },
-                                  child: const Icon(Icons.add_circle_outline,
-                                      size: 25)),
-                            ],
-                          ),
-                          const Text(
-                            'Metronome',
-                            style: TextStyle(
-                              color: Color(0xffF61212),
+                                  child: const Icon(
+                                    Icons.remove_circle_outline,
+                                    size: 25,
+                                  ),
+                                ),
+                                Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Obx(
+                                      () => Text(
+                                        '${controller.count}',
+                                        style: const TextStyle(
+                                            color: Color(0xffF61212),
+                                            fontWeight: FontWeight.w700,
+                                            fontSize: 16),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                GestureDetector(
+                                    onTap: () async {
+                                      if (controller.count != 120) {
+                                        controller.increment();
+                                        audioSoundManage();
+                                      }
+                                    },
+                                    child: const Icon(Icons.add_circle_outline,
+                                        size: 25)),
+                              ],
                             ),
-             
-             ),
-                        ],
-                      ),
-                      if (isEnable == false)
-                        Container(
-                          height: 50,
-                          width: 80,
-                          color: Colors.white.withOpacity(0.7),
-                        ),
-                    ],
-                  ),
-                  GestureDetector(
-                    onTap: () {
-                      setState(() {
-                        isplay1 = true;
-                        isplay = true;
-                        isEnable = true;
-                      });
-                      _controller2.start();
-                      _controller.start();
-                      _startFlashlightTimer();
-                      playAudio();
-                      audioSoundManage();
-                      loop();
-                    },
-                    child: Container(
-                      height: 40,
-                      width: 100,
-                      decoration: BoxDecoration(
-                        color: kOrange,
-                        borderRadius: BorderRadius.circular(16),
-                        gradient: const LinearGradient(
-                          begin: Alignment.centerLeft,
-                          end: Alignment.centerRight,
-                          colors: [
-                            Color.fromARGB(129, 157, 196, 187),
-                            Color(0xff81E89E),
+                            const Text(
+                              'Metronome',
+                              style: TextStyle(
+                                color: Color(0xffF61212),
+                              ),
+                            ),
                           ],
                         ),
-                      ),
-                      child: const Center(
-                        child: Text(
-                          'Start',
-                          style: TextStyle(
-                              color: Color(0xff12175E),
-                              fontSize: 17,
-                              fontWeight: FontWeight.w700),
+                        if (isEnable == false)
+                          Container(
+                            height: 50,
+                            width: 80,
+                            color: Colors.white.withOpacity(0.7),
+                          ),
+                      ],
+                    ),
+                    GestureDetector(
+                      onTap: () {
+                        setState(() {
+                          isplay1 = true;
+                          isplay = true;
+                          isEnable = true;
+                        });
+                        _controller2.start();
+                        _controller.start();
+                        _startFlashlightTimer();
+                        playAudio();
+                        audioSoundManage();
+                        loop();
+                      },
+                      child: Container(
+                        height: 40,
+                        width: 100,
+                        decoration: BoxDecoration(
+                          color: kOrange,
+                          borderRadius: BorderRadius.circular(16),
+                          gradient: const LinearGradient(
+                            begin: Alignment.centerLeft,
+                            end: Alignment.centerRight,
+                            colors: [
+                              Color.fromARGB(129, 157, 196, 187),
+                              Color(0xff81E89E),
+                            ],
+                          ),
+                        ),
+                        child: const Center(
+                          child: Text(
+                            'Start',
+                            style: TextStyle(
+                                color: Color(0xff12175E),
+                                fontSize: 17,
+                                fontWeight: FontWeight.w700),
+                          ),
                         ),
                       ),
                     ),
-                  ),
-                  kwidth5,
-                  Stack(
-                    children: [
-                      Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          GestureDetector(
-                            onTap: () async {
-                              if (isflashon == false) {
-                                setState(() {
-                                  isflashon = true;
-                                });
-                                print("-----------------> flsh oning");
-                                _enableTorch(context);
-                              } else {
-                                setState(() {
-                                  isflashon = false;
-                                });
-                                print("------------>. flash off");
-                                _disableTorch(context);
-                              }
-                            },
-                            child: const Icon(Icons.flash_on),
-                          ),
-                          const Text('Flash'),
-                        ],
-                      ),
-                      if (isEnable == false)
-                        Container(
-                          height: 50,
-                          width: 40,
-                          color: Colors.white.withOpacity(0.7),
+                    kwidth5,
+                    Stack(
+                      children: [
+                        Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            GestureDetector(
+                              onTap: () async {
+                                if (isflashon == false) {
+                                  setState(() {
+                                    isflashon = true;
+                                  });
+                                  print("-----------------> flsh oning");
+                                  _enableTorch(context);
+                                } else {
+                                  setState(() {
+                                    isflashon = false;
+                                  });
+                                  print("------------>. flash off");
+                                  _disableTorch(context);
+                                }
+                              },
+                              child: const Icon(Icons.flash_on),
+                            ),
+                            const Text('Flash'),
+                          ],
                         ),
-                    ],
-                  )
-                ],
-              ),
-            ],
-          ),
+                        if (isEnable == false)
+                          Container(
+                            height: 50,
+                            width: 40,
+                            color: Colors.white.withOpacity(0.7),
+                          ),
+                      ],
+                    )
+                  ],
+                ),
+              ],
+            );
+          }),
         ),
       ),
       body: Stack(
@@ -614,12 +638,25 @@ class _HomeScreenState extends State<HomeScreen> {
                                       debugPrint('Countdown Ended');
                                       debugPrint(
                                           'Countdown ${_controller.getTime()}');
-
+                                      endtime = _controller.getTime();
+                                      print(
+                                          '============================endtime========${endtime}=----------------------');
                                       if (_controller.getTime() == "00:02:00") {
-                                        setState(() {
-                                          showPlayButtom = true;
-                                          isreaload = true;
-                                        });
+                                        print(
+                                            '============================endtime========${endtime}=----------------------');
+                                        tactapiController.activitylog(
+                                          endtime: endtime,
+                                          starttime: starttime,
+                                          type: typelist,
+                                          catogory: catogorylist,
+                                        );
+
+                                        setState(
+                                          () {
+                                            showPlayButtom = true;
+                                            isreaload = true;
+                                          },
+                                        );
 
                                         // _controller.restart();
                                         // final alarmSettings =
@@ -660,8 +697,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                     },
                                   ),
                                   Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.center,
+                                    mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
                                       isplay == true
                                           ? _controller.getTime() == "00:02:00"
@@ -724,26 +760,27 @@ class _HomeScreenState extends State<HomeScreen> {
                                                 color: Colors.amber[700],
                                               ),
                                             ),
-                                             isplay == true
+                                      isplay == true
                                           ? Container()
                                           : Padding(
-                                            padding: const EdgeInsets.symmetric(horizontal:5 ),
-                                            child: GestureDetector(
-                                              
+                                              padding:
+                                                  const EdgeInsets.symmetric(
+                                                      horizontal: 5),
+                                              child: GestureDetector(
                                                 onTap: () {
                                                   setState(() {
-                                                    isplay=true;
+                                                    isplay = true;
                                                   });
                                                   _controller.restart(
                                                       duration: 200);
-                                                //  _startFlashlightTimer();
+                                                  //  _startFlashlightTimer();
                                                 },
                                                 child: Icon(
                                                   Icons.restart_alt,
                                                   color: Colors.amber[700],
                                                 ),
                                               ),
-                                          ),
+                                            ),
                                     ],
                                   ),
                                 ],
@@ -800,10 +837,11 @@ class _HomeScreenState extends State<HomeScreen> {
                                         var txtControllerrythem =
                                             TextEditingController();
                                         _showTextFieldDialog(
-                                            context,
-                                            "Rhythm",
-                                            "Enter Rhythm",
-                                            txtControllerrythem);
+                                          context,
+                                          "Rhythm",
+                                          "Enter Rhythm",
+                                          txtControllerrythem,
+                                        );
                                       },
                                       child: Row(
                                         children: [
@@ -856,17 +894,22 @@ class _HomeScreenState extends State<HomeScreen> {
                                     ListView.builder(
                                         physics: NeverScrollableScrollPhysics(),
                                         shrinkWrap: true,
-                                        itemCount: tactapiController.gettypelistdata.length,
+                                        itemCount: tactapiController
+                                            .rythmlistdata.length,
                                         itemBuilder: (context, index) {
                                           // The itemBuilder callback is called for each item in the list.
                                           return Container(
                                             child: Column(
                                               children: [
                                                 RadioListTile(
-                                                  title: Text(tactapiController.gettypelistdata[index].title,
-                                        
+                                                  title: Text(
+                                                      tactapiController
+                                                          .rythmlistdata[index]
+                                                          .title,
                                                       style: minfont),
-                                                  value: 'v${index}',
+                                                  value: tactapiController
+                                                      .rythmlistdata[index]
+                                                      .title,
                                                   groupValue: selectedOption,
                                                   onChanged:
                                                       handleRadioValueChanged,
@@ -887,10 +930,11 @@ class _HomeScreenState extends State<HomeScreen> {
                                           var txtControllerrythem =
                                               TextEditingController();
                                           _showTextFieldDialog(
-                                              context,
-                                              "Rhythm",
-                                              "Enter Rhythm",
-                                              txtControllerrythem);
+                                            context,
+                                            "Rhythm",
+                                            "Enter Rhythm",
+                                            txtControllerrythem,
+                                          );
                                         },
                                         child: Row(
                                           children: [
@@ -1007,34 +1051,37 @@ class _HomeScreenState extends State<HomeScreen> {
                                       ),
                                     ),
                                     ListView.builder(
-                                        physics: NeverScrollableScrollPhysics(),
-                                        shrinkWrap: true,
-                                        itemCount: controller.shockList.length,
-                                        itemBuilder: (context, index) {
-                                          // The itemBuilder callback is called for each item in the list.
-                                          return Container(
-                                            child: Column(
-                                              children: [
-                                                RadioListTile(
-                                                  title: Text(
-                                                      controller
-                                                          .shockList[index]
-                                                          .toString(),
-                                                      style: minfont),
-                                                  value: 'v${index}',
-                                                  groupValue: selectedOption,
-                                                  onChanged:
-                                                      handleRadioValueChanged,
-                                                ),
-                                                kwidth5,
-                                                Divider(
-                                                  height: 1,
-                                                ),
-                                                ksizedbox10,
-                                              ],
-                                            ),
-                                          );
-                                        }),
+                                      physics: NeverScrollableScrollPhysics(),
+                                      shrinkWrap: true,
+                                      itemCount: tactapiController
+                                          .shocktypelistdata.length,
+                                      itemBuilder: (context, index) {
+                                        // The itemBuilder callback is called for each item in the list.
+                                        return Container(
+                                          child: Column(
+                                            children: [
+                                              RadioListTile(
+                                                title: Text(
+                                                    tactapiController
+                                                        .shocktypelistdata[
+                                                            index]
+                                                        .title,
+                                                    style: minfont),
+                                                value: 'v${index}',
+                                                groupValue: selectedOption,
+                                                onChanged:
+                                                    handleRadioValueChanged,
+                                              ),
+                                              kwidth5,
+                                              Divider(
+                                                height: 1,
+                                              ),
+                                              ksizedbox10,
+                                            ],
+                                          ),
+                                        );
+                                      },
+                                    ),
                                     Padding(
                                       padding: const EdgeInsets.all(12.0),
                                       child: GestureDetector(
@@ -1162,7 +1209,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                         physics:
                                             const NeverScrollableScrollPhysics(),
                                         shrinkWrap: true,
-                                        itemCount: controller.drugList.length,
+                                        itemCount: tactapiController
+                                            .druglistdata.length,
                                         itemBuilder: (context, index) {
                                           // The itemBuilder callback is called for each item in the list.
                                           return Container(
@@ -1170,13 +1218,22 @@ class _HomeScreenState extends State<HomeScreen> {
                                               children: [
                                                 RadioListTile(
                                                   title: Text(
-                                                      controller.drugList[index]
-                                                          .toString(),
+                                                      tactapiController
+                                                          .druglistdata[index]
+                                                          .title,
                                                       style: minfont),
                                                   value: 'v${index}',
                                                   groupValue: selectedOption,
-                                                  onChanged:
-                                                      handleRadioValueChanged,
+                                                  onChanged: (value) {
+                                                    setState(() {
+                                                      selectedOption = value!;
+                                                      print(
+                                                          '${selectedOption}');
+                                                      var data = selectedOption;
+                                                      print(
+                                                          '=======  =====${data}======== ===');
+                                                    });
+                                                  },
                                                 ),
                                                 ksizedbox10,
                                                 if (index == 1 &&
@@ -1848,7 +1905,7 @@ Future<void> _showTextFieldDialog(BuildContext context, String text,
     String label, TextEditingController textController) async {
   String textFieldValue = '';
   //final TextEditingController textController;
-
+  final tactapiController = Get.find<TactApiController>();
   return showDialog(
     context: context,
     builder: (BuildContext context) {
@@ -1883,17 +1940,21 @@ Future<void> _showTextFieldDialog(BuildContext context, String text,
                 //     print('Entered text: ${textEditingController.text}');
                 if (textController.text.isNotEmpty) {
                   if (text == "Rhythm") {
-                    Get.find<counterController>()
-                        .rythmList
-                        .add(textController.text);
+                    //api call
+                    tactapiController.storedatas(
+                        title: textController.text,
+                        description: 'test',
+                        type: "rhythm");
                   } else if (text == "Shock") {
-                    Get.find<counterController>()
-                        .shockList
-                        .add(textController.text);
+                    tactapiController.storedatas(
+                        title: textController.text,
+                        description: 'test',
+                        type: "shock");
                   } else if (text == "DRUG") {
-                    Get.find<counterController>()
-                        .drugList
-                        .add(textController.text);
+                    tactapiController.storedatas(
+                        title: textController.text,
+                        description: 'test',
+                        type: 'drug');
                   } else if (text == "QUALITY CPR") {
                     Get.find<counterController>()
                         .cprList
