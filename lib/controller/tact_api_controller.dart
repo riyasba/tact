@@ -5,6 +5,7 @@ import 'package:flutter_application_1/models/get_activity_log.dart';
 
 import 'package:flutter_application_1/models/get_type_model.dart';
 import 'package:flutter_application_1/services/base_url/base_url.dart';
+import 'package:flutter_application_1/services/networks/activity_log_api_service.dart';
 
 import 'package:flutter_application_1/services/networks/get_type_api_services.dart';
 import 'package:flutter_application_1/services/networks/store_type_api_services.dart';
@@ -34,17 +35,19 @@ class TactApiController extends GetxController {
     update();
   }
 
-  StoreTypeApiService storetypeapiservice = StoreTypeApiService();
+  ActivityLogApiService activitylogapiservice = ActivityLogApiService();
   List<List<ActivityLog>> activityloglistdata = [];
 
   Future activitylog(
-      {required String description,
-      required String title,
-      required String type}) async {
-    dio.Response<dynamic> response = await storetypeapiservice.storetype(
-      description: description,
-      title: title,
+      {required String endtime,
+      required String starttime,
+      required String type,
+      required String catogory}) async {
+    dio.Response<dynamic> response = await activitylogapiservice.activitlog(
       type: type,
+      catogory: catogory,
+      starttime: starttime,
+      endtime: endtime,
     );
     if (response.statusCode == 200) {
       GetActivityLogModel getactivitymodel =
@@ -57,5 +60,15 @@ class TactApiController extends GetxController {
               style: TextStyle(fontSize: 15, color: kwhite)));
     }
     update();
+  }
+
+  StoreTypeApiService stoetypeapiservice = StoreTypeApiService();
+  Future storedatas(
+      {required String title,
+      required String description,
+      required String type}) async {
+    dio.Response<dynamic> response = await stoetypeapiservice.storetype(
+        title: title, description: description, type: type);
+    // if (response.statusCode == 200) {}
   }
 }
