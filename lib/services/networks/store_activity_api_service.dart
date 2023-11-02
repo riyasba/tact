@@ -3,22 +3,25 @@ import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:flutter_application_1/services/base_url/base_url.dart';
 
-class StoreTypeApiService extends BaseApiServices {
-  Future storetype({
-    required String title,
-    required String description,
-    required String type,
-  }) async {
+class StoreActivityApiService extends BaseApiServices {
+  Future storeactivityapi(
+      {required String catogory,
+      required String c_id,
+      required String s_id,
+      required String from_time,
+      required String to_time,
+      required String title}) async {
     dynamic responseJson;
-
     try {
       var formData = FormData.fromMap({
+        "c_id": c_id,
+        "s_id": s_id,
+        "from_time": from_time,
+        "to_time": to_time,
         "title": title,
-        "description": description,
-        "type": type,
       });
       var dio = Dio();
-      var response = await dio.post(storetypeURL,
+      var response = await dio.post(storeactivityURL,
           options: Options(
               headers: {
                 'Accept': 'application/json',
@@ -28,13 +31,15 @@ class StoreTypeApiService extends BaseApiServices {
                 return status! <= 500;
               }),
           data: formData);
-            responseJson = response;
 
-      print("::::::::<--TACT store log  api-->::::::::status code:::::::::");
+      responseJson = response;
+
+      print("::::::::<--TACT  store activity   api-->::::::::status code:::::::::");
       print(response.data);
     } on SocketException {
       print("no internet");
     }
+
     return responseJson;
   }
 

@@ -1,40 +1,34 @@
 import 'dart:io';
+
 import 'package:dio/dio.dart';
 import 'package:flutter_application_1/services/base_url/base_url.dart';
 
-class GetTypesApiServices extends BaseApiServices {
-  Future getvaluetype({required String typevalue}) async {
+class GetActivityApiService extends BaseApiServices {
+  Future getactivityapi() async {
     dynamic responseJson;
     try {
-      var formData = FormData.fromMap({
-        "type":typevalue,
-      });
       var dio = Dio();
-      var response = await dio.post(gettype,
-          options: Options(
-              headers: {
-                'Accept': 'application/json',
-              },
-              followRedirects: false,
-              validateStatus: (status) {
-                return status! <= 500;
-              }),
-          data: formData);
+      var response = await dio.get(
+        getactivitysURL,
+        options: Options(
+            headers: {
+              'Accept': 'application/json',
+            },
+            followRedirects: false,
+            validateStatus: (status) {
+              return status! <= 500;
+            }),
+      );
+      responseJson = response;
 
-          responseJson = response;
-
-             print(
-          "::::::::<--TACT get typr api-->::::::::status code:::::::::"
-          );
-
-          print(response.data);
+      print(
+          "::::::::<<<<<- get  activity  api-->>>>>::::::::status code:::::::::");
     } on SocketException {
-      print("no internet");
+      print('no internet');
     }
-    return responseJson;
+     return responseJson;
   }
-
-  dynamic returnResponse(Response<dynamic> response) {
+    dynamic returnResponse(Response<dynamic> response) {
     switch (response.statusCode) {
       case 200:
         dynamic responseJson = response.data;

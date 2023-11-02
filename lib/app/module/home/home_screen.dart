@@ -41,7 +41,7 @@ class _HomeScreenState extends State<HomeScreen> {
 //  final _controller = CountDownController();
 
   final controller = Get.put(counterController());
-
+  var typevalue;
 //  final int duration = 120;
   // final _controller2 = CountDownController();
   String? selectedOption;
@@ -91,28 +91,33 @@ class _HomeScreenState extends State<HomeScreen> {
     subscription ??= Alarm.ringStream.stream.listen(
       (alarmSettings) => navigateToRingScreen(alarmSettings),
     );
-
-    tactapiController.gettype(typevalue: "rhythm");
-    tactapiController.gettype(typevalue: "shock");
+    tactapiController.getcatogory();
+    tactapiController.getactivity();
+    //tactapiController.getsubcatogory(id: 1);
+    // tactapiController.gettype(typevalue: "rhythm");
+    // tactapiController.gettype(typevalue: "shock");
     //  tactapiController.gettype(typevalue: "drug");
     // tactapiController.gettype(typevalue: "rythm");
     // tactapiController.gettype(typevalue: "rythm");
   }
 
   void loadAlarms() {
-    setState(() {
-      alarms = Alarm.getAlarms();
-      alarms.sort((a, b) => a.dateTime.isBefore(b.dateTime) ? 0 : 1);
-    });
+    setState(
+      () {
+        alarms = Alarm.getAlarms();
+        alarms.sort((a, b) => a.dateTime.isBefore(b.dateTime) ? 0 : 1);
+      },
+    );
   }
 
   Future<void> navigateToRingScreen(AlarmSettings alarmSettings) async {
     await Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) =>
-              ExampleAlarmRingScreen(alarmSettings: alarmSettings),
-        ));
+      context,
+      MaterialPageRoute(
+        builder: (context) =>
+            ExampleAlarmRingScreen(alarmSettings: alarmSettings),
+      ),
+    );
     loadAlarms();
   }
 
@@ -133,9 +138,12 @@ class _HomeScreenState extends State<HomeScreen> {
     _enableTorch(context); // Turn on the flashlight
 
     // Turn off the flashlight after a delay (e.g., 2 seconds)
-    Future.delayed(Duration(seconds: 2), () {
-      _disableTorch(context);
-    });
+    Future.delayed(
+      Duration(seconds: 2),
+      () {
+        _disableTorch(context);
+      },
+    );
   }
 
   Timer? timerCr;
@@ -433,14 +441,146 @@ class _HomeScreenState extends State<HomeScreen> {
             physics: const BouncingScrollPhysics(),
             child: Padding(
               padding: const EdgeInsets.all(8.0),
-              child: Obx(
-                () => Column(
-                  children: [
-                    ksizedbox20,
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        Container(
+              child: Column(
+                children: [
+                  ksizedbox20,
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      Container(
+                        width: size.width * 0.43,
+                        height: size.height * 0.35,
+                        decoration: BoxDecoration(
+                          color: kwhite,
+                          borderRadius: BorderRadius.circular(18),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.grey.withOpacity(0.5),
+                              spreadRadius: 5,
+                              blurRadius: 7,
+                              offset: const Offset(
+                                  0, 3), // changes position of shadow
+                            ),
+                          ],
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.all(15.0),
+                          child: Column(
+                            children: [
+                              const Text(
+                                'Actual Time',
+                                style: TextStyle(
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.w700,
+                                  color: Colors.blue,
+                                ),
+                              ),
+                              CircularCountDownTimer(
+                                duration: 3000,
+                                initialDuration: 0,
+                                controller: _controller2,
+                                width: MediaQuery.of(context).size.width / 3,
+                                height: MediaQuery.of(context).size.height / 4,
+                                ringColor: Colors.grey[300]!,
+                                ringGradient: null,
+                                fillColor:
+                                    const Color.fromARGB(255, 128, 182, 252)!,
+                                fillGradient: null,
+                                backgroundColor:
+                                    const Color.fromARGB(255, 255, 255, 255),
+                                backgroundGradient: null,
+                                strokeWidth: 20.0,
+                                strokeCap: StrokeCap.round,
+                                textStyle: const TextStyle(
+                                  fontSize: 25.0,
+                                  //  color: Colors.white,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                                textFormat: CountdownTextFormat.HH_MM_SS,
+                                isReverse: false,
+                                isReverseAnimation: false,
+                                isTimerTextShown: true,
+                                autoStart: false,
+                                onStart: () {
+                                  debugPrint('Countdown Started');
+                                },
+                                onComplete: () {
+                                  // Here, do whatever you want
+                                  debugPrint('Countdown Ended');
+                                },
+                                onChange: (String timeStamp) {
+                                  // Here, do whatever you want
+                                  debugPrint('Countdown Changed $timeStamp');
+                                },
+                                timeFormatterFunction:
+                                    (defaultFormatterFunction, duration) {
+                                  if (duration.inSeconds == 0) {
+                                    // only format for '0'
+                                    return "Start";
+                                  } else {
+                                    // timesound(duration.inSeconds);
+                                    // other durations by it's default format
+                                    return Function.apply(
+                                        defaultFormatterFunction, [duration]);
+                                  }
+                                },
+                              ),
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceEvenly,
+                                children: [
+                                  if (isplay1 == true)
+                                    GestureDetector(
+                                      onTap: () {
+                                        setState(() {
+                                          isplay1 = false;
+                                          //isplay = false;
+                                        });
+                                        _controller2.pause();
+                                        //_controller.pause();
+                                        // timerCr!.cancel();
+                                      },
+                                      child: const Icon(
+                                        Icons.pause,
+                                        color: Colors.blue,
+                                      ),
+                                    ),
+                                  if (isplay1 == false)
+                                    GestureDetector(
+                                      onTap: () {
+                                        setState(() {
+                                          isplay1 = true;
+                                          //isplay = true;
+                                        });
+                                        _controller2.resume();
+                                        //_controller.resume();
+                                      },
+                                      child: const Icon(
+                                        Icons.play_arrow,
+                                        color: Colors.blue,
+                                      ),
+                                    ),
+                                  // GestureDetector(
+                                  //     onTap: () =>
+                                  //         _controller2.restart(duration: 200),
+                                  //     child: Icon(Icons.restart_alt)),
+                                ],
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                      GestureDetector(
+                        onTap: () {
+                          // final alarmSettings = AlarmSettings(
+                          //   id: 42,
+                          //   dateTime: DateTime.now().add(Duration(minutes: 2)),
+                          //   assetAudioPath: 'assets/images/marimba.mp3',
+                          //   volumeMax: false,
+                          // );
+                          // Alarm.set(alarmSettings: alarmSettings);
+                        },
+                        child: Container(
                           width: size.width * 0.43,
                           height: size.height * 0.35,
                           decoration: BoxDecoration(
@@ -460,25 +600,24 @@ class _HomeScreenState extends State<HomeScreen> {
                             padding: const EdgeInsets.all(15.0),
                             child: Column(
                               children: [
-                                const Text(
-                                  'Actual Time',
+                                Text(
+                                  '2 min Alarm',
                                   style: TextStyle(
                                     fontSize: 20,
                                     fontWeight: FontWeight.w700,
-                                    color: Colors.blue,
+                                    color: Colors.amber[700],
                                   ),
                                 ),
                                 CircularCountDownTimer(
-                                  duration: 3000,
+                                  duration: 120,
                                   initialDuration: 0,
-                                  controller: _controller2,
+                                  controller: _controller,
                                   width: MediaQuery.of(context).size.width / 3,
                                   height:
                                       MediaQuery.of(context).size.height / 4,
                                   ringColor: Colors.grey[300]!,
                                   ringGradient: null,
-                                  fillColor:
-                                      const Color.fromARGB(255, 128, 182, 252)!,
+                                  fillColor: Colors.orange,
                                   fillGradient: null,
                                   backgroundColor:
                                       const Color.fromARGB(255, 255, 255, 255),
@@ -496,15 +635,57 @@ class _HomeScreenState extends State<HomeScreen> {
                                   isTimerTextShown: true,
                                   autoStart: false,
                                   onStart: () {
+                                    // Here, do whatever you want
                                     debugPrint('Countdown Started');
                                   },
-                                  onComplete: () {
+                                  onComplete: () async {
                                     // Here, do whatever you want
                                     debugPrint('Countdown Ended');
+                                    debugPrint(
+                                        'Countdown ${_controller.getTime()}');
+                                    endtime = _controller.getTime();
+                                    print(
+                                        '============================endtime========${endtime}=----------------------');
+                                    if (_controller.getTime() == "00:02:00") {
+                                      print(
+                                          '============================endtime========${endtime}=----------------------');
+                                      tactapiController.storeactivity(
+                                          catogory: '3',
+                                          c_id: '3',
+                                          s_id:'3',
+                                          from_time: '3',
+                                          to_time: endtime,
+                                          title: 'shock');
+
+                                      setState(
+                                        () {
+                                          showPlayButtom = true;
+                                          isreaload = true;
+                                        },
+                                      );
+
+                                      // _controller.restart();
+                                      // final alarmSettings =
+                                      //     AlarmSettings(
+                                      //   id: 42,
+                                      //   dateTime: DateTime.now().subtract(Duration(
+                                      //     seconds: 12
+                                      //   )),
+                                      //   assetAudioPath:
+                                      //       'assets/images/marimba.mp3',
+                                      //   volumeMax: false,
+                                      // );
+                                      // Alarm.set(
+                                      //     alarmSettings:
+                                      //         alarmSettings);
+
+                                      // await player.play(AssetSource(
+                                      //     'assets/images/-154921.mp3'));
+                                    }
                                   },
-                                  onChange: (String timeStamp) {
+                                  onChange: (String timeStamp) async {
                                     // Here, do whatever you want
-                                    debugPrint('Countdown Changed $timeStamp');
+                                    print("--------------------->>$timeStamp");
                                   },
                                   timeFormatterFunction:
                                       (defaultFormatterFunction, duration) {
@@ -512,7 +693,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                       // only format for '0'
                                       return "Start";
                                     } else {
-                                      // timesound(duration.inSeconds);
+                                      setListen(duration.inSeconds);
                                       // other durations by it's default format
                                       return Function.apply(
                                           defaultFormatterFunction, [duration]);
@@ -520,1349 +701,1337 @@ class _HomeScreenState extends State<HomeScreen> {
                                   },
                                 ),
                                 Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceEvenly,
+                                  mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
-                                    if (isplay1 == true)
-                                      GestureDetector(
-                                        onTap: () {
-                                          setState(() {
-                                            isplay1 = false;
-                                            //isplay = false;
-                                          });
-                                          _controller2.pause();
-                                          //_controller.pause();
-                                          // timerCr!.cancel();
-                                        },
-                                        child: const Icon(
-                                          Icons.pause,
-                                          color: Colors.blue,
-                                        ),
-                                      ),
-                                    if (isplay1 == false)
-                                      GestureDetector(
-                                        onTap: () {
-                                          setState(() {
-                                            isplay1 = true;
-                                            //isplay = true;
-                                          });
-                                          _controller2.resume();
-                                          //_controller.resume();
-                                        },
-                                        child: const Icon(
-                                          Icons.play_arrow,
-                                          color: Colors.blue,
-                                        ),
-                                      ),
-                                    // GestureDetector(
-                                    //     onTap: () =>
-                                    //         _controller2.restart(duration: 200),
-                                    //     child: Icon(Icons.restart_alt)),
-                                  ],
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                        GestureDetector(
-                          onTap: () {
-                            // final alarmSettings = AlarmSettings(
-                            //   id: 42,
-                            //   dateTime: DateTime.now().add(Duration(minutes: 2)),
-                            //   assetAudioPath: 'assets/images/marimba.mp3',
-                            //   volumeMax: false,
-                            // );
-                            // Alarm.set(alarmSettings: alarmSettings);
-                          },
-                          child: Container(
-                            width: size.width * 0.43,
-                            height: size.height * 0.35,
-                            decoration: BoxDecoration(
-                              color: kwhite,
-                              borderRadius: BorderRadius.circular(18),
-                              boxShadow: [
-                                BoxShadow(
-                                  color: Colors.grey.withOpacity(0.5),
-                                  spreadRadius: 5,
-                                  blurRadius: 7,
-                                  offset: const Offset(
-                                      0, 3), // changes position of shadow
-                                ),
-                              ],
-                            ),
-                            child: Padding(
-                              padding: const EdgeInsets.all(15.0),
-                              child: Column(
-                                children: [
-                                  Text(
-                                    '2 min Alarm',
-                                    style: TextStyle(
-                                      fontSize: 20,
-                                      fontWeight: FontWeight.w700,
-                                      color: Colors.amber[700],
-                                    ),
-                                  ),
-                                  CircularCountDownTimer(
-                                    duration: 120,
-                                    initialDuration: 0,
-                                    controller: _controller,
-                                    width:
-                                        MediaQuery.of(context).size.width / 3,
-                                    height:
-                                        MediaQuery.of(context).size.height / 4,
-                                    ringColor: Colors.grey[300]!,
-                                    ringGradient: null,
-                                    fillColor: Colors.orange,
-                                    fillGradient: null,
-                                    backgroundColor: const Color.fromARGB(
-                                        255, 255, 255, 255),
-                                    backgroundGradient: null,
-                                    strokeWidth: 20.0,
-                                    strokeCap: StrokeCap.round,
-                                    textStyle: const TextStyle(
-                                      fontSize: 25.0,
-                                      //  color: Colors.white,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                    textFormat: CountdownTextFormat.HH_MM_SS,
-                                    isReverse: false,
-                                    isReverseAnimation: false,
-                                    isTimerTextShown: true,
-                                    autoStart: false,
-                                    onStart: () {
-                                      // Here, do whatever you want
-                                      debugPrint('Countdown Started');
-                                    },
-                                    onComplete: () async {
-                                      // Here, do whatever you want
-                                      debugPrint('Countdown Ended');
-                                      debugPrint(
-                                          'Countdown ${_controller.getTime()}');
-                                      endtime = _controller.getTime();
-                                      print(
-                                          '============================endtime========${endtime}=----------------------');
-                                      if (_controller.getTime() == "00:02:00") {
-                                        print(
-                                            '============================endtime========${endtime}=----------------------');
-                                        tactapiController.activitylog(
-                                          endtime: endtime,
-                                          starttime: starttime,
-                                          type: typelist,
-                                          catogory: catogorylist,
-                                        );
-
-                                        setState(
-                                          () {
-                                            showPlayButtom = true;
-                                            isreaload = true;
-                                          },
-                                        );
-
-                                        // _controller.restart();
-                                        // final alarmSettings =
-                                        //     AlarmSettings(
-                                        //   id: 42,
-                                        //   dateTime: DateTime.now().subtract(Duration(
-                                        //     seconds: 12
-                                        //   )),
-                                        //   assetAudioPath:
-                                        //       'assets/images/marimba.mp3',
-                                        //   volumeMax: false,
-                                        // );
-                                        // Alarm.set(
-                                        //     alarmSettings:
-                                        //         alarmSettings);
-
-                                        // await player.play(AssetSource(
-                                        //     'assets/images/-154921.mp3'));
-                                      }
-                                    },
-                                    onChange: (String timeStamp) async {
-                                      // Here, do whatever you want
-                                      print(
-                                          "--------------------->>$timeStamp");
-                                    },
-                                    timeFormatterFunction:
-                                        (defaultFormatterFunction, duration) {
-                                      if (duration.inSeconds == 0) {
-                                        // only format for '0'
-                                        return "Start";
-                                      } else {
-                                        setListen(duration.inSeconds);
-                                        // other durations by it's default format
-                                        return Function.apply(
-                                            defaultFormatterFunction,
-                                            [duration]);
-                                      }
-                                    },
-                                  ),
-                                  Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      isplay == true
-                                          ? _controller.getTime() == "00:02:00"
-                                              ? InkWell(
-                                                  onTap: () {
-                                                    setState(() {
-                                                      isreaload = false;
-                                                    });
-                                                    _controller.restart();
-                                                    // player.stop();
-                                                    // playAudio();
-                                                    // loop();
-                                                  },
-                                                  child: Icon(
-                                                    Icons.restart_alt,
-                                                    color: Colors.amber[700],
-                                                  ),
-                                                )
-                                              : GestureDetector(
-                                                  onTap: () {
-                                                    setState(() {
-                                                      isplay = false;
-                                                      //isplay1 = false;
-                                                    });
-                                                    //audioPlayer.stop();
-                                                    _controller.pause();
-                                                    //_controller2.pause();
-                                                    // timerCr!.cancel();
-                                                    setState(() {});
-                                                  },
-                                                  child: Icon(
-                                                    Icons.pause,
-                                                    color: Colors.amber[700],
-                                                  ),
-                                                )
-                                          : GestureDetector(
-                                              onTap: () {
-                                                setState(() {
-                                                  isplay = true;
-                                                  //isplay1 = true;
-                                                });
-                                                //_controller2.resume();
-                                                _controller.resume();
-                                                // _startFlashlightTimer();
-                                                // playAudio();
-                                                // loop();
-                                                // final alarmSettings = AlarmSettings(
-                                                //   id: 42,
-                                                //   dateTime: DateTime.now()
-                                                //       .add(Duration(minutes: 2)),
-                                                //   assetAudioPath:
-                                                //       'assets/images/marimba.mp3',
-                                                //   volumeMax: false,
-                                                // );
-                                                // Alarm.set(
-                                                //     alarmSettings: alarmSettings);
-                                              },
-                                              child: Icon(
-                                                Icons.play_arrow,
-                                                color: Colors.amber[700],
-                                              ),
-                                            ),
-                                      isplay == true
-                                          ? Container()
-                                          : Padding(
-                                              padding:
-                                                  const EdgeInsets.symmetric(
-                                                      horizontal: 5),
-                                              child: GestureDetector(
+                                    isplay == true
+                                        ? _controller.getTime() == "00:02:00"
+                                            ? InkWell(
                                                 onTap: () {
                                                   setState(() {
-                                                    isplay = true;
+                                                    isreaload = false;
                                                   });
-                                                  _controller.restart(
-                                                      duration: 200);
-                                                  //  _startFlashlightTimer();
+                                                  _controller.restart();
+                                                  // player.stop();
+                                                  // playAudio();
+                                                  // loop();
                                                 },
                                                 child: Icon(
                                                   Icons.restart_alt,
                                                   color: Colors.amber[700],
                                                 ),
+                                              )
+                                            : GestureDetector(
+                                                onTap: () {
+                                                  setState(() {
+                                                    isplay = false;
+                                                    //isplay1 = false;
+                                                  });
+                                                  //audioPlayer.stop();
+                                                  _controller.pause();
+                                                  //_controller2.pause();
+                                                  // timerCr!.cancel();
+                                                  setState(() {});
+                                                },
+                                                child: Icon(
+                                                  Icons.pause,
+                                                  color: Colors.amber[700],
+                                                ),
+                                              )
+                                        : GestureDetector(
+                                            onTap: () {
+                                              setState(() {
+                                                isplay = true;
+                                                //isplay1 = true;
+                                              });
+                                              //_controller2.resume();
+                                              _controller.resume();
+                                              // _startFlashlightTimer();
+                                              // playAudio();
+                                              // loop();
+                                              // final alarmSettings = AlarmSettings(
+                                              //   id: 42,
+                                              //   dateTime: DateTime.now()
+                                              //       .add(Duration(minutes: 2)),
+                                              //   assetAudioPath:
+                                              //       'assets/images/marimba.mp3',
+                                              //   volumeMax: false,
+                                              // );
+                                              // Alarm.set(
+                                              //     alarmSettings: alarmSettings);
+                                            },
+                                            child: Icon(
+                                              Icons.play_arrow,
+                                              color: Colors.amber[700],
+                                            ),
+                                          ),
+                                    isplay == true
+                                        ? Container()
+                                        : Padding(
+                                            padding: const EdgeInsets.symmetric(
+                                                horizontal: 5),
+                                            child: GestureDetector(
+                                              onTap: () {
+                                                setState(() {
+                                                  isplay = true;
+                                                });
+                                                _controller.restart(
+                                                    duration: 200);
+                                                //  _startFlashlightTimer();
+                                              },
+                                              child: Icon(
+                                                Icons.restart_alt,
+                                                color: Colors.amber[700],
                                               ),
                                             ),
+                                          ),
+                                  ],
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  ksizedbox20,
+////
+                  ///
+
+                  ListView.builder(
+                      physics: NeverScrollableScrollPhysics(),
+                      shrinkWrap: true,
+                      itemCount: tactapiController.catogorylist.length,
+                      itemBuilder: (BuildContext context, int index) {
+                        return Padding(
+                          padding: const EdgeInsets.only(top: 10, bottom: 20),
+                          child: GestureDetector(
+                            onTap: () {
+                              if (tactapiController.catogorylist[index].index ==
+                                  0) {
+                                tactapiController.catogorylist[index].index = 1;
+                                tactapiController.update();
+                              } else {
+                                tactapiController.catogorylist[index].index = 0;
+                                tactapiController.update();
+                              }
+                              tactapiController.update();
+                            },
+                            child: tactapiController
+                                        .catogorylist[index].index ==
+                                    0
+                                ? Container(
+                                    width: double.infinity,
+                                    //  height: 300,
+                                    decoration: BoxDecoration(
+                                      color: kwhite,
+                                      borderRadius: BorderRadius.circular(18),
+                                      boxShadow: [
+                                        BoxShadow(
+                                          color: Colors.grey.withOpacity(0.5),
+                                          spreadRadius: 5,
+                                          blurRadius: 7,
+                                          offset: const Offset(0,
+                                              3), // changes position of shadow
+                                        ),
+                                      ],
+                                    ),
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: Column(
+                                        children: [
+                                          Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              Text(
+                                                  'Choose ${tactapiController.catogorylist[index].title}',
+                                                  style: maxfont),
+                                              const Icon(
+                                                  Icons.arrow_drop_down_rounded)
+                                            ],
+                                          ),
+                                          ksizedbox10,
+                                          GestureDetector(
+                                            onTap: () {
+                                              var txtControllerrythem =
+                                                  TextEditingController();
+                                              _showTextFieldDialog(
+                                                context,
+                                                "Rhythm ",
+                                                "Enter Rhythm",
+                                                txtControllerrythem,
+                                              );
+                                            },
+                                            child: Row(
+                                              children: [
+                                                Icon(
+                                                  Icons.edit_square,
+                                                  color: kblue,
+                                                ),
+                                                kwidth5,
+                                                Text('Customize',
+                                                    style: minfont)
+                                              ],
+                                            ),
+                                          ),
+                                          ksizedbox10
+                                        ],
+                                      ),
+                                    ),
+                                  )
+                                : Container(
+                                    width: double.infinity,
+                                    //  height: 300,
+                                    decoration: BoxDecoration(
+                                      color: kwhite,
+                                      borderRadius: BorderRadius.circular(18),
+                                      boxShadow: [
+                                        BoxShadow(
+                                          color: Colors.grey.withOpacity(0.5),
+                                          spreadRadius: 5,
+                                          blurRadius: 7,
+                                          offset: Offset(0,
+                                              3), // changes position of shadow
+                                        ),
+                                      ],
+                                    ),
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: Column(
+                                        children: [
+                                          Padding(
+                                            padding: const EdgeInsets.all(12.0),
+                                            child: Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment
+                                                      .spaceBetween,
+                                              children: [
+                                                Text(
+                                                    'Choose ${tactapiController.catogorylist[index].title}',
+                                                    style: maxfont),
+                                                const Icon(
+                                                    Icons.arrow_drop_up_rounded)
+                                              ],
+                                            ),
+                                          ),
+                                          ListView.builder(
+                                              physics:
+                                                  NeverScrollableScrollPhysics(),
+                                              shrinkWrap: true,
+                                              itemCount: tactapiController
+                                                  .getDatList(tactapiController
+                                                      .catogorylist[index].id)
+                                                  .length,
+                                              itemBuilder: (context, index2) {
+                                                // The itemBuilder callback is called for each item in the list.
+                                                return Container(
+                                                  child: Column(
+                                                    children: [
+                                                      RadioListTile(
+                                                        title: Text(
+                                                            tactapiController
+                                                                .getDatList(
+                                                                    tactapiController
+                                                                        .catogorylist[
+                                                                            index]
+                                                                        .id)[
+                                                                    index2]
+                                                                .subTitle,
+                                                            style: minfont),
+                                                        value: tactapiController
+                                                            .getDatList(
+                                                                tactapiController
+                                                                    .catogorylist[
+                                                                        index]
+                                                                    .id)[index2]
+                                                            .subTitle,
+                                                        groupValue:
+                                                            selectedOption,
+                                                        onChanged:
+                                                            handleRadioValueChanged,
+                                                      ),
+                                                      kwidth5,
+                                                      Divider(
+                                                        height: 1,
+                                                      ),
+                                                      ksizedbox10,
+                                                    ],
+                                                  ),
+                                                );
+                                              }),
+                                          Padding(
+                                            padding: const EdgeInsets.all(12.0),
+                                            child: GestureDetector(
+                                              onTap: () {
+                                                var txtControllerrythem =
+                                                    TextEditingController();
+                                                _showTextFieldDialog(
+                                                  context,
+                                                  "Rhythm",
+                                                  "Enter Rhythm",
+                                                  txtControllerrythem,
+                                                );
+                                              },
+                                              child: Row(
+                                                children: [
+                                                  Icon(
+                                                    Icons.edit_square,
+                                                    color: kblue,
+                                                  ),
+                                                  kwidth5,
+                                                  Text('Customize',
+                                                      style: minfont)
+                                                ],
+                                              ),
+                                            ),
+                                          ),
+                                          ksizedbox10
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                          ),
+                        );
+                      }),
+
+/////
+                  // ksizedbox30,
+                  // GestureDetector(
+                  //   onTap: () {
+                  //     if (controller.ecgindex.value == 0) {
+                  //       controller.ecgindex(1);
+                  //     } else {
+                  //       controller.ecgindex(0);
+                  //     }
+                  //   },
+                  //   child: controller.ecgindex.value == 0
+                  //       ? Container(
+                  //           width: double.infinity,
+                  //           //  height: 300,
+                  //           decoration: BoxDecoration(
+                  //             color: kwhite,
+                  //             borderRadius: BorderRadius.circular(18),
+                  //             boxShadow: [
+                  //               BoxShadow(
+                  //                 color: Colors.grey.withOpacity(0.5),
+                  //                 spreadRadius: 5,
+                  //                 blurRadius: 7,
+                  //                 offset: const Offset(
+                  //                     0, 3), // changes position of shadow
+                  //               ),
+                  //             ],
+                  //           ),
+                  //           child: Padding(
+                  //             padding: const EdgeInsets.all(8.0),
+                  //             child: Column(
+                  //               children: [
+                  //                 Row(
+                  //                   mainAxisAlignment:
+                  //                       MainAxisAlignment.spaceBetween,
+                  //                   children: [
+                  //                     Text('Choose Rhythm', style: maxfont),
+                  //                     const Icon(
+                  //                         Icons.arrow_drop_down_rounded)
+                  //                   ],
+                  //                 ),
+                  //                 ksizedbox10,
+                  //                 GestureDetector(
+                  //                   onTap: () {
+                  //                     var txtControllerrythem =
+                  //                         TextEditingController();
+                  //                     _showTextFieldDialog(
+                  //                       context,
+                  //                       "Rhythm",
+                  //                       "Enter Rhythm",
+                  //                       txtControllerrythem,
+                  //                     );
+                  //                   },
+                  //                   child: Row(
+                  //                     children: [
+                  //                       Icon(
+                  //                         Icons.edit_square,
+                  //                         color: kblue,
+                  //                       ),
+                  //                       kwidth5,
+                  //                       Text('Customize', style: minfont)
+                  //                     ],
+                  //                   ),
+                  //                 ),
+                  //                 ksizedbox10
+                  //               ],
+                  //             ),
+                  //           ),
+                  //         )
+                  //       : Container(
+                  //           width: double.infinity,
+                  //           //  height: 300,
+                  //           decoration: BoxDecoration(
+                  //             color: kwhite,
+                  //             borderRadius: BorderRadius.circular(18),
+                  //             boxShadow: [
+                  //               BoxShadow(
+                  //                 color: Colors.grey.withOpacity(0.5),
+                  //                 spreadRadius: 5,
+                  //                 blurRadius: 7,
+                  //                 offset: Offset(
+                  //                     0, 3), // changes position of shadow
+                  //               ),
+                  //             ],
+                  //           ),
+                  //           child: Padding(
+                  //             padding: const EdgeInsets.all(8.0),
+                  //             child: Column(
+                  //               children: [
+                  //                 Padding(
+                  //                   padding: const EdgeInsets.all(12.0),
+                  //                   child: Row(
+                  //                     mainAxisAlignment:
+                  //                         MainAxisAlignment.spaceBetween,
+                  //                     children: [
+                  //                       Text('Choose Rhythm', style: maxfont),
+                  //                       const Icon(
+                  //                           Icons.arrow_drop_up_rounded)
+                  //                     ],
+                  //                   ),
+                  //                 ),
+                  //                 ListView.builder(
+                  //                     physics: NeverScrollableScrollPhysics(),
+                  //                     shrinkWrap: true,
+                  //                     itemCount: tactapiController
+                  //                         .rythmlistdata.length,
+                  //                     itemBuilder: (context, index) {
+                  //                       // The itemBuilder callback is called for each item in the list.
+                  //                       return Container(
+                  //                         child: Column(
+                  //                           children: [
+                  //                             RadioListTile(
+                  //                               title: Text(
+                  //                                   tactapiController
+                  //                                       .rythmlistdata[index]
+                  //                                       .subTitle,
+                  //                                   style: minfont),
+                  //                               value: tactapiController
+                  //                                   .rythmlistdata[index]
+                  //                                   .subTitle,
+                  //                               groupValue: selectedOption,
+                  //                               onChanged:
+                  //                                   handleRadioValueChanged,
+                  //                             ),
+                  //                             kwidth5,
+                  //                             Divider(
+                  //                               height: 1,
+                  //                             ),
+                  //                             ksizedbox10,
+                  //                           ],
+                  //                         ),
+                  //                       );
+                  //                     }),
+                  //                 Padding(
+                  //                   padding: const EdgeInsets.all(12.0),
+                  //                   child: GestureDetector(
+                  //                     onTap: () {
+                  //                       var txtControllerrythem =
+                  //                           TextEditingController();
+                  //                       _showTextFieldDialog(
+                  //                         context,
+                  //                         "Rhythm",
+                  //                         "Enter Rhythm",
+                  //                         txtControllerrythem,
+                  //                       );
+                  //                     },
+                  //                     child: Row(
+                  //                       children: [
+                  //                         Icon(
+                  //                           Icons.edit_square,
+                  //                           color: kblue,
+                  //                         ),
+                  //                         kwidth5,
+                  //                         Text('Customize', style: minfont)
+                  //                       ],
+                  //                     ),
+                  //                   ),
+                  //                 ),
+                  //                 ksizedbox10
+                  //               ],
+                  //             ),
+                  //           ),
+                  //         ),
+                  // ),
+                  // // ksizedbox20,
+
+                  // ksizedbox20,
+                  // InkWell(
+                  //   onTap: () {
+                  //     if (controller.shock.value == 0) {
+                  //       controller.shock(1);
+                  //     } else {
+                  //       controller.shock(0);
+                  //     }
+                  //     ;
+                  //   },
+                  //   child: controller.shock.value == 0
+                  //       ? Container(
+                  //           child: Padding(
+                  //             padding: const EdgeInsets.all(8.0),
+                  //             child: Column(
+                  //               children: [
+                  //                 Row(
+                  //                   mainAxisAlignment:
+                  //                       MainAxisAlignment.spaceBetween,
+                  //                   children: [
+                  //                     Text('Choose Shock', style: maxfont),
+                  //                     Icon(Icons.arrow_drop_down_rounded)
+                  //                   ],
+                  //                 ),
+                  //                 ksizedbox10,
+                  //                 GestureDetector(
+                  //                   onTap: () {
+                  //                     var txtControllershock =
+                  //                         TextEditingController();
+                  //                     _showTextFieldDialog(context, "Shock",
+                  //                         "Enter", txtControllershock);
+                  //                   },
+                  //                   child: Row(
+                  //                     children: [
+                  //                       Icon(
+                  //                         Icons.edit_square,
+                  //                         color: kblue,
+                  //                       ),
+                  //                       kwidth5,
+                  //                       Text('Customize', style: minfont)
+                  //                     ],
+                  //                   ),
+                  //                 ),
+                  //                 ksizedbox10
+                  //               ],
+                  //             ),
+                  //           ),
+                  //           width: double.infinity,
+                  //           //  height: 300,
+                  //           decoration: BoxDecoration(
+                  //             color: kwhite,
+                  //             borderRadius: BorderRadius.circular(18),
+                  //             boxShadow: [
+                  //               BoxShadow(
+                  //                 color: Colors.grey.withOpacity(0.5),
+                  //                 spreadRadius: 5,
+                  //                 blurRadius: 7,
+                  //                 offset: Offset(
+                  //                     0, 3), // changes position of shadow
+                  //               ),
+                  //             ],
+                  //           ),
+                  //         )
+                  //       : Container(
+                  //           width: double.infinity,
+                  //           //  height: 300,
+                  //           decoration: BoxDecoration(
+                  //             color: kwhite,
+                  //             borderRadius: BorderRadius.circular(18),
+                  //             boxShadow: [
+                  //               BoxShadow(
+                  //                 color: Colors.grey.withOpacity(0.5),
+                  //                 spreadRadius: 5,
+                  //                 blurRadius: 7,
+                  //                 offset: Offset(
+                  //                     0, 3), // changes position of shadow
+                  //               ),
+                  //             ],
+                  //           ),
+                  //           child: Padding(
+                  //             padding: const EdgeInsets.all(8.0),
+                  //             child: Column(
+                  //               children: [
+                  //                 Padding(
+                  //                   padding: const EdgeInsets.all(12.0),
+                  //                   child: Row(
+                  //                     mainAxisAlignment:
+                  //                         MainAxisAlignment.spaceBetween,
+                  //                     children: [
+                  //                       Text('Choose Shock', style: maxfont),
+                  //                       Icon(Icons.arrow_drop_up_rounded)
+                  //                     ],
+                  //                   ),
+                  //                 ),
+                  //                 ListView.builder(
+                  //                   physics: NeverScrollableScrollPhysics(),
+                  //                   shrinkWrap: true,
+                  //                   itemCount: tactapiController
+                  //                       .shocktypelistdata.length,
+                  //                   itemBuilder: (context, index) {
+                  //                     // The itemBuilder callback is called for each item in the list.
+                  //                     return Container(
+                  //                       child: Column(
+                  //                         children: [
+                  //                           RadioListTile(
+                  //                             title: Text(
+                  //                                 tactapiController
+                  //                                     .shocktypelistdata[
+                  //                                         index]
+                  //                                     .subTitle,
+                  //                                 style: minfont),
+                  //                             value: 'v${index}',
+                  //                             groupValue: selectedOption,
+                  //                             onChanged:
+                  //                                 handleRadioValueChanged,
+                  //                           ),
+                  //                           kwidth5,
+                  //                           Divider(
+                  //                             height: 1,
+                  //                           ),
+                  //                           ksizedbox10,
+                  //                         ],
+                  //                       ),
+                  //                     );
+                  //                   },
+                  //                 ),
+                  //                 Padding(
+                  //                   padding: const EdgeInsets.all(12.0),
+                  //                   child: GestureDetector(
+                  //                     onTap: () {
+                  //                       var txtControllershock =
+                  //                           TextEditingController();
+                  //                       _showTextFieldDialog(context, "Shock",
+                  //                           "Enter", txtControllershock);
+                  //                     },
+                  //                     child: Row(
+                  //                       children: [
+                  //                         Icon(
+                  //                           Icons.edit_square,
+                  //                           color: kblue,
+                  //                         ),
+                  //                         kwidth5,
+                  //                         Text('Customize', style: minfont)
+                  //                       ],
+                  //                     ),
+                  //                   ),
+                  //                 ),
+                  //                 ksizedbox10
+                  //               ],
+                  //             ),
+                  //           ),
+                  //         ),
+                  // ),
+                  // ksizedbox20,
+                  // GestureDetector(
+                  //   onTap: () {
+                  //     if (controller.quality.value == 0) {
+                  //       controller.quality(1);
+                  //     } else {
+                  //       controller.quality(0);
+                  //     }
+                  //     ;
+                  //   },
+                  //   child: controller.quality.value == 0
+                  //       ? Container(
+                  //           width: double.infinity,
+                  //           //  height: 300,
+                  //           decoration: BoxDecoration(
+                  //             color: kwhite,
+                  //             borderRadius: BorderRadius.circular(18),
+                  //             boxShadow: [
+                  //               BoxShadow(
+                  //                 color: Colors.grey.withOpacity(0.5),
+                  //                 spreadRadius: 5,
+                  //                 blurRadius: 7,
+                  //                 offset: const Offset(
+                  //                     0, 3), // changes position of shadow
+                  //               ),
+                  //             ],
+                  //           ),
+                  //           child: Padding(
+                  //             padding: const EdgeInsets.all(8.0),
+                  //             child: Column(
+                  //               children: [
+                  //                 Row(
+                  //                   mainAxisAlignment:
+                  //                       MainAxisAlignment.spaceBetween,
+                  //                   children: [
+                  //                     Text('Drug/Dose', style: maxfont),
+                  //                     const Icon(
+                  //                         Icons.arrow_drop_down_rounded)
+                  //                   ],
+                  //                 ),
+                  //                 ksizedbox10,
+                  //                 GestureDetector(
+                  //                   onTap: () {
+                  //                     var txtControllerdrug =
+                  //                         TextEditingController();
+                  //                     _showTextFieldDialog(context, "DRUG",
+                  //                         "Enter", txtControllerdrug);
+                  //                   },
+                  //                   child: Row(
+                  //                     children: [
+                  //                       Icon(
+                  //                         Icons.edit_square,
+                  //                         color: kblue,
+                  //                       ),
+                  //                       kwidth5,
+                  //                       Text('Customize', style: minfont)
+                  //                     ],
+                  //                   ),
+                  //                 ),
+                  //                 ksizedbox10
+                  //               ],
+                  //             ),
+                  //           ),
+                  //         )
+                  //       : Container(
+                  //           width: double.infinity,
+                  //           //  height: 300,
+                  //           decoration: BoxDecoration(
+                  //             color: kwhite,
+                  //             borderRadius: BorderRadius.circular(18),
+                  //             boxShadow: [
+                  //               BoxShadow(
+                  //                 color: Colors.grey.withOpacity(0.5),
+                  //                 spreadRadius: 5,
+                  //                 blurRadius: 7,
+                  //                 offset: const Offset(
+                  //                     0, 3), // changes position of shadow
+                  //               ),
+                  //             ],
+                  //           ),
+                  //           child: Padding(
+                  //             padding: const EdgeInsets.all(8.0),
+                  //             child: Column(
+                  //               children: [
+                  //                 Padding(
+                  //                   padding: const EdgeInsets.all(12.0),
+                  //                   child: Row(
+                  //                     mainAxisAlignment:
+                  //                         MainAxisAlignment.spaceBetween,
+                  //                     children: [
+                  //                       Text('Drug / Dose', style: maxfont),
+                  //                       const Icon(
+                  //                           Icons.arrow_drop_up_rounded)
+                  //                     ],
+                  //                   ),
+                  //                 ),
+                  //                 ListView.builder(
+                  //                     physics:
+                  //                         const NeverScrollableScrollPhysics(),
+                  //                     shrinkWrap: true,
+                  //                     itemCount: tactapiController
+                  //                         .druglistdata.length,
+                  //                     itemBuilder: (context, index) {
+                  //                       // The itemBuilder callback is called for each item in the list.
+                  //                       return Container(
+                  //                         child: Column(
+                  //                           children: [
+                  //                             RadioListTile(
+                  //                               title: Text(
+                  //                                   tactapiController
+                  //                                       .druglistdata[index]
+                  //                                       .subTitle,
+                  //                                   style: minfont),
+                  //                               value: 'v${index}',
+                  //                               groupValue: selectedOption,
+                  //                               onChanged: (value) {
+                  //                                 setState(() {
+                  //                                   selectedOption = value!;
+                  //                                   print(
+                  //                                       '${selectedOption}');
+                  //                                   var data = selectedOption;
+                  //                                   print(
+                  //                                       '=======  =====${data}======== ===');
+                  //                                 });
+                  //                               },
+                  //                             ),
+                  //                             ksizedbox10,
+                  //                             if (index == 1 &&
+                  //                                 selectedOption == "v1")
+                  //                               Padding(
+                  //                                 padding:
+                  //                                     const EdgeInsets.only(
+                  //                                         left: 40),
+                  //                                 child: Column(
+                  //                                   children: [
+                  //                                     RadioListTile(
+                  //                                       title: Text("150mg",
+                  //                                           style: minfont),
+                  //                                       value: 'a1',
+                  //                                       groupValue:
+                  //                                           selectedOption2,
+                  //                                       onChanged:
+                  //                                           handleRadioValueChanged2,
+                  //                                     ),
+                  //                                     RadioListTile(
+                  //                                       title: Text("300mg",
+                  //                                           style: minfont),
+                  //                                       value: 'a2',
+                  //                                       groupValue:
+                  //                                           selectedOption2,
+                  //                                       onChanged:
+                  //                                           handleRadioValueChanged2,
+                  //                                     ),
+                  //                                   ],
+                  //                                 ),
+                  //                               ),
+                  //                             kwidth5,
+                  //                             const Divider(
+                  //                               height: 1,
+                  //                             ),
+                  //                             ksizedbox10,
+                  //                           ],
+                  //                         ),
+                  //                       );
+                  //                     }),
+                  //                 Padding(
+                  //                   padding: const EdgeInsets.all(12.0),
+                  //                   child: GestureDetector(
+                  //                     onTap: () {
+                  //                       var txtControllerdrug =
+                  //                           TextEditingController();
+                  //                       _showTextFieldDialog(context, "DRUG",
+                  //                           "Enter", txtControllerdrug);
+                  //                     },
+                  //                     child: Row(
+                  //                       children: [
+                  //                         Icon(
+                  //                           Icons.edit_square,
+                  //                           color: kblue,
+                  //                         ),
+                  //                         kwidth5,
+                  //                         Text('Customize', style: minfont)
+                  //                       ],
+                  //                     ),
+                  //                   ),
+                  //                 ),
+                  //                 ksizedbox10,
+                  //               ],
+                  //             ),
+                  //           ),
+                  //         ),
+                  // ),
+                  // ksizedbox20,
+                  // GestureDetector(
+                  //   onTap: () {
+                  //     if (controller.cpr.value == 0) {
+                  //       controller.cpr(1);
+                  //     } else {
+                  //       controller.cpr(0);
+                  //     }
+                  //   },
+                  //   child: controller.cpr.value == 0
+                  //       ? Container(
+                  //           child: Padding(
+                  //             padding: const EdgeInsets.all(8.0),
+                  //             child: Column(
+                  //               children: [
+                  //                 Row(
+                  //                   mainAxisAlignment:
+                  //                       MainAxisAlignment.spaceBetween,
+                  //                   children: [
+                  //                     Text('Quality CPR', style: maxfont),
+                  //                     Icon(Icons.arrow_drop_down_rounded)
+                  //                   ],
+                  //                 ),
+                  //                 ksizedbox10,
+                  //                 GestureDetector(
+                  //                   onTap: () {
+                  //                     var txtControllerCPR =
+                  //                         TextEditingController();
+                  //                     _showTextFieldDialog(
+                  //                         context,
+                  //                         "QUALITY CPR",
+                  //                         "Enter",
+                  //                         txtControllerCPR);
+                  //                   },
+                  //                   child: Row(
+                  //                     children: [
+                  //                       Icon(
+                  //                         Icons.edit_square,
+                  //                         color: kblue,
+                  //                       ),
+                  //                       kwidth5,
+                  //                       Text('Customize', style: minfont)
+                  //                     ],
+                  //                   ),
+                  //                 ),
+                  //                 ksizedbox10
+                  //               ],
+                  //             ),
+                  //           ),
+                  //           width: double.infinity,
+                  //           //  height: 300,
+                  //           decoration: BoxDecoration(
+                  //             color: kwhite,
+                  //             borderRadius: BorderRadius.circular(18),
+                  //             boxShadow: [
+                  //               BoxShadow(
+                  //                 color: Colors.grey.withOpacity(0.5),
+                  //                 spreadRadius: 5,
+                  //                 blurRadius: 7,
+                  //                 offset: Offset(
+                  //                     0, 3), // changes position of shadow
+                  //               ),
+                  //             ],
+                  //           ),
+                  //         )
+                  //       : Container(
+                  //           child: Padding(
+                  //             padding: const EdgeInsets.all(8.0),
+                  //             child: Column(
+                  //               children: [
+                  //                 Padding(
+                  //                   padding: const EdgeInsets.all(12.0),
+                  //                   child: Row(
+                  //                     mainAxisAlignment:
+                  //                         MainAxisAlignment.spaceBetween,
+                  //                     children: [
+                  //                       Text('Quality CPR', style: maxfont),
+                  //                       Icon(Icons.arrow_drop_up_rounded)
+                  //                     ],
+                  //                   ),
+                  //                 ),
+                  //                 ListView.builder(
+                  //                     physics: NeverScrollableScrollPhysics(),
+                  //                     shrinkWrap: true,
+                  //                     itemCount: controller.cprList.length,
+                  //                     itemBuilder: (context, index) {
+                  //                       // The itemBuilder callback is called for each item in the list.
+                  //                       return Container(
+                  //                         child: Column(
+                  //                           children: [
+                  //                             RadioListTile(
+                  //                               title: Text(
+                  //                                   controller.cprList[index]
+                  //                                       .toString(),
+                  //                                   style: minfont),
+                  //                               value: 'e${index}',
+                  //                               groupValue: selectedOption,
+                  //                               onChanged:
+                  //                                   handleRadioValueChanged,
+                  //                             ),
+                  //                             kwidth5,
+                  //                             ksizedbox10,
+                  //                             if (selectedOption == "e0" &&
+                  //                                 index == 0)
+                  //                               Slider(
+                  //                                 value: _currentSliderValue,
+                  //                                 max: 100,
+                  //                                 divisions: 100,
+                  //                                 label: _currentSliderValue
+                  //                                     .round()
+                  //                                     .toString(),
+                  //                                 onChanged: (double value) {
+                  //                                   setState(() {
+                  //                                     _currentSliderValue =
+                  //                                         value;
+                  //                                   });
+                  //                                 },
+                  //                               ),
+                  //                             ksizedbox10,
+                  //                             Divider(
+                  //                               height: 1,
+                  //                             ),
+                  //                           ],
+                  //                         ),
+                  //                       );
+                  //                     }),
+                  //                 Padding(
+                  //                   padding: const EdgeInsets.all(12.0),
+                  //                   child: GestureDetector(
+                  //                     onTap: () {
+                  //                       var txtControllerCPR =
+                  //                           TextEditingController();
+                  //                       _showTextFieldDialog(
+                  //                           context,
+                  //                           "QUALITY CPR",
+                  //                           "Enter",
+                  //                           txtControllerCPR);
+                  //                     },
+                  //                     child: Row(
+                  //                       children: [
+                  //                         Icon(
+                  //                           Icons.edit_square,
+                  //                           color: kblue,
+                  //                         ),
+                  //                         kwidth5,
+                  //                         Text('Customize', style: minfont)
+                  //                       ],
+                  //                     ),
+                  //                   ),
+                  //                 ),
+                  //                 ksizedbox10
+                  //               ],
+                  //             ),
+                  //           ),
+                  //           width: double.infinity,
+                  //           decoration: BoxDecoration(
+                  //             color: kwhite,
+                  //             borderRadius: BorderRadius.circular(18),
+                  //             boxShadow: [
+                  //               BoxShadow(
+                  //                 color: Colors.grey.withOpacity(0.5),
+                  //                 spreadRadius: 5,
+                  //                 blurRadius: 7,
+                  //                 offset: Offset(
+                  //                     0, 3), // changes position of shadow
+                  //               ),
+                  //             ],
+                  //           ),
+                  //         ),
+                  // ),
+                  // ksizedbox20,
+                  // GestureDetector(
+                  //   onTap: () {
+                  //     if (controller.procedureindex.value == 0) {
+                  //       controller.procedureindex(1);
+                  //     } else {
+                  //       controller.procedureindex(0);
+                  //     }
+                  //   },
+                  //   child: controller.procedureindex.value == 0
+                  //       ? Container(
+                  //           child: Padding(
+                  //             padding: const EdgeInsets.all(8.0),
+                  //             child: Column(
+                  //               children: [
+                  //                 Row(
+                  //                   mainAxisAlignment:
+                  //                       MainAxisAlignment.spaceBetween,
+                  //                   children: [
+                  //                     Text('Other Procedure', style: maxfont),
+                  //                     Icon(Icons.arrow_drop_down_rounded)
+                  //                   ],
+                  //                 ),
+                  //                 ksizedbox10,
+                  //                 GestureDetector(
+                  //                   onTap: () {
+                  //                     var txtControllerrythem =
+                  //                         TextEditingController();
+                  //                     _showTextFieldDialog(
+                  //                         context,
+                  //                         "Procedure",
+                  //                         "Enter Procedure",
+                  //                         txtControllerrythem);
+                  //                   },
+                  //                   child: Row(
+                  //                     children: [
+                  //                       Icon(
+                  //                         Icons.edit_square,
+                  //                         color: kblue,
+                  //                       ),
+                  //                       kwidth5,
+                  //                       Text('Customize', style: minfont)
+                  //                     ],
+                  //                   ),
+                  //                 ),
+                  //                 ksizedbox10
+                  //               ],
+                  //             ),
+                  //           ),
+                  //           width: double.infinity,
+                  //           //  height: 300,
+                  //           decoration: BoxDecoration(
+                  //             color: kwhite,
+                  //             borderRadius: BorderRadius.circular(18),
+                  //             boxShadow: [
+                  //               BoxShadow(
+                  //                 color: Colors.grey.withOpacity(0.5),
+                  //                 spreadRadius: 5,
+                  //                 blurRadius: 7,
+                  //                 offset: Offset(
+                  //                     0, 3), // changes position of shadow
+                  //               ),
+                  //             ],
+                  //           ),
+                  //         )
+                  //       : Container(
+                  //           child: Padding(
+                  //             padding: const EdgeInsets.all(8.0),
+                  //             child: Column(
+                  //               children: [
+                  //                 Padding(
+                  //                   padding: const EdgeInsets.all(12.0),
+                  //                   child: Row(
+                  //                     mainAxisAlignment:
+                  //                         MainAxisAlignment.spaceBetween,
+                  //                     children: [
+                  //                       Text('Choose Procedure',
+                  //                           style: maxfont),
+                  //                       Icon(Icons.arrow_drop_up_rounded)
+                  //                     ],
+                  //                   ),
+                  //                 ),
+                  //                 ListView.builder(
+                  //                     physics: NeverScrollableScrollPhysics(),
+                  //                     shrinkWrap: true,
+                  //                     itemCount:
+                  //                         controller.procedurelist.length,
+                  //                     itemBuilder: (context, index) {
+                  //                       // The itemBuilder callback is called for each item in the list.
+                  //                       return Container(
+                  //                         child: Column(
+                  //                           children: [
+                  //                             RadioListTile(
+                  //                               title: Text(
+                  //                                   controller
+                  //                                       .procedurelist[index]
+                  //                                       .toString(),
+                  //                                   style: minfont),
+                  //                               value: 'd${index}',
+                  //                               groupValue: selectedOption,
+                  //                               onChanged:
+                  //                                   handleRadioValueChanged,
+                  //                             ),
+                  //                             kwidth5,
+                  //                             Divider(
+                  //                               height: 1,
+                  //                             ),
+                  //                             ksizedbox10,
+                  //                           ],
+                  //                         ),
+                  //                       );
+                  //                     }),
+                  //                 Padding(
+                  //                   padding: const EdgeInsets.all(12.0),
+                  //                   child: GestureDetector(
+                  //                     onTap: () {
+                  //                       var txtControllerrythem =
+                  //                           TextEditingController();
+                  //                       _showTextFieldDialog(
+                  //                           context,
+                  //                           "Procedure",
+                  //                           "Enter Procedure",
+                  //                           txtControllerrythem);
+                  //                     },
+                  //                     child: Row(
+                  //                       children: [
+                  //                         Icon(
+                  //                           Icons.edit_square,
+                  //                           color: kblue,
+                  //                         ),
+                  //                         kwidth5,
+                  //                         Text('Customize', style: minfont)
+                  //                       ],
+                  //                     ),
+                  //                   ),
+                  //                 ),
+                  //                 ksizedbox10
+                  //               ],
+                  //             ),
+                  //           ),
+                  //           width: double.infinity,
+                  //           //  height: 300,
+                  //           decoration: BoxDecoration(
+                  //             color: kwhite,
+                  //             borderRadius: BorderRadius.circular(18),
+                  //             boxShadow: [
+                  //               BoxShadow(
+                  //                 color: Colors.grey.withOpacity(0.5),
+                  //                 spreadRadius: 5,
+                  //                 blurRadius: 7,
+                  //                 offset: Offset(
+                  //                     0, 3), // changes position of shadow
+                  //               ),
+                  //             ],
+                  //           ),
+                  //         ),
+                  // ),
+                  ksizedbox20,
+                  GestureDetector(
+                    onTap: () {
+                      setState(() {
+                        isEnable = false;
+                        audioPlayer.stop();
+                        audioPlayer2.stop();
+                        player.stop();
+                      });
+                      Get.off(const SuccessScreen());
+                    },
+                    child: Container(
+                      height: 50,
+                      width: 140,
+                      child: Center(
+                        child: Text(
+                          'ROSC Achieved',
+                          style: TextStyle(
+                              color: kwhite,
+                              fontSize: 17,
+                              fontWeight: FontWeight.w700),
+                        ),
+                      ),
+                      decoration: BoxDecoration(
+                        color: kOrange,
+                        borderRadius: BorderRadius.circular(16),
+                        gradient: const LinearGradient(
+                          begin: Alignment.centerLeft,
+                          end: Alignment.centerRight,
+                          colors: [
+                            Color(0xffE77D7D),
+                            Color.fromARGB(255, 229, 182, 182),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                  ksizedbox10,
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 10),
+                    child: Column(
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              'Activity Log',
+                              style: TextStyle(
+                                  fontSize: 24,
+                                  fontWeight: FontWeight.bold,
+                                  color: kblue),
+                            ),
+                            GestureDetector(
+                              onTap: () {
+                                Get.to(ReportDetails());
+                              },
+                              child: Text(
+                                'View all',
+                                style: TextStyle(
+                                    fontSize: 15,
+                                    fontWeight: FontWeight.w500,
+                                    color: kgrey),
+                              ),
+                            )
+                          ],
+                        ),
+                        ksizedbox20,
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  'Overal CPR time',
+                                  style: minfont,
+                                ),
+                                ksizedbox10,
+                                Text(
+                                  'Actual Time',
+                                  style: minfont,
+                                ),
+                              ],
+                            ),
+                            Column(
+                              children: [
+                                Text(
+                                  '00:00:00',
+                                  style: minfont,
+                                ),
+                                ksizedbox10,
+                                if (tactapiController.activitylist.isNotEmpty)
+                                  Text(
+                                    tactapiController
+                                        .activitylist.first.fromTime,
+                                    style: minfont,
+                                  ),
+                              ],
+                            ),
+                            Column(
+                              children: [
+                                Text(
+                                  '00:00:00',
+                                  style: minfont,
+                                ),
+                                ksizedbox10,
+                                Text(
+                                  '00:00:00',
+                                  style: minfont,
+                                ),
+                              ],
+                            )
+                          ],
+                        ),
+                        ksizedbox20,
+                        ListView.builder(
+                            physics: NeverScrollableScrollPhysics(),
+                            shrinkWrap: true,
+                            itemCount: tactapiController.activitylist.length,
+                            itemBuilder: (BuildContext context, int index) {
+                              return Column(
+                                children: [
+                                  Row(
+                                    children: [
+                                      Text(
+                                        tactapiController
+                                            .activitylist[index].title,
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.w700,
+                                            fontSize: 18,
+                                            color: kblue),
+                                      ),
+                                    ],
+                                  ),
+                                  ksizedbox10,
+                                  Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceEvenly,
+                                    children: [
+                                      Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            tactapiController
+                                                .activitylist[index]
+                                                .categoryTitle,
+                                            style: minfont,
+                                          ),
+                                          ksizedbox10,
+                                          Text(
+                                            tactapiController
+                                                .activitylist[index]
+                                                .categoryTitle,
+                                            style: minfont,
+                                          ),
+                                        ],
+                                      ),
+                                      Column(
+                                        children: [
+                                          Text(
+                                            tactapiController
+                                                .activitylist[index].toTime,
+                                            style: minfont,
+                                          ),
+                                          ksizedbox10,
+                                          Text(
+                                            tactapiController
+                                                .activitylist[index].fromTime,
+                                            style: minfont,
+                                          ),
+                                        ],
+                                      ),
+                                      Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.end,
+                                        children: [
+                                          Text(
+                                            tactapiController
+                                                .activitylist[index].subTitle,
+                                            style: minfont,
+                                          ),
+                                          ksizedbox10,
+                                          Text(
+                                            tactapiController
+                                                .activitylist[index].subTitle,
+                                            style: minfont,
+                                          ),
+                                        ],
+                                      ),
                                     ],
                                   ),
                                 ],
-                              ),
-                            ),
-                          ),
-                        ),
+                              );
+                            }),
+                        ksizedbox20,
+                        ksizedbox10,
                       ],
                     ),
-                    ksizedbox20,
-
-                    ksizedbox30,
-                    GestureDetector(
-                      onTap: () {
-                        if (controller.ecgindex.value == 0) {
-                          controller.ecgindex(1);
-                        } else {
-                          controller.ecgindex(0);
-                        }
-                      },
-                      child: controller.ecgindex.value == 0
-                          ? Container(
-                              width: double.infinity,
-                              //  height: 300,
-                              decoration: BoxDecoration(
-                                color: kwhite,
-                                borderRadius: BorderRadius.circular(18),
-                                boxShadow: [
-                                  BoxShadow(
-                                    color: Colors.grey.withOpacity(0.5),
-                                    spreadRadius: 5,
-                                    blurRadius: 7,
-                                    offset: const Offset(
-                                        0, 3), // changes position of shadow
-                                  ),
-                                ],
-                              ),
-                              child: Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: Column(
-                                  children: [
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Text('Choose Rhythm', style: maxfont),
-                                        const Icon(
-                                            Icons.arrow_drop_down_rounded)
-                                      ],
-                                    ),
-                                    ksizedbox10,
-                                    GestureDetector(
-                                      onTap: () {
-                                        var txtControllerrythem =
-                                            TextEditingController();
-                                        _showTextFieldDialog(
-                                          context,
-                                          "Rhythm",
-                                          "Enter Rhythm",
-                                          txtControllerrythem,
-                                        );
-                                      },
-                                      child: Row(
-                                        children: [
-                                          Icon(
-                                            Icons.edit_square,
-                                            color: kblue,
-                                          ),
-                                          kwidth5,
-                                          Text('Customize', style: minfont)
-                                        ],
-                                      ),
-                                    ),
-                                    ksizedbox10
-                                  ],
-                                ),
-                              ),
-                            )
-                          : Container(
-                              width: double.infinity,
-                              //  height: 300,
-                              decoration: BoxDecoration(
-                                color: kwhite,
-                                borderRadius: BorderRadius.circular(18),
-                                boxShadow: [
-                                  BoxShadow(
-                                    color: Colors.grey.withOpacity(0.5),
-                                    spreadRadius: 5,
-                                    blurRadius: 7,
-                                    offset: Offset(
-                                        0, 3), // changes position of shadow
-                                  ),
-                                ],
-                              ),
-                              child: Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: Column(
-                                  children: [
-                                    Padding(
-                                      padding: const EdgeInsets.all(12.0),
-                                      child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          Text('Choose Rhythm', style: maxfont),
-                                          const Icon(
-                                              Icons.arrow_drop_up_rounded)
-                                        ],
-                                      ),
-                                    ),
-                                    ListView.builder(
-                                        physics: NeverScrollableScrollPhysics(),
-                                        shrinkWrap: true,
-                                        itemCount: tactapiController
-                                            .rythmlistdata.length,
-                                        itemBuilder: (context, index) {
-                                          // The itemBuilder callback is called for each item in the list.
-                                          return Container(
-                                            child: Column(
-                                              children: [
-                                                RadioListTile(
-                                                  title: Text(
-                                                      tactapiController
-                                                          .rythmlistdata[index]
-                                                          .title,
-                                                      style: minfont),
-                                                  value: tactapiController
-                                                      .rythmlistdata[index]
-                                                      .title,
-                                                  groupValue: selectedOption,
-                                                  onChanged:
-                                                      handleRadioValueChanged,
-                                                ),
-                                                kwidth5,
-                                                Divider(
-                                                  height: 1,
-                                                ),
-                                                ksizedbox10,
-                                              ],
-                                            ),
-                                          );
-                                        }),
-                                    Padding(
-                                      padding: const EdgeInsets.all(12.0),
-                                      child: GestureDetector(
-                                        onTap: () {
-                                          var txtControllerrythem =
-                                              TextEditingController();
-                                          _showTextFieldDialog(
-                                            context,
-                                            "Rhythm",
-                                            "Enter Rhythm",
-                                            txtControllerrythem,
-                                          );
-                                        },
-                                        child: Row(
-                                          children: [
-                                            Icon(
-                                              Icons.edit_square,
-                                              color: kblue,
-                                            ),
-                                            kwidth5,
-                                            Text('Customize', style: minfont)
-                                          ],
-                                        ),
-                                      ),
-                                    ),
-                                    ksizedbox10
-                                  ],
-                                ),
-                              ),
-                            ),
-                    ),
-                    // ksizedbox20,
-
-                    ksizedbox20,
-                    InkWell(
-                      onTap: () {
-                        if (controller.shock.value == 0) {
-                          controller.shock(1);
-                        } else {
-                          controller.shock(0);
-                        }
-                        ;
-                      },
-                      child: controller.shock.value == 0
-                          ? Container(
-                              child: Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: Column(
-                                  children: [
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Text('Choose Shock', style: maxfont),
-                                        Icon(Icons.arrow_drop_down_rounded)
-                                      ],
-                                    ),
-                                    ksizedbox10,
-                                    GestureDetector(
-                                      onTap: () {
-                                        var txtControllershock =
-                                            TextEditingController();
-                                        _showTextFieldDialog(context, "Shock",
-                                            "Enter", txtControllershock);
-                                      },
-                                      child: Row(
-                                        children: [
-                                          Icon(
-                                            Icons.edit_square,
-                                            color: kblue,
-                                          ),
-                                          kwidth5,
-                                          Text('Customize', style: minfont)
-                                        ],
-                                      ),
-                                    ),
-                                    ksizedbox10
-                                  ],
-                                ),
-                              ),
-                              width: double.infinity,
-                              //  height: 300,
-                              decoration: BoxDecoration(
-                                color: kwhite,
-                                borderRadius: BorderRadius.circular(18),
-                                boxShadow: [
-                                  BoxShadow(
-                                    color: Colors.grey.withOpacity(0.5),
-                                    spreadRadius: 5,
-                                    blurRadius: 7,
-                                    offset: Offset(
-                                        0, 3), // changes position of shadow
-                                  ),
-                                ],
-                              ),
-                            )
-                          : Container(
-                              width: double.infinity,
-                              //  height: 300,
-                              decoration: BoxDecoration(
-                                color: kwhite,
-                                borderRadius: BorderRadius.circular(18),
-                                boxShadow: [
-                                  BoxShadow(
-                                    color: Colors.grey.withOpacity(0.5),
-                                    spreadRadius: 5,
-                                    blurRadius: 7,
-                                    offset: Offset(
-                                        0, 3), // changes position of shadow
-                                  ),
-                                ],
-                              ),
-                              child: Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: Column(
-                                  children: [
-                                    Padding(
-                                      padding: const EdgeInsets.all(12.0),
-                                      child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          Text('Choose Shock', style: maxfont),
-                                          Icon(Icons.arrow_drop_up_rounded)
-                                        ],
-                                      ),
-                                    ),
-                                    ListView.builder(
-                                      physics: NeverScrollableScrollPhysics(),
-                                      shrinkWrap: true,
-                                      itemCount: tactapiController
-                                          .shocktypelistdata.length,
-                                      itemBuilder: (context, index) {
-                                        // The itemBuilder callback is called for each item in the list.
-                                        return Container(
-                                          child: Column(
-                                            children: [
-                                              RadioListTile(
-                                                title: Text(
-                                                    tactapiController
-                                                        .shocktypelistdata[
-                                                            index]
-                                                        .title,
-                                                    style: minfont),
-                                                value: 'v${index}',
-                                                groupValue: selectedOption,
-                                                onChanged:
-                                                    handleRadioValueChanged,
-                                              ),
-                                              kwidth5,
-                                              Divider(
-                                                height: 1,
-                                              ),
-                                              ksizedbox10,
-                                            ],
-                                          ),
-                                        );
-                                      },
-                                    ),
-                                    Padding(
-                                      padding: const EdgeInsets.all(12.0),
-                                      child: GestureDetector(
-                                        onTap: () {
-                                          var txtControllershock =
-                                              TextEditingController();
-                                          _showTextFieldDialog(context, "Shock",
-                                              "Enter", txtControllershock);
-                                        },
-                                        child: Row(
-                                          children: [
-                                            Icon(
-                                              Icons.edit_square,
-                                              color: kblue,
-                                            ),
-                                            kwidth5,
-                                            Text('Customize', style: minfont)
-                                          ],
-                                        ),
-                                      ),
-                                    ),
-                                    ksizedbox10
-                                  ],
-                                ),
-                              ),
-                            ),
-                    ),
-                    ksizedbox20,
-                    GestureDetector(
-                      onTap: () {
-                        if (controller.quality.value == 0) {
-                          controller.quality(1);
-                        } else {
-                          controller.quality(0);
-                        }
-                        ;
-                      },
-                      child: controller.quality.value == 0
-                          ? Container(
-                              width: double.infinity,
-                              //  height: 300,
-                              decoration: BoxDecoration(
-                                color: kwhite,
-                                borderRadius: BorderRadius.circular(18),
-                                boxShadow: [
-                                  BoxShadow(
-                                    color: Colors.grey.withOpacity(0.5),
-                                    spreadRadius: 5,
-                                    blurRadius: 7,
-                                    offset: const Offset(
-                                        0, 3), // changes position of shadow
-                                  ),
-                                ],
-                              ),
-                              child: Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: Column(
-                                  children: [
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Text('Drug/Dose', style: maxfont),
-                                        const Icon(
-                                            Icons.arrow_drop_down_rounded)
-                                      ],
-                                    ),
-                                    ksizedbox10,
-                                    GestureDetector(
-                                      onTap: () {
-                                        var txtControllerdrug =
-                                            TextEditingController();
-                                        _showTextFieldDialog(context, "DRUG",
-                                            "Enter", txtControllerdrug);
-                                      },
-                                      child: Row(
-                                        children: [
-                                          Icon(
-                                            Icons.edit_square,
-                                            color: kblue,
-                                          ),
-                                          kwidth5,
-                                          Text('Customize', style: minfont)
-                                        ],
-                                      ),
-                                    ),
-                                    ksizedbox10
-                                  ],
-                                ),
-                              ),
-                            )
-                          : Container(
-                              width: double.infinity,
-                              //  height: 300,
-                              decoration: BoxDecoration(
-                                color: kwhite,
-                                borderRadius: BorderRadius.circular(18),
-                                boxShadow: [
-                                  BoxShadow(
-                                    color: Colors.grey.withOpacity(0.5),
-                                    spreadRadius: 5,
-                                    blurRadius: 7,
-                                    offset: const Offset(
-                                        0, 3), // changes position of shadow
-                                  ),
-                                ],
-                              ),
-                              child: Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: Column(
-                                  children: [
-                                    Padding(
-                                      padding: const EdgeInsets.all(12.0),
-                                      child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          Text('Drug / Dose', style: maxfont),
-                                          const Icon(
-                                              Icons.arrow_drop_up_rounded)
-                                        ],
-                                      ),
-                                    ),
-                                    ListView.builder(
-                                        physics:
-                                            const NeverScrollableScrollPhysics(),
-                                        shrinkWrap: true,
-                                        itemCount: tactapiController
-                                            .druglistdata.length,
-                                        itemBuilder: (context, index) {
-                                          // The itemBuilder callback is called for each item in the list.
-                                          return Container(
-                                            child: Column(
-                                              children: [
-                                                RadioListTile(
-                                                  title: Text(
-                                                      tactapiController
-                                                          .druglistdata[index]
-                                                          .title,
-                                                      style: minfont),
-                                                  value: 'v${index}',
-                                                  groupValue: selectedOption,
-                                                  onChanged: (value) {
-                                                    setState(() {
-                                                      selectedOption = value!;
-                                                      print(
-                                                          '${selectedOption}');
-                                                      var data = selectedOption;
-                                                      print(
-                                                          '=======  =====${data}======== ===');
-                                                    });
-                                                  },
-                                                ),
-                                                ksizedbox10,
-                                                if (index == 1 &&
-                                                    selectedOption == "v1")
-                                                  Padding(
-                                                    padding:
-                                                        const EdgeInsets.only(
-                                                            left: 40),
-                                                    child: Column(
-                                                      children: [
-                                                        RadioListTile(
-                                                          title: Text("150mg",
-                                                              style: minfont),
-                                                          value: 'a1',
-                                                          groupValue:
-                                                              selectedOption2,
-                                                          onChanged:
-                                                              handleRadioValueChanged2,
-                                                        ),
-                                                        RadioListTile(
-                                                          title: Text("300mg",
-                                                              style: minfont),
-                                                          value: 'a2',
-                                                          groupValue:
-                                                              selectedOption2,
-                                                          onChanged:
-                                                              handleRadioValueChanged2,
-                                                        ),
-                                                      ],
-                                                    ),
-                                                  ),
-                                                kwidth5,
-                                                const Divider(
-                                                  height: 1,
-                                                ),
-                                                ksizedbox10,
-                                              ],
-                                            ),
-                                          );
-                                        }),
-                                    Padding(
-                                      padding: const EdgeInsets.all(12.0),
-                                      child: GestureDetector(
-                                        onTap: () {
-                                          var txtControllerdrug =
-                                              TextEditingController();
-                                          _showTextFieldDialog(context, "DRUG",
-                                              "Enter", txtControllerdrug);
-                                        },
-                                        child: Row(
-                                          children: [
-                                            Icon(
-                                              Icons.edit_square,
-                                              color: kblue,
-                                            ),
-                                            kwidth5,
-                                            Text('Customize', style: minfont)
-                                          ],
-                                        ),
-                                      ),
-                                    ),
-                                    ksizedbox10,
-                                  ],
-                                ),
-                              ),
-                            ),
-                    ),
-                    ksizedbox20,
-                    GestureDetector(
-                      onTap: () {
-                        if (controller.cpr.value == 0) {
-                          controller.cpr(1);
-                        } else {
-                          controller.cpr(0);
-                        }
-                      },
-                      child: controller.cpr.value == 0
-                          ? Container(
-                              child: Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: Column(
-                                  children: [
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Text('Quality CPR', style: maxfont),
-                                        Icon(Icons.arrow_drop_down_rounded)
-                                      ],
-                                    ),
-                                    ksizedbox10,
-                                    GestureDetector(
-                                      onTap: () {
-                                        var txtControllerCPR =
-                                            TextEditingController();
-                                        _showTextFieldDialog(
-                                            context,
-                                            "QUALITY CPR",
-                                            "Enter",
-                                            txtControllerCPR);
-                                      },
-                                      child: Row(
-                                        children: [
-                                          Icon(
-                                            Icons.edit_square,
-                                            color: kblue,
-                                          ),
-                                          kwidth5,
-                                          Text('Customize', style: minfont)
-                                        ],
-                                      ),
-                                    ),
-                                    ksizedbox10
-                                  ],
-                                ),
-                              ),
-                              width: double.infinity,
-                              //  height: 300,
-                              decoration: BoxDecoration(
-                                color: kwhite,
-                                borderRadius: BorderRadius.circular(18),
-                                boxShadow: [
-                                  BoxShadow(
-                                    color: Colors.grey.withOpacity(0.5),
-                                    spreadRadius: 5,
-                                    blurRadius: 7,
-                                    offset: Offset(
-                                        0, 3), // changes position of shadow
-                                  ),
-                                ],
-                              ),
-                            )
-                          : Container(
-                              child: Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: Column(
-                                  children: [
-                                    Padding(
-                                      padding: const EdgeInsets.all(12.0),
-                                      child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          Text('Quality CPR', style: maxfont),
-                                          Icon(Icons.arrow_drop_up_rounded)
-                                        ],
-                                      ),
-                                    ),
-                                    ListView.builder(
-                                        physics: NeverScrollableScrollPhysics(),
-                                        shrinkWrap: true,
-                                        itemCount: controller.cprList.length,
-                                        itemBuilder: (context, index) {
-                                          // The itemBuilder callback is called for each item in the list.
-                                          return Container(
-                                            child: Column(
-                                              children: [
-                                                RadioListTile(
-                                                  title: Text(
-                                                      controller.cprList[index]
-                                                          .toString(),
-                                                      style: minfont),
-                                                  value: 'e${index}',
-                                                  groupValue: selectedOption,
-                                                  onChanged:
-                                                      handleRadioValueChanged,
-                                                ),
-                                                kwidth5,
-                                                ksizedbox10,
-                                                if (selectedOption == "e0" &&
-                                                    index == 0)
-                                                  Slider(
-                                                    value: _currentSliderValue,
-                                                    max: 100,
-                                                    divisions: 100,
-                                                    label: _currentSliderValue
-                                                        .round()
-                                                        .toString(),
-                                                    onChanged: (double value) {
-                                                      setState(() {
-                                                        _currentSliderValue =
-                                                            value;
-                                                      });
-                                                    },
-                                                  ),
-                                                ksizedbox10,
-                                                Divider(
-                                                  height: 1,
-                                                ),
-                                              ],
-                                            ),
-                                          );
-                                        }),
-                                    Padding(
-                                      padding: const EdgeInsets.all(12.0),
-                                      child: GestureDetector(
-                                        onTap: () {
-                                          var txtControllerCPR =
-                                              TextEditingController();
-                                          _showTextFieldDialog(
-                                              context,
-                                              "QUALITY CPR",
-                                              "Enter",
-                                              txtControllerCPR);
-                                        },
-                                        child: Row(
-                                          children: [
-                                            Icon(
-                                              Icons.edit_square,
-                                              color: kblue,
-                                            ),
-                                            kwidth5,
-                                            Text('Customize', style: minfont)
-                                          ],
-                                        ),
-                                      ),
-                                    ),
-                                    ksizedbox10
-                                  ],
-                                ),
-                              ),
-                              width: double.infinity,
-                              decoration: BoxDecoration(
-                                color: kwhite,
-                                borderRadius: BorderRadius.circular(18),
-                                boxShadow: [
-                                  BoxShadow(
-                                    color: Colors.grey.withOpacity(0.5),
-                                    spreadRadius: 5,
-                                    blurRadius: 7,
-                                    offset: Offset(
-                                        0, 3), // changes position of shadow
-                                  ),
-                                ],
-                              ),
-                            ),
-                    ),
-                    ksizedbox20,
-                    GestureDetector(
-                      onTap: () {
-                        if (controller.procedureindex.value == 0) {
-                          controller.procedureindex(1);
-                        } else {
-                          controller.procedureindex(0);
-                        }
-                      },
-                      child: controller.procedureindex.value == 0
-                          ? Container(
-                              child: Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: Column(
-                                  children: [
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Text('Other Procedure', style: maxfont),
-                                        Icon(Icons.arrow_drop_down_rounded)
-                                      ],
-                                    ),
-                                    ksizedbox10,
-                                    GestureDetector(
-                                      onTap: () {
-                                        var txtControllerrythem =
-                                            TextEditingController();
-                                        _showTextFieldDialog(
-                                            context,
-                                            "Procedure",
-                                            "Enter Procedure",
-                                            txtControllerrythem);
-                                      },
-                                      child: Row(
-                                        children: [
-                                          Icon(
-                                            Icons.edit_square,
-                                            color: kblue,
-                                          ),
-                                          kwidth5,
-                                          Text('Customize', style: minfont)
-                                        ],
-                                      ),
-                                    ),
-                                    ksizedbox10
-                                  ],
-                                ),
-                              ),
-                              width: double.infinity,
-                              //  height: 300,
-                              decoration: BoxDecoration(
-                                color: kwhite,
-                                borderRadius: BorderRadius.circular(18),
-                                boxShadow: [
-                                  BoxShadow(
-                                    color: Colors.grey.withOpacity(0.5),
-                                    spreadRadius: 5,
-                                    blurRadius: 7,
-                                    offset: Offset(
-                                        0, 3), // changes position of shadow
-                                  ),
-                                ],
-                              ),
-                            )
-                          : Container(
-                              child: Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: Column(
-                                  children: [
-                                    Padding(
-                                      padding: const EdgeInsets.all(12.0),
-                                      child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          Text('Choose Procedure',
-                                              style: maxfont),
-                                          Icon(Icons.arrow_drop_up_rounded)
-                                        ],
-                                      ),
-                                    ),
-                                    ListView.builder(
-                                        physics: NeverScrollableScrollPhysics(),
-                                        shrinkWrap: true,
-                                        itemCount:
-                                            controller.procedurelist.length,
-                                        itemBuilder: (context, index) {
-                                          // The itemBuilder callback is called for each item in the list.
-                                          return Container(
-                                            child: Column(
-                                              children: [
-                                                RadioListTile(
-                                                  title: Text(
-                                                      controller
-                                                          .procedurelist[index]
-                                                          .toString(),
-                                                      style: minfont),
-                                                  value: 'd${index}',
-                                                  groupValue: selectedOption,
-                                                  onChanged:
-                                                      handleRadioValueChanged,
-                                                ),
-                                                kwidth5,
-                                                Divider(
-                                                  height: 1,
-                                                ),
-                                                ksizedbox10,
-                                              ],
-                                            ),
-                                          );
-                                        }),
-                                    Padding(
-                                      padding: const EdgeInsets.all(12.0),
-                                      child: GestureDetector(
-                                        onTap: () {
-                                          var txtControllerrythem =
-                                              TextEditingController();
-                                          _showTextFieldDialog(
-                                              context,
-                                              "Procedure",
-                                              "Enter Procedure",
-                                              txtControllerrythem);
-                                        },
-                                        child: Row(
-                                          children: [
-                                            Icon(
-                                              Icons.edit_square,
-                                              color: kblue,
-                                            ),
-                                            kwidth5,
-                                            Text('Customize', style: minfont)
-                                          ],
-                                        ),
-                                      ),
-                                    ),
-                                    ksizedbox10
-                                  ],
-                                ),
-                              ),
-                              width: double.infinity,
-                              //  height: 300,
-                              decoration: BoxDecoration(
-                                color: kwhite,
-                                borderRadius: BorderRadius.circular(18),
-                                boxShadow: [
-                                  BoxShadow(
-                                    color: Colors.grey.withOpacity(0.5),
-                                    spreadRadius: 5,
-                                    blurRadius: 7,
-                                    offset: Offset(
-                                        0, 3), // changes position of shadow
-                                  ),
-                                ],
-                              ),
-                            ),
-                    ),
-                    ksizedbox20,
-                    GestureDetector(
-                      onTap: () {
-                        setState(() {
-                          isEnable = false;
-                          audioPlayer.stop();
-                          audioPlayer2.stop();
-                          player.stop();
-                        });
-                        Get.off(const SuccessScreen());
-                      },
-                      child: Container(
-                        height: 50,
-                        width: 140,
-                        child: Center(
-                          child: Text(
-                            'ROSC Achieved',
-                            style: TextStyle(
-                                color: kwhite,
-                                fontSize: 17,
-                                fontWeight: FontWeight.w700),
-                          ),
-                        ),
-                        decoration: BoxDecoration(
-                          color: kOrange,
-                          borderRadius: BorderRadius.circular(16),
-                          gradient: const LinearGradient(
-                            begin: Alignment.centerLeft,
-                            end: Alignment.centerRight,
-                            colors: [
-                              Color(0xffE77D7D),
-                              Color.fromARGB(255, 229, 182, 182),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ),
-                    ksizedbox10,
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 10),
-                      child: Column(
-                        children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(
-                                'Activity Log',
-                                style: TextStyle(
-                                    fontSize: 24,
-                                    fontWeight: FontWeight.bold,
-                                    color: kblue),
-                              ),
-                              GestureDetector(
-                                onTap: () {
-                                  Get.to(ReportDetails());
-                                },
-                                child: Text(
-                                  'View all',
-                                  style: TextStyle(
-                                      fontSize: 15,
-                                      fontWeight: FontWeight.w500,
-                                      color: kgrey),
-                                ),
-                              )
-                            ],
-                          ),
-                          ksizedbox20,
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: [
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    'Overal CPR time',
-                                    style: minfont,
-                                  ),
-                                  ksizedbox10,
-                                  Text(
-                                    'Actual Time',
-                                    style: minfont,
-                                  ),
-                                ],
-                              ),
-                              Column(
-                                children: [
-                                  Text(
-                                    '00:00:00',
-                                    style: minfont,
-                                  ),
-                                  ksizedbox10,
-                                  Text(
-                                    '00:00:00',
-                                    style: minfont,
-                                  ),
-                                ],
-                              ),
-                              Column(
-                                children: [
-                                  Text(
-                                    '00:00:00',
-                                    style: minfont,
-                                  ),
-                                  ksizedbox10,
-                                  Text(
-                                    '00:00:00',
-                                    style: minfont,
-                                  ),
-                                ],
-                              )
-                            ],
-                          ),
-                          ksizedbox20,
-                          Row(
-                            children: [
-                              Text(
-                                'Cycle 1',
-                                style: TextStyle(
-                                    fontWeight: FontWeight.w700,
-                                    fontSize: 18,
-                                    color: kblue),
-                              ),
-                            ],
-                          ),
-                          ksizedbox10,
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: [
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    'ECG',
-                                    style: minfont,
-                                  ),
-                                  ksizedbox10,
-                                  Text(
-                                    'Medicine',
-                                    style: minfont,
-                                  ),
-                                ],
-                              ),
-                              Column(
-                                children: [
-                                  Text(
-                                    '00:00:00',
-                                    style: minfont,
-                                  ),
-                                  ksizedbox10,
-                                  Text(
-                                    '00:00:00',
-                                    style: minfont,
-                                  ),
-                                ],
-                              ),
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.end,
-                                children: [
-                                  Text(
-                                    'PVT',
-                                    style: minfont,
-                                  ),
-                                  ksizedbox10,
-                                  Text(
-                                    'Epinephrine',
-                                    style: minfont,
-                                  ),
-                                ],
-                              ),
-                            ],
-                          ),
-                          ksizedbox20,
-                          Row(
-                            children: [
-                              Text(
-                                'Cycle 1',
-                                style: TextStyle(
-                                    fontWeight: FontWeight.w700,
-                                    fontSize: 18,
-                                    color: kblue),
-                              ),
-                            ],
-                          ),
-                          ksizedbox10,
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: [
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    'ECG',
-                                    style: minfont,
-                                  ),
-                                  ksizedbox10,
-                                  Text(
-                                    'Medicine',
-                                    style: minfont,
-                                  ),
-                                ],
-                              ),
-                              Column(
-                                children: [
-                                  Text(
-                                    '00:00:00',
-                                    style: minfont,
-                                  ),
-                                  ksizedbox10,
-                                  Text(
-                                    '00:00:00',
-                                    style: minfont,
-                                  ),
-                                ],
-                              ),
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.end,
-                                children: [
-                                  Text(
-                                    'PVT',
-                                    style: minfont,
-                                  ),
-                                  ksizedbox10,
-                                  Text(
-                                    'Epinephrine',
-                                    style: minfont,
-                                  ),
-                                ],
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
+                  ),
+                ],
               ),
             ),
           ),
@@ -1939,22 +2108,23 @@ Future<void> _showTextFieldDialog(BuildContext context, String text,
               onPressed: () {
                 //     print('Entered text: ${textEditingController.text}');
                 if (textController.text.isNotEmpty) {
-                  if (text == "Rhythm") {
+                  if (text == 1) {
                     //api call
-                    tactapiController.storedatas(
+                    var typevalue;
+                    tactapiController.storesubcatogory(
                         title: textController.text,
                         description: 'test',
-                        type: "rhythm");
+                        categoryid: typevalue);
                   } else if (text == "Shock") {
-                    tactapiController.storedatas(
+                    tactapiController.storesubcatogory(
                         title: textController.text,
                         description: 'test',
-                        type: "shock");
+                        categoryid: "shock");
                   } else if (text == "DRUG") {
-                    tactapiController.storedatas(
+                    tactapiController.storesubcatogory(
                         title: textController.text,
                         description: 'test',
-                        type: 'drug');
+                        categoryid: 'drug');
                   } else if (text == "QUALITY CPR") {
                     Get.find<counterController>()
                         .cprList
