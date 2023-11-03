@@ -5,8 +5,7 @@ import 'package:flutter_application_1/services/base_url/base_url.dart';
 
 class StoreActivityApiService extends BaseApiServices {
   Future storeactivityapi(
-      {required String catogory,
-      required String c_id,
+      {required String c_id,
       required String s_id,
       required String from_time,
       required String to_time,
@@ -34,7 +33,30 @@ class StoreActivityApiService extends BaseApiServices {
 
       responseJson = response;
 
-      print("::::::::<--TACT  store activity   api-->::::::::status code:::::::::");
+      print(
+          "::::::::<--TACT  store activity   api-->::::::::status code:::::::::");
+      print(
+          "::::::::<--TACT  store activity   api-->::::::::status code:::::::::");
+      print(
+          "::::::::<--TACT  store activity   api-->::::::::status code:::::::::");
+      print(
+          "::::::::<--TACT  store activity   api-->::::::::status code:::::::::");
+      print(
+          "::::::::<--TACT  store activity   api-->::::::::status code:::::::::");
+      print(
+          "::::::::<--TACT  store activity   api-->::::::::status code:::::::::");
+      print(
+          "::::::::<--TACT  store activity   api-->::::::::status code:::::::::");
+      print(
+          "::::::::<--TACT  store activity   api-->::::::::status code:::::::::");
+      print(
+          "::::::::<--TACT  store activity   api-->::::::::status code:::::::::");
+      print(
+          "::::::::<--TACT  store activity   api-->::::::::status code:::::::::");
+      print(
+          "::::::::<--TACT  store activity   api-->::::::::status code:::::::::");
+      print(
+          "::::::::<--TACT  store activity   api-->::::::::status code:::::::::");
       print(response.data);
     } on SocketException {
       print("no internet");

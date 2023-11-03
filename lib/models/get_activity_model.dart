@@ -75,7 +75,7 @@ class Activitylist {
         createdAt: DateTime.parse(json["created_at"]),
         updatedAt: DateTime.parse(json["updated_at"]),
         categoryTitle: json["categoryTitle"],
-        subTitle: json["subTitle"],
+        subTitle: json["subTitle"]??"",
     );
 
     Map<String, dynamic> toJson() => {

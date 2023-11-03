@@ -6,6 +6,7 @@ import 'package:flutter_application_1/models/get_activity_model.dart';
 import 'package:flutter_application_1/models/get_catogory_model.dart';
 
 import 'package:flutter_application_1/models/get_subcatogory_model.dart';
+import 'package:flutter_application_1/models/store_activity_list_model.dart';
 
 
 
@@ -21,8 +22,13 @@ import 'package:get/get.dart';
 import 'package:dio/dio.dart' as dio;
 
 class TactApiController extends GetxController {
-  GetSubCatogoriesApiServices gettypeapiservice = GetSubCatogoriesApiServices();
 
+bool isloading=true;
+
+GetSubCatogoriesApiServices gettypeapiservice = GetSubCatogoriesApiServices();
+
+
+List<StoreActivityListModel> selectedSubCatIdList = [];
 
 
 
@@ -106,7 +112,7 @@ class TactApiController extends GetxController {
   StoreActivityApiService activitylogapiservice = StoreActivityApiService();
 
   Future storeactivity(
-      {required String catogory,
+      {
       required String c_id,
       required String s_id,
       required String from_time,
@@ -114,13 +120,13 @@ class TactApiController extends GetxController {
       required String title}) async {
     dio.Response<dynamic> response =
         await activitylogapiservice.storeactivityapi(
-            catogory: catogory,
+          
             c_id: c_id,
             s_id: s_id,
             from_time: from_time,
             to_time: to_time,
             title: title);
-   
+    getactivity();
     update();
   }
 
@@ -144,7 +150,7 @@ class TactApiController extends GetxController {
 
   List<CatogoryList> catogorylist = [];
 
-  Future getcatogory() async {
+  Future getcatogory() async {isloading=true;
     dio.Response<dynamic> response =
         await getcatogoryapiservices.getcatogoryapi();
     if (response.statusCode == 200) {
@@ -156,6 +162,7 @@ class TactApiController extends GetxController {
       for (var categ in catogorylist) {
         getsubcatogory(id: categ.id);
       }
+      isloading=false;
       //storedatas(title: '', description: '', categoryid: id);
     } else {
       Get.rawSnackbar(

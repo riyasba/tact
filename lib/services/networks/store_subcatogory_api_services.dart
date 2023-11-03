@@ -28,9 +28,24 @@ class StoreSubCatogoryApiService extends BaseApiServices {
                 return status! <= 500;
               }),
           data: formData);
-            responseJson = response;
+      responseJson = response;
 
-      print("::::::::<--TACT store subcatogory log  api-->::::::::status code:::::::::");
+      print(
+          "::::-------------------------------------------::::<--TACT store subcatogory log  api-->::::::::status code:::-------------------------------::::::");
+      print(
+          "::::-------------------------------------------::::<--TACT store subcatogory log  api-->::::::::status code:::-------------------------------::::::");
+      print(
+          "::::-------------------------------------------::::<--TACT store subcatogory log  api-->::::::::status code:::-------------------------------::::::");
+      print(
+          "::::-------------------------------------------::::<--TACT store subcatogory log  api-->::::::::status code:::-------------------------------::::::");
+      print(
+          "::::-------------------------------------------::::<--TACT store subcatogory log  api-->::::::::status code:::-------------------------------::::::");
+      print(
+          "::::-------------------------------------------::::<--TACT store subcatogory log  api-->::::::::status code:::-------------------------------::::::");
+      print(
+          "::::-------------------------------------------::::<--TACT store subcatogory log  api-->::::::::status code:::-------------------------------::::::");
+      print(
+          "::::-------------------------------------------::::<--TACT store subcatogory log  api-->::::::::status code:::-------------------------------::::::");
       print(response.data);
     } on SocketException {
       print("no internet");

@@ -5,6 +5,7 @@ import 'package:alarm/alarm.dart';
 import 'package:alarm/model/alarm_settings.dart';
 
 import 'package:flutter_application_1/controller/tact_api_controller.dart';
+import 'package:flutter_application_1/models/store_activity_list_model.dart';
 
 import 'package:just_audio/just_audio.dart';
 
@@ -66,8 +67,8 @@ class _HomeScreenState extends State<HomeScreen> {
     setState(() {
       selectedOption = value!;
       print('${selectedOption}');
-      var data = selectedOption;
-      print('============${data}===========');
+      var sub_id = selectedOption;
+      print('============${sub_id}===========');
     });
   }
 
@@ -77,6 +78,7 @@ class _HomeScreenState extends State<HomeScreen> {
     });
   }
 
+  int cycle = 1;
   var endtime;
   var starttime;
   List<dynamic> typelist = [];
@@ -518,8 +520,6 @@ class _HomeScreenState extends State<HomeScreen> {
                                     // only format for '0'
                                     return "Start";
                                   } else {
-                                    // timesound(duration.inSeconds);
-                                    // other durations by it's default format
                                     return Function.apply(
                                         defaultFormatterFunction, [duration]);
                                   }
@@ -636,7 +636,12 @@ class _HomeScreenState extends State<HomeScreen> {
                                   autoStart: false,
                                   onStart: () {
                                     // Here, do whatever you want
-                                    debugPrint('Countdown Started');
+                                    debugPrint(
+                                        'Countdown Started ${_controller.getTime()}');
+                                    starttime = _controller.getTime();
+
+                                    print(
+                                        '============================starttime========${starttime}=----------------------');
                                   },
                                   onComplete: () async {
                                     // Here, do whatever you want
@@ -649,16 +654,26 @@ class _HomeScreenState extends State<HomeScreen> {
                                     if (_controller.getTime() == "00:02:00") {
                                       print(
                                           '============================endtime========${endtime}=----------------------');
-                                      tactapiController.storeactivity(
-                                          catogory: '3',
-                                          c_id: '3',
-                                          s_id:'3',
-                                          from_time: '3',
-                                          to_time: endtime,
-                                          title: 'shock');
+
+                                      for (int i = 0;
+                                          i <
+                                              tactapiController
+                                                  .selectedSubCatIdList.length;
+                                          i++) {
+                                        tactapiController.storeactivity(
+                                            c_id: tactapiController
+                                                .selectedSubCatIdList[i]
+                                                .catogoryid,
+                                            s_id: tactapiController
+                                                .selectedSubCatIdList[i].subid,
+                                            from_time: starttime,
+                                            to_time: endtime,
+                                            title: 'Cycle$cycle');
+                                      }
 
                                       setState(
                                         () {
+                                          cycle++;
                                           showPlayButtom = true;
                                           isreaload = true;
                                         },
@@ -798,48 +813,111 @@ class _HomeScreenState extends State<HomeScreen> {
                   ///
 
                   ListView.builder(
-                      physics: NeverScrollableScrollPhysics(),
-                      shrinkWrap: true,
-                      itemCount: tactapiController.catogorylist.length,
-                      itemBuilder: (BuildContext context, int index) {
-                        return Padding(
-                          padding: const EdgeInsets.only(top: 10, bottom: 20),
-                          child: GestureDetector(
-                            onTap: () {
-                              if (tactapiController.catogorylist[index].index ==
-                                  0) {
-                                tactapiController.catogorylist[index].index = 1;
-                                tactapiController.update();
-                              } else {
-                                tactapiController.catogorylist[index].index = 0;
-                                tactapiController.update();
-                              }
+                    physics: NeverScrollableScrollPhysics(),
+                    shrinkWrap: true,
+                    itemCount: tactapiController.catogorylist.length,
+                    itemBuilder: (BuildContext context, int index) {
+                      return Padding(
+                        padding: const EdgeInsets.only(top: 10, bottom: 20),
+                        child: GestureDetector(
+                          onTap: () {
+                            if (tactapiController.catogorylist[index].index ==
+                                0) {
+                              tactapiController.catogorylist[index].index = 1;
                               tactapiController.update();
-                            },
-                            child: tactapiController
-                                        .catogorylist[index].index ==
-                                    0
-                                ? Container(
-                                    width: double.infinity,
-                                    //  height: 300,
-                                    decoration: BoxDecoration(
-                                      color: kwhite,
-                                      borderRadius: BorderRadius.circular(18),
-                                      boxShadow: [
-                                        BoxShadow(
-                                          color: Colors.grey.withOpacity(0.5),
-                                          spreadRadius: 5,
-                                          blurRadius: 7,
-                                          offset: const Offset(0,
-                                              3), // changes position of shadow
+                            } else {
+                              tactapiController.catogorylist[index].index = 0;
+                              tactapiController.update();
+                            }
+                            tactapiController.update();
+                          },
+                          child: tactapiController.catogorylist[index].index ==
+                                  0
+                              ? Container(
+                                  width: double.infinity,
+                                  //  height: 300,
+                                  decoration: BoxDecoration(
+                                    color: kwhite,
+                                    borderRadius: BorderRadius.circular(18),
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: Colors.grey.withOpacity(0.5),
+                                        spreadRadius: 5,
+                                        blurRadius: 7,
+                                        offset: const Offset(
+                                            0, 3), // changes position of shadow
+                                      ),
+                                    ],
+                                  ),
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: Column(
+                                      children: [
+                                        Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            Text(
+                                                'Choose ${tactapiController.catogorylist[index].title}',
+                                                style: maxfont),
+                                            const Icon(
+                                                Icons.arrow_drop_down_rounded)
+                                          ],
                                         ),
+                                        ksizedbox10,
+                                        GestureDetector(
+                                          onTap: () {
+                                            var txtControllerrythem =
+                                                TextEditingController();
+                                            _showTextFieldDialog(
+                                              context,
+                                              "Rhythm ",
+                                              "Enter Rhythm",
+                                              txtControllerrythem,
+                                              tactapiController
+                                                  .catogorylist[index].id
+                                                  .toString(),
+                                            );
+                                          },
+                                          child: Row(
+                                            children: [
+                                              Icon(
+                                                Icons.edit_square,
+                                                color: kblue,
+                                              ),
+                                              kwidth5,
+                                              Text('Customize', style: minfont),
+                                            ],
+                                          ),
+                                        ),
+                                        ksizedbox10
                                       ],
                                     ),
-                                    child: Padding(
-                                      padding: const EdgeInsets.all(8.0),
-                                      child: Column(
-                                        children: [
-                                          Row(
+                                  ),
+                                )
+                              : Container(
+                                  width: double.infinity,
+                                  //  height: 300,
+                                  decoration: BoxDecoration(
+                                    color: kwhite,
+                                    borderRadius: BorderRadius.circular(18),
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: Colors.grey.withOpacity(0.5),
+                                        spreadRadius: 5,
+                                        blurRadius: 7,
+                                        offset: Offset(
+                                            0, 3), // changes position of shadow
+                                      ),
+                                    ],
+                                  ),
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: Column(
+                                      children: [
+                                        Padding(
+                                          padding: const EdgeInsets.all(12.0),
+                                          child: Row(
                                             mainAxisAlignment:
                                                 MainAxisAlignment.spaceBetween,
                                             children: [
@@ -847,19 +925,129 @@ class _HomeScreenState extends State<HomeScreen> {
                                                   'Choose ${tactapiController.catogorylist[index].title}',
                                                   style: maxfont),
                                               const Icon(
-                                                  Icons.arrow_drop_down_rounded)
+                                                  Icons.arrow_drop_up_rounded)
                                             ],
                                           ),
-                                          ksizedbox10,
-                                          GestureDetector(
+                                        ),
+                                        ListView.builder(
+                                            physics:
+                                                NeverScrollableScrollPhysics(),
+                                            shrinkWrap: true,
+                                            itemCount: tactapiController
+                                                .getDatList(tactapiController
+                                                    .catogorylist[index].id)
+                                                .length,
+                                            itemBuilder: (context, index2) {
+                                              // The itemBuilder callback is called for each item in the list.
+                                              return Container(
+                                                child: Column(
+                                                  children: [
+                                                    RadioListTile(
+                                                      title: Text(
+                                                          tactapiController
+                                                              .getDatList(
+                                                                  tactapiController
+                                                                      .catogorylist[
+                                                                          index]
+                                                                      .id)[
+                                                                  index2]
+                                                              .subTitle,
+                                                          style: minfont),
+                                                      value: tactapiController
+                                                          .getDatList(
+                                                              tactapiController
+                                                                  .catogorylist[
+                                                                      index]
+                                                                  .id)[index2]
+                                                          .categoryId,
+                                                      groupValue:
+                                                          selectedOption,
+                                                      onChanged: (
+                                                        String? value,
+                                                      ) {
+                                                        setState(() {
+                                                          selectedOption =
+                                                              value!;
+                                                          StoreActivityListModel
+                                                              storeActivityListModel =
+                                                              StoreActivityListModel(
+                                                                  catogoryid: tactapiController
+                                                                      .catogorylist[
+                                                                          index]
+                                                                      .id
+                                                                      .toString(),
+                                                                  subid: value);
+                                                          var tempList = tactapiController
+                                                              .selectedSubCatIdList
+                                                              .where((value2) =>
+                                                                  value2.subid ==
+                                                                      value &&
+                                                                  value2.catogoryid ==
+                                                                      storeActivityListModel
+                                                                          .catogoryid);
+                                                          var tempId;
+                                                          for (int i = 0;
+                                                              i <
+                                                                  tactapiController
+                                                                      .selectedSubCatIdList
+                                                                      .length;
+                                                              i++) {
+                                                            var value2 =
+                                                                tactapiController
+                                                                    .selectedSubCatIdList[i];
+                                                            if (value2.subid ==
+                                                                    value &&
+                                                                value2.catogoryid ==
+                                                                    storeActivityListModel
+                                                                        .catogoryid) {
+                                                              tempId = i;
+                                                            }
+                                                          }
+
+                                                          if (tempId != null) {
+                                                            tactapiController
+                                                                .selectedSubCatIdList
+                                                                .removeAt(
+                                                                    tempId);
+                                                          } else {
+                                                            tactapiController
+                                                                .selectedSubCatIdList
+                                                                .add(
+                                                                    storeActivityListModel);
+                                                          }
+
+                                                          print(
+                                                              '${selectedOption}');
+                                                          var sub_id =
+                                                              selectedOption;
+                                                          print(
+                                                              '============${sub_id}===========');
+                                                        });
+                                                      },
+                                                    ),
+                                                    kwidth5,
+                                                    Divider(
+                                                      height: 1,
+                                                    ),
+                                                    ksizedbox10,
+                                                  ],
+                                                ),
+                                              );
+                                            }),
+                                        Padding(
+                                          padding: const EdgeInsets.all(12.0),
+                                          child: GestureDetector(
                                             onTap: () {
                                               var txtControllerrythem =
                                                   TextEditingController();
                                               _showTextFieldDialog(
                                                 context,
-                                                "Rhythm ",
+                                                "Rhythm",
                                                 "Enter Rhythm",
                                                 txtControllerrythem,
+                                                tactapiController
+                                                    .catogorylist[index].id
+                                                    .toString(),
                                               );
                                             },
                                             child: Row(
@@ -874,964 +1062,19 @@ class _HomeScreenState extends State<HomeScreen> {
                                               ],
                                             ),
                                           ),
-                                          ksizedbox10
-                                        ],
-                                      ),
-                                    ),
-                                  )
-                                : Container(
-                                    width: double.infinity,
-                                    //  height: 300,
-                                    decoration: BoxDecoration(
-                                      color: kwhite,
-                                      borderRadius: BorderRadius.circular(18),
-                                      boxShadow: [
-                                        BoxShadow(
-                                          color: Colors.grey.withOpacity(0.5),
-                                          spreadRadius: 5,
-                                          blurRadius: 7,
-                                          offset: Offset(0,
-                                              3), // changes position of shadow
                                         ),
+                                        ksizedbox10
                                       ],
                                     ),
-                                    child: Padding(
-                                      padding: const EdgeInsets.all(8.0),
-                                      child: Column(
-                                        children: [
-                                          Padding(
-                                            padding: const EdgeInsets.all(12.0),
-                                            child: Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment
-                                                      .spaceBetween,
-                                              children: [
-                                                Text(
-                                                    'Choose ${tactapiController.catogorylist[index].title}',
-                                                    style: maxfont),
-                                                const Icon(
-                                                    Icons.arrow_drop_up_rounded)
-                                              ],
-                                            ),
-                                          ),
-                                          ListView.builder(
-                                              physics:
-                                                  NeverScrollableScrollPhysics(),
-                                              shrinkWrap: true,
-                                              itemCount: tactapiController
-                                                  .getDatList(tactapiController
-                                                      .catogorylist[index].id)
-                                                  .length,
-                                              itemBuilder: (context, index2) {
-                                                // The itemBuilder callback is called for each item in the list.
-                                                return Container(
-                                                  child: Column(
-                                                    children: [
-                                                      RadioListTile(
-                                                        title: Text(
-                                                            tactapiController
-                                                                .getDatList(
-                                                                    tactapiController
-                                                                        .catogorylist[
-                                                                            index]
-                                                                        .id)[
-                                                                    index2]
-                                                                .subTitle,
-                                                            style: minfont),
-                                                        value: tactapiController
-                                                            .getDatList(
-                                                                tactapiController
-                                                                    .catogorylist[
-                                                                        index]
-                                                                    .id)[index2]
-                                                            .subTitle,
-                                                        groupValue:
-                                                            selectedOption,
-                                                        onChanged:
-                                                            handleRadioValueChanged,
-                                                      ),
-                                                      kwidth5,
-                                                      Divider(
-                                                        height: 1,
-                                                      ),
-                                                      ksizedbox10,
-                                                    ],
-                                                  ),
-                                                );
-                                              }),
-                                          Padding(
-                                            padding: const EdgeInsets.all(12.0),
-                                            child: GestureDetector(
-                                              onTap: () {
-                                                var txtControllerrythem =
-                                                    TextEditingController();
-                                                _showTextFieldDialog(
-                                                  context,
-                                                  "Rhythm",
-                                                  "Enter Rhythm",
-                                                  txtControllerrythem,
-                                                );
-                                              },
-                                              child: Row(
-                                                children: [
-                                                  Icon(
-                                                    Icons.edit_square,
-                                                    color: kblue,
-                                                  ),
-                                                  kwidth5,
-                                                  Text('Customize',
-                                                      style: minfont)
-                                                ],
-                                              ),
-                                            ),
-                                          ),
-                                          ksizedbox10
-                                        ],
-                                      ),
-                                    ),
                                   ),
-                          ),
-                        );
-                      }),
+                                ),
+                        ),
+                      );
+                    },
+                  ),
 
-/////
-                  // ksizedbox30,
-                  // GestureDetector(
-                  //   onTap: () {
-                  //     if (controller.ecgindex.value == 0) {
-                  //       controller.ecgindex(1);
-                  //     } else {
-                  //       controller.ecgindex(0);
-                  //     }
-                  //   },
-                  //   child: controller.ecgindex.value == 0
-                  //       ? Container(
-                  //           width: double.infinity,
-                  //           //  height: 300,
-                  //           decoration: BoxDecoration(
-                  //             color: kwhite,
-                  //             borderRadius: BorderRadius.circular(18),
-                  //             boxShadow: [
-                  //               BoxShadow(
-                  //                 color: Colors.grey.withOpacity(0.5),
-                  //                 spreadRadius: 5,
-                  //                 blurRadius: 7,
-                  //                 offset: const Offset(
-                  //                     0, 3), // changes position of shadow
-                  //               ),
-                  //             ],
-                  //           ),
-                  //           child: Padding(
-                  //             padding: const EdgeInsets.all(8.0),
-                  //             child: Column(
-                  //               children: [
-                  //                 Row(
-                  //                   mainAxisAlignment:
-                  //                       MainAxisAlignment.spaceBetween,
-                  //                   children: [
-                  //                     Text('Choose Rhythm', style: maxfont),
-                  //                     const Icon(
-                  //                         Icons.arrow_drop_down_rounded)
-                  //                   ],
-                  //                 ),
-                  //                 ksizedbox10,
-                  //                 GestureDetector(
-                  //                   onTap: () {
-                  //                     var txtControllerrythem =
-                  //                         TextEditingController();
-                  //                     _showTextFieldDialog(
-                  //                       context,
-                  //                       "Rhythm",
-                  //                       "Enter Rhythm",
-                  //                       txtControllerrythem,
-                  //                     );
-                  //                   },
-                  //                   child: Row(
-                  //                     children: [
-                  //                       Icon(
-                  //                         Icons.edit_square,
-                  //                         color: kblue,
-                  //                       ),
-                  //                       kwidth5,
-                  //                       Text('Customize', style: minfont)
-                  //                     ],
-                  //                   ),
-                  //                 ),
-                  //                 ksizedbox10
-                  //               ],
-                  //             ),
-                  //           ),
-                  //         )
-                  //       : Container(
-                  //           width: double.infinity,
-                  //           //  height: 300,
-                  //           decoration: BoxDecoration(
-                  //             color: kwhite,
-                  //             borderRadius: BorderRadius.circular(18),
-                  //             boxShadow: [
-                  //               BoxShadow(
-                  //                 color: Colors.grey.withOpacity(0.5),
-                  //                 spreadRadius: 5,
-                  //                 blurRadius: 7,
-                  //                 offset: Offset(
-                  //                     0, 3), // changes position of shadow
-                  //               ),
-                  //             ],
-                  //           ),
-                  //           child: Padding(
-                  //             padding: const EdgeInsets.all(8.0),
-                  //             child: Column(
-                  //               children: [
-                  //                 Padding(
-                  //                   padding: const EdgeInsets.all(12.0),
-                  //                   child: Row(
-                  //                     mainAxisAlignment:
-                  //                         MainAxisAlignment.spaceBetween,
-                  //                     children: [
-                  //                       Text('Choose Rhythm', style: maxfont),
-                  //                       const Icon(
-                  //                           Icons.arrow_drop_up_rounded)
-                  //                     ],
-                  //                   ),
-                  //                 ),
-                  //                 ListView.builder(
-                  //                     physics: NeverScrollableScrollPhysics(),
-                  //                     shrinkWrap: true,
-                  //                     itemCount: tactapiController
-                  //                         .rythmlistdata.length,
-                  //                     itemBuilder: (context, index) {
-                  //                       // The itemBuilder callback is called for each item in the list.
-                  //                       return Container(
-                  //                         child: Column(
-                  //                           children: [
-                  //                             RadioListTile(
-                  //                               title: Text(
-                  //                                   tactapiController
-                  //                                       .rythmlistdata[index]
-                  //                                       .subTitle,
-                  //                                   style: minfont),
-                  //                               value: tactapiController
-                  //                                   .rythmlistdata[index]
-                  //                                   .subTitle,
-                  //                               groupValue: selectedOption,
-                  //                               onChanged:
-                  //                                   handleRadioValueChanged,
-                  //                             ),
-                  //                             kwidth5,
-                  //                             Divider(
-                  //                               height: 1,
-                  //                             ),
-                  //                             ksizedbox10,
-                  //                           ],
-                  //                         ),
-                  //                       );
-                  //                     }),
-                  //                 Padding(
-                  //                   padding: const EdgeInsets.all(12.0),
-                  //                   child: GestureDetector(
-                  //                     onTap: () {
-                  //                       var txtControllerrythem =
-                  //                           TextEditingController();
-                  //                       _showTextFieldDialog(
-                  //                         context,
-                  //                         "Rhythm",
-                  //                         "Enter Rhythm",
-                  //                         txtControllerrythem,
-                  //                       );
-                  //                     },
-                  //                     child: Row(
-                  //                       children: [
-                  //                         Icon(
-                  //                           Icons.edit_square,
-                  //                           color: kblue,
-                  //                         ),
-                  //                         kwidth5,
-                  //                         Text('Customize', style: minfont)
-                  //                       ],
-                  //                     ),
-                  //                   ),
-                  //                 ),
-                  //                 ksizedbox10
-                  //               ],
-                  //             ),
-                  //           ),
-                  //         ),
-                  // ),
-                  // // ksizedbox20,
-
-                  // ksizedbox20,
-                  // InkWell(
-                  //   onTap: () {
-                  //     if (controller.shock.value == 0) {
-                  //       controller.shock(1);
-                  //     } else {
-                  //       controller.shock(0);
-                  //     }
-                  //     ;
-                  //   },
-                  //   child: controller.shock.value == 0
-                  //       ? Container(
-                  //           child: Padding(
-                  //             padding: const EdgeInsets.all(8.0),
-                  //             child: Column(
-                  //               children: [
-                  //                 Row(
-                  //                   mainAxisAlignment:
-                  //                       MainAxisAlignment.spaceBetween,
-                  //                   children: [
-                  //                     Text('Choose Shock', style: maxfont),
-                  //                     Icon(Icons.arrow_drop_down_rounded)
-                  //                   ],
-                  //                 ),
-                  //                 ksizedbox10,
-                  //                 GestureDetector(
-                  //                   onTap: () {
-                  //                     var txtControllershock =
-                  //                         TextEditingController();
-                  //                     _showTextFieldDialog(context, "Shock",
-                  //                         "Enter", txtControllershock);
-                  //                   },
-                  //                   child: Row(
-                  //                     children: [
-                  //                       Icon(
-                  //                         Icons.edit_square,
-                  //                         color: kblue,
-                  //                       ),
-                  //                       kwidth5,
-                  //                       Text('Customize', style: minfont)
-                  //                     ],
-                  //                   ),
-                  //                 ),
-                  //                 ksizedbox10
-                  //               ],
-                  //             ),
-                  //           ),
-                  //           width: double.infinity,
-                  //           //  height: 300,
-                  //           decoration: BoxDecoration(
-                  //             color: kwhite,
-                  //             borderRadius: BorderRadius.circular(18),
-                  //             boxShadow: [
-                  //               BoxShadow(
-                  //                 color: Colors.grey.withOpacity(0.5),
-                  //                 spreadRadius: 5,
-                  //                 blurRadius: 7,
-                  //                 offset: Offset(
-                  //                     0, 3), // changes position of shadow
-                  //               ),
-                  //             ],
-                  //           ),
-                  //         )
-                  //       : Container(
-                  //           width: double.infinity,
-                  //           //  height: 300,
-                  //           decoration: BoxDecoration(
-                  //             color: kwhite,
-                  //             borderRadius: BorderRadius.circular(18),
-                  //             boxShadow: [
-                  //               BoxShadow(
-                  //                 color: Colors.grey.withOpacity(0.5),
-                  //                 spreadRadius: 5,
-                  //                 blurRadius: 7,
-                  //                 offset: Offset(
-                  //                     0, 3), // changes position of shadow
-                  //               ),
-                  //             ],
-                  //           ),
-                  //           child: Padding(
-                  //             padding: const EdgeInsets.all(8.0),
-                  //             child: Column(
-                  //               children: [
-                  //                 Padding(
-                  //                   padding: const EdgeInsets.all(12.0),
-                  //                   child: Row(
-                  //                     mainAxisAlignment:
-                  //                         MainAxisAlignment.spaceBetween,
-                  //                     children: [
-                  //                       Text('Choose Shock', style: maxfont),
-                  //                       Icon(Icons.arrow_drop_up_rounded)
-                  //                     ],
-                  //                   ),
-                  //                 ),
-                  //                 ListView.builder(
-                  //                   physics: NeverScrollableScrollPhysics(),
-                  //                   shrinkWrap: true,
-                  //                   itemCount: tactapiController
-                  //                       .shocktypelistdata.length,
-                  //                   itemBuilder: (context, index) {
-                  //                     // The itemBuilder callback is called for each item in the list.
-                  //                     return Container(
-                  //                       child: Column(
-                  //                         children: [
-                  //                           RadioListTile(
-                  //                             title: Text(
-                  //                                 tactapiController
-                  //                                     .shocktypelistdata[
-                  //                                         index]
-                  //                                     .subTitle,
-                  //                                 style: minfont),
-                  //                             value: 'v${index}',
-                  //                             groupValue: selectedOption,
-                  //                             onChanged:
-                  //                                 handleRadioValueChanged,
-                  //                           ),
-                  //                           kwidth5,
-                  //                           Divider(
-                  //                             height: 1,
-                  //                           ),
-                  //                           ksizedbox10,
-                  //                         ],
-                  //                       ),
-                  //                     );
-                  //                   },
-                  //                 ),
-                  //                 Padding(
-                  //                   padding: const EdgeInsets.all(12.0),
-                  //                   child: GestureDetector(
-                  //                     onTap: () {
-                  //                       var txtControllershock =
-                  //                           TextEditingController();
-                  //                       _showTextFieldDialog(context, "Shock",
-                  //                           "Enter", txtControllershock);
-                  //                     },
-                  //                     child: Row(
-                  //                       children: [
-                  //                         Icon(
-                  //                           Icons.edit_square,
-                  //                           color: kblue,
-                  //                         ),
-                  //                         kwidth5,
-                  //                         Text('Customize', style: minfont)
-                  //                       ],
-                  //                     ),
-                  //                   ),
-                  //                 ),
-                  //                 ksizedbox10
-                  //               ],
-                  //             ),
-                  //           ),
-                  //         ),
-                  // ),
-                  // ksizedbox20,
-                  // GestureDetector(
-                  //   onTap: () {
-                  //     if (controller.quality.value == 0) {
-                  //       controller.quality(1);
-                  //     } else {
-                  //       controller.quality(0);
-                  //     }
-                  //     ;
-                  //   },
-                  //   child: controller.quality.value == 0
-                  //       ? Container(
-                  //           width: double.infinity,
-                  //           //  height: 300,
-                  //           decoration: BoxDecoration(
-                  //             color: kwhite,
-                  //             borderRadius: BorderRadius.circular(18),
-                  //             boxShadow: [
-                  //               BoxShadow(
-                  //                 color: Colors.grey.withOpacity(0.5),
-                  //                 spreadRadius: 5,
-                  //                 blurRadius: 7,
-                  //                 offset: const Offset(
-                  //                     0, 3), // changes position of shadow
-                  //               ),
-                  //             ],
-                  //           ),
-                  //           child: Padding(
-                  //             padding: const EdgeInsets.all(8.0),
-                  //             child: Column(
-                  //               children: [
-                  //                 Row(
-                  //                   mainAxisAlignment:
-                  //                       MainAxisAlignment.spaceBetween,
-                  //                   children: [
-                  //                     Text('Drug/Dose', style: maxfont),
-                  //                     const Icon(
-                  //                         Icons.arrow_drop_down_rounded)
-                  //                   ],
-                  //                 ),
-                  //                 ksizedbox10,
-                  //                 GestureDetector(
-                  //                   onTap: () {
-                  //                     var txtControllerdrug =
-                  //                         TextEditingController();
-                  //                     _showTextFieldDialog(context, "DRUG",
-                  //                         "Enter", txtControllerdrug);
-                  //                   },
-                  //                   child: Row(
-                  //                     children: [
-                  //                       Icon(
-                  //                         Icons.edit_square,
-                  //                         color: kblue,
-                  //                       ),
-                  //                       kwidth5,
-                  //                       Text('Customize', style: minfont)
-                  //                     ],
-                  //                   ),
-                  //                 ),
-                  //                 ksizedbox10
-                  //               ],
-                  //             ),
-                  //           ),
-                  //         )
-                  //       : Container(
-                  //           width: double.infinity,
-                  //           //  height: 300,
-                  //           decoration: BoxDecoration(
-                  //             color: kwhite,
-                  //             borderRadius: BorderRadius.circular(18),
-                  //             boxShadow: [
-                  //               BoxShadow(
-                  //                 color: Colors.grey.withOpacity(0.5),
-                  //                 spreadRadius: 5,
-                  //                 blurRadius: 7,
-                  //                 offset: const Offset(
-                  //                     0, 3), // changes position of shadow
-                  //               ),
-                  //             ],
-                  //           ),
-                  //           child: Padding(
-                  //             padding: const EdgeInsets.all(8.0),
-                  //             child: Column(
-                  //               children: [
-                  //                 Padding(
-                  //                   padding: const EdgeInsets.all(12.0),
-                  //                   child: Row(
-                  //                     mainAxisAlignment:
-                  //                         MainAxisAlignment.spaceBetween,
-                  //                     children: [
-                  //                       Text('Drug / Dose', style: maxfont),
-                  //                       const Icon(
-                  //                           Icons.arrow_drop_up_rounded)
-                  //                     ],
-                  //                   ),
-                  //                 ),
-                  //                 ListView.builder(
-                  //                     physics:
-                  //                         const NeverScrollableScrollPhysics(),
-                  //                     shrinkWrap: true,
-                  //                     itemCount: tactapiController
-                  //                         .druglistdata.length,
-                  //                     itemBuilder: (context, index) {
-                  //                       // The itemBuilder callback is called for each item in the list.
-                  //                       return Container(
-                  //                         child: Column(
-                  //                           children: [
-                  //                             RadioListTile(
-                  //                               title: Text(
-                  //                                   tactapiController
-                  //                                       .druglistdata[index]
-                  //                                       .subTitle,
-                  //                                   style: minfont),
-                  //                               value: 'v${index}',
-                  //                               groupValue: selectedOption,
-                  //                               onChanged: (value) {
-                  //                                 setState(() {
-                  //                                   selectedOption = value!;
-                  //                                   print(
-                  //                                       '${selectedOption}');
-                  //                                   var data = selectedOption;
-                  //                                   print(
-                  //                                       '=======  =====${data}======== ===');
-                  //                                 });
-                  //                               },
-                  //                             ),
-                  //                             ksizedbox10,
-                  //                             if (index == 1 &&
-                  //                                 selectedOption == "v1")
-                  //                               Padding(
-                  //                                 padding:
-                  //                                     const EdgeInsets.only(
-                  //                                         left: 40),
-                  //                                 child: Column(
-                  //                                   children: [
-                  //                                     RadioListTile(
-                  //                                       title: Text("150mg",
-                  //                                           style: minfont),
-                  //                                       value: 'a1',
-                  //                                       groupValue:
-                  //                                           selectedOption2,
-                  //                                       onChanged:
-                  //                                           handleRadioValueChanged2,
-                  //                                     ),
-                  //                                     RadioListTile(
-                  //                                       title: Text("300mg",
-                  //                                           style: minfont),
-                  //                                       value: 'a2',
-                  //                                       groupValue:
-                  //                                           selectedOption2,
-                  //                                       onChanged:
-                  //                                           handleRadioValueChanged2,
-                  //                                     ),
-                  //                                   ],
-                  //                                 ),
-                  //                               ),
-                  //                             kwidth5,
-                  //                             const Divider(
-                  //                               height: 1,
-                  //                             ),
-                  //                             ksizedbox10,
-                  //                           ],
-                  //                         ),
-                  //                       );
-                  //                     }),
-                  //                 Padding(
-                  //                   padding: const EdgeInsets.all(12.0),
-                  //                   child: GestureDetector(
-                  //                     onTap: () {
-                  //                       var txtControllerdrug =
-                  //                           TextEditingController();
-                  //                       _showTextFieldDialog(context, "DRUG",
-                  //                           "Enter", txtControllerdrug);
-                  //                     },
-                  //                     child: Row(
-                  //                       children: [
-                  //                         Icon(
-                  //                           Icons.edit_square,
-                  //                           color: kblue,
-                  //                         ),
-                  //                         kwidth5,
-                  //                         Text('Customize', style: minfont)
-                  //                       ],
-                  //                     ),
-                  //                   ),
-                  //                 ),
-                  //                 ksizedbox10,
-                  //               ],
-                  //             ),
-                  //           ),
-                  //         ),
-                  // ),
-                  // ksizedbox20,
-                  // GestureDetector(
-                  //   onTap: () {
-                  //     if (controller.cpr.value == 0) {
-                  //       controller.cpr(1);
-                  //     } else {
-                  //       controller.cpr(0);
-                  //     }
-                  //   },
-                  //   child: controller.cpr.value == 0
-                  //       ? Container(
-                  //           child: Padding(
-                  //             padding: const EdgeInsets.all(8.0),
-                  //             child: Column(
-                  //               children: [
-                  //                 Row(
-                  //                   mainAxisAlignment:
-                  //                       MainAxisAlignment.spaceBetween,
-                  //                   children: [
-                  //                     Text('Quality CPR', style: maxfont),
-                  //                     Icon(Icons.arrow_drop_down_rounded)
-                  //                   ],
-                  //                 ),
-                  //                 ksizedbox10,
-                  //                 GestureDetector(
-                  //                   onTap: () {
-                  //                     var txtControllerCPR =
-                  //                         TextEditingController();
-                  //                     _showTextFieldDialog(
-                  //                         context,
-                  //                         "QUALITY CPR",
-                  //                         "Enter",
-                  //                         txtControllerCPR);
-                  //                   },
-                  //                   child: Row(
-                  //                     children: [
-                  //                       Icon(
-                  //                         Icons.edit_square,
-                  //                         color: kblue,
-                  //                       ),
-                  //                       kwidth5,
-                  //                       Text('Customize', style: minfont)
-                  //                     ],
-                  //                   ),
-                  //                 ),
-                  //                 ksizedbox10
-                  //               ],
-                  //             ),
-                  //           ),
-                  //           width: double.infinity,
-                  //           //  height: 300,
-                  //           decoration: BoxDecoration(
-                  //             color: kwhite,
-                  //             borderRadius: BorderRadius.circular(18),
-                  //             boxShadow: [
-                  //               BoxShadow(
-                  //                 color: Colors.grey.withOpacity(0.5),
-                  //                 spreadRadius: 5,
-                  //                 blurRadius: 7,
-                  //                 offset: Offset(
-                  //                     0, 3), // changes position of shadow
-                  //               ),
-                  //             ],
-                  //           ),
-                  //         )
-                  //       : Container(
-                  //           child: Padding(
-                  //             padding: const EdgeInsets.all(8.0),
-                  //             child: Column(
-                  //               children: [
-                  //                 Padding(
-                  //                   padding: const EdgeInsets.all(12.0),
-                  //                   child: Row(
-                  //                     mainAxisAlignment:
-                  //                         MainAxisAlignment.spaceBetween,
-                  //                     children: [
-                  //                       Text('Quality CPR', style: maxfont),
-                  //                       Icon(Icons.arrow_drop_up_rounded)
-                  //                     ],
-                  //                   ),
-                  //                 ),
-                  //                 ListView.builder(
-                  //                     physics: NeverScrollableScrollPhysics(),
-                  //                     shrinkWrap: true,
-                  //                     itemCount: controller.cprList.length,
-                  //                     itemBuilder: (context, index) {
-                  //                       // The itemBuilder callback is called for each item in the list.
-                  //                       return Container(
-                  //                         child: Column(
-                  //                           children: [
-                  //                             RadioListTile(
-                  //                               title: Text(
-                  //                                   controller.cprList[index]
-                  //                                       .toString(),
-                  //                                   style: minfont),
-                  //                               value: 'e${index}',
-                  //                               groupValue: selectedOption,
-                  //                               onChanged:
-                  //                                   handleRadioValueChanged,
-                  //                             ),
-                  //                             kwidth5,
-                  //                             ksizedbox10,
-                  //                             if (selectedOption == "e0" &&
-                  //                                 index == 0)
-                  //                               Slider(
-                  //                                 value: _currentSliderValue,
-                  //                                 max: 100,
-                  //                                 divisions: 100,
-                  //                                 label: _currentSliderValue
-                  //                                     .round()
-                  //                                     .toString(),
-                  //                                 onChanged: (double value) {
-                  //                                   setState(() {
-                  //                                     _currentSliderValue =
-                  //                                         value;
-                  //                                   });
-                  //                                 },
-                  //                               ),
-                  //                             ksizedbox10,
-                  //                             Divider(
-                  //                               height: 1,
-                  //                             ),
-                  //                           ],
-                  //                         ),
-                  //                       );
-                  //                     }),
-                  //                 Padding(
-                  //                   padding: const EdgeInsets.all(12.0),
-                  //                   child: GestureDetector(
-                  //                     onTap: () {
-                  //                       var txtControllerCPR =
-                  //                           TextEditingController();
-                  //                       _showTextFieldDialog(
-                  //                           context,
-                  //                           "QUALITY CPR",
-                  //                           "Enter",
-                  //                           txtControllerCPR);
-                  //                     },
-                  //                     child: Row(
-                  //                       children: [
-                  //                         Icon(
-                  //                           Icons.edit_square,
-                  //                           color: kblue,
-                  //                         ),
-                  //                         kwidth5,
-                  //                         Text('Customize', style: minfont)
-                  //                       ],
-                  //                     ),
-                  //                   ),
-                  //                 ),
-                  //                 ksizedbox10
-                  //               ],
-                  //             ),
-                  //           ),
-                  //           width: double.infinity,
-                  //           decoration: BoxDecoration(
-                  //             color: kwhite,
-                  //             borderRadius: BorderRadius.circular(18),
-                  //             boxShadow: [
-                  //               BoxShadow(
-                  //                 color: Colors.grey.withOpacity(0.5),
-                  //                 spreadRadius: 5,
-                  //                 blurRadius: 7,
-                  //                 offset: Offset(
-                  //                     0, 3), // changes position of shadow
-                  //               ),
-                  //             ],
-                  //           ),
-                  //         ),
-                  // ),
-                  // ksizedbox20,
-                  // GestureDetector(
-                  //   onTap: () {
-                  //     if (controller.procedureindex.value == 0) {
-                  //       controller.procedureindex(1);
-                  //     } else {
-                  //       controller.procedureindex(0);
-                  //     }
-                  //   },
-                  //   child: controller.procedureindex.value == 0
-                  //       ? Container(
-                  //           child: Padding(
-                  //             padding: const EdgeInsets.all(8.0),
-                  //             child: Column(
-                  //               children: [
-                  //                 Row(
-                  //                   mainAxisAlignment:
-                  //                       MainAxisAlignment.spaceBetween,
-                  //                   children: [
-                  //                     Text('Other Procedure', style: maxfont),
-                  //                     Icon(Icons.arrow_drop_down_rounded)
-                  //                   ],
-                  //                 ),
-                  //                 ksizedbox10,
-                  //                 GestureDetector(
-                  //                   onTap: () {
-                  //                     var txtControllerrythem =
-                  //                         TextEditingController();
-                  //                     _showTextFieldDialog(
-                  //                         context,
-                  //                         "Procedure",
-                  //                         "Enter Procedure",
-                  //                         txtControllerrythem);
-                  //                   },
-                  //                   child: Row(
-                  //                     children: [
-                  //                       Icon(
-                  //                         Icons.edit_square,
-                  //                         color: kblue,
-                  //                       ),
-                  //                       kwidth5,
-                  //                       Text('Customize', style: minfont)
-                  //                     ],
-                  //                   ),
-                  //                 ),
-                  //                 ksizedbox10
-                  //               ],
-                  //             ),
-                  //           ),
-                  //           width: double.infinity,
-                  //           //  height: 300,
-                  //           decoration: BoxDecoration(
-                  //             color: kwhite,
-                  //             borderRadius: BorderRadius.circular(18),
-                  //             boxShadow: [
-                  //               BoxShadow(
-                  //                 color: Colors.grey.withOpacity(0.5),
-                  //                 spreadRadius: 5,
-                  //                 blurRadius: 7,
-                  //                 offset: Offset(
-                  //                     0, 3), // changes position of shadow
-                  //               ),
-                  //             ],
-                  //           ),
-                  //         )
-                  //       : Container(
-                  //           child: Padding(
-                  //             padding: const EdgeInsets.all(8.0),
-                  //             child: Column(
-                  //               children: [
-                  //                 Padding(
-                  //                   padding: const EdgeInsets.all(12.0),
-                  //                   child: Row(
-                  //                     mainAxisAlignment:
-                  //                         MainAxisAlignment.spaceBetween,
-                  //                     children: [
-                  //                       Text('Choose Procedure',
-                  //                           style: maxfont),
-                  //                       Icon(Icons.arrow_drop_up_rounded)
-                  //                     ],
-                  //                   ),
-                  //                 ),
-                  //                 ListView.builder(
-                  //                     physics: NeverScrollableScrollPhysics(),
-                  //                     shrinkWrap: true,
-                  //                     itemCount:
-                  //                         controller.procedurelist.length,
-                  //                     itemBuilder: (context, index) {
-                  //                       // The itemBuilder callback is called for each item in the list.
-                  //                       return Container(
-                  //                         child: Column(
-                  //                           children: [
-                  //                             RadioListTile(
-                  //                               title: Text(
-                  //                                   controller
-                  //                                       .procedurelist[index]
-                  //                                       .toString(),
-                  //                                   style: minfont),
-                  //                               value: 'd${index}',
-                  //                               groupValue: selectedOption,
-                  //                               onChanged:
-                  //                                   handleRadioValueChanged,
-                  //                             ),
-                  //                             kwidth5,
-                  //                             Divider(
-                  //                               height: 1,
-                  //                             ),
-                  //                             ksizedbox10,
-                  //                           ],
-                  //                         ),
-                  //                       );
-                  //                     }),
-                  //                 Padding(
-                  //                   padding: const EdgeInsets.all(12.0),
-                  //                   child: GestureDetector(
-                  //                     onTap: () {
-                  //                       var txtControllerrythem =
-                  //                           TextEditingController();
-                  //                       _showTextFieldDialog(
-                  //                           context,
-                  //                           "Procedure",
-                  //                           "Enter Procedure",
-                  //                           txtControllerrythem);
-                  //                     },
-                  //                     child: Row(
-                  //                       children: [
-                  //                         Icon(
-                  //                           Icons.edit_square,
-                  //                           color: kblue,
-                  //                         ),
-                  //                         kwidth5,
-                  //                         Text('Customize', style: minfont)
-                  //                       ],
-                  //                     ),
-                  //                   ),
-                  //                 ),
-                  //                 ksizedbox10
-                  //               ],
-                  //             ),
-                  //           ),
-                  //           width: double.infinity,
-                  //           //  height: 300,
-                  //           decoration: BoxDecoration(
-                  //             color: kwhite,
-                  //             borderRadius: BorderRadius.circular(18),
-                  //             boxShadow: [
-                  //               BoxShadow(
-                  //                 color: Colors.grey.withOpacity(0.5),
-                  //                 spreadRadius: 5,
-                  //                 blurRadius: 7,
-                  //                 offset: Offset(
-                  //                     0, 3), // changes position of shadow
-                  //               ),
-                  //             ],
-                  //           ),
-                  //         ),
-                  // ),
                   ksizedbox20,
+
                   GestureDetector(
                     onTap: () {
                       setState(() {
@@ -2071,7 +1314,7 @@ class _HomeScreenState extends State<HomeScreen> {
 }
 
 Future<void> _showTextFieldDialog(BuildContext context, String text,
-    String label, TextEditingController textController) async {
+    String label, TextEditingController textController, String id) async {
   String textFieldValue = '';
   //final TextEditingController textController;
   final tactapiController = Get.find<TactApiController>();
@@ -2108,28 +1351,12 @@ Future<void> _showTextFieldDialog(BuildContext context, String text,
               onPressed: () {
                 //     print('Entered text: ${textEditingController.text}');
                 if (textController.text.isNotEmpty) {
-                  if (text == 1) {
-                    //api call
-                    var typevalue;
-                    tactapiController.storesubcatogory(
-                        title: textController.text,
-                        description: 'test',
-                        categoryid: typevalue);
-                  } else if (text == "Shock") {
-                    tactapiController.storesubcatogory(
-                        title: textController.text,
-                        description: 'test',
-                        categoryid: "shock");
-                  } else if (text == "DRUG") {
-                    tactapiController.storesubcatogory(
-                        title: textController.text,
-                        description: 'test',
-                        categoryid: 'drug');
-                  } else if (text == "QUALITY CPR") {
-                    Get.find<counterController>()
-                        .cprList
-                        .add(textController.text);
-                  }
+                  //api call
+
+                  tactapiController.storesubcatogory(
+                      title: textController.text,
+                      description: 'test',
+                      categoryid: id);
                 }
                 Navigator.of(context).pop();
               },
