@@ -45,8 +45,8 @@ class CatogoryList {
 
     factory CatogoryList.fromJson(Map<String, dynamic> json) => CatogoryList(
         id: json["id"],
-        title: json["title"],
-        description: json["description"],
+        title: json["title"] ?? "",
+        description: json["description"] ?? "",
         createdAt: DateTime.parse(json["created_at"]),
         updatedAt: DateTime.parse(json["updated_at"]), index: 0,
     );

@@ -89,13 +89,15 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     super.initState();
-
+    tactapiController.getcatogory();
+    // tactapiController.getactivity();
+// startTimer();
     loadAlarms();
+    
     subscription ??= Alarm.ringStream.stream.listen(
       (alarmSettings) => navigateToRingScreen(alarmSettings),
     );
-    tactapiController.getcatogory();
-    tactapiController.getactivity();
+    
     //tactapiController.getsubcatogory(id: 1);
     // tactapiController.gettype(typevalue: "rhythm");
     // tactapiController.gettype(typevalue: "shock");
@@ -209,6 +211,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   void dispose() {
+    _timer!.cancel();
     subscription?.cancel();
     audioPlayer.stop();
     player.stop();
@@ -252,6 +255,39 @@ class _HomeScreenState extends State<HomeScreen> {
   double _currentSliderValue = 20;
   late List<AlarmSettings> alarms;
   static StreamSubscription? subscription;
+
+   Timer? _timer;
+   int tempOverallCtime = 0;
+
+void startTimer() {
+  const oneSec =  Duration(seconds: 1);
+  _timer =  Timer.periodic(
+    oneSec,
+    (Timer timer) {
+      tempOverallCtime++;
+      tactapiController.overallCprTime(formatHHMMSS(tempOverallCtime));
+      tactapiController.actualTimetotal(_controller2.getTime());
+    },
+  );
+}
+
+String formatHHMMSS(int seconds) {
+  int hours = (seconds / 3600).truncate();
+  seconds = (seconds % 3600).truncate();
+  int minutes = (seconds / 60).truncate();
+
+  String hoursStr = (hours).toString().padLeft(2, '0');
+  String minutesStr = (minutes).toString().padLeft(2, '0');
+  String secondsStr = (seconds % 60).toString().padLeft(2, '0');
+
+  // if (hours == 0) {
+  //   return "$minutesStr:$secondsStr";
+  // }
+
+  return "$hoursStr:$minutesStr:$secondsStr";
+}
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -342,6 +378,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         });
                         _controller2.start();
                         _controller.start();
+                        startTimer();
                         _startFlashlightTimer();
                         playAudio();
                         audioSoundManage();
@@ -490,7 +527,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                 },
                                 onChange: (String timeStamp) {
                                   // Here, do whatever you want
-                                  debugPrint('Countdown Changed $timeStamp');
+                                  // debugPrint('Countdown Changed $timeStamp');
+                                  // print("-------------->>timeStamp");
                                 },
                                 timeFormatterFunction:
                                     (defaultFormatterFunction, duration) {
@@ -623,7 +661,27 @@ class _HomeScreenState extends State<HomeScreen> {
                                         '============================endtime========${endtime}=----------------------');
                                     if (_controller.getTime() == "00:02:00") {
                                       print(
-                                          '============================endtime========${endtime}=----------------------');
+                                          '============================endtime========${endtime}=----------------------???${tactapiController
+                                                  .selectedSubCatIdList.length}');
+
+                                      print(
+                                          '============================endtime========${endtime}=----------------------???${tactapiController
+                                                  .selectedSubCatIdList.length}');
+                                                  print("-------------------->>>>>>>>>>>>");
+                                                  print("-------------------->>>>>>>>>>>>");
+                                                  print("-------------------->>>>>>>>>>>>");
+                                                  print("-------------------->>>>>>>>>>>>");
+                                                  print("-------------------->>>>>>>>>>>>");
+                                                  print("-------------------->>>>>>>>>>>>");
+                                                  print("-------------------->>>>>>>>>>>>");
+                                                  print("-------------------->>>>>>>>>>>>");
+                                                  print("-------------------->>>>>>>>>>>>");
+                                                  print("-------------------->>>>>>>>>>>>");
+                                                  print("-------------------->>>>>>>>>>>>");
+                                                  print("-------------------->>>>>>>>>>>>");
+                                                  print("-------------------->>>>>>>>>>>>");
+                                                  print("-------------------->>>>>>>>>>>>");
+                                                  print("-------------------->>>>>>>>>>>>");
 
                                       for (int i = 0;
                                           i <
@@ -631,6 +689,9 @@ class _HomeScreenState extends State<HomeScreen> {
                                                   .selectedSubCatIdList.length;
                                           i++) {
                                         tactapiController.storeactivity(
+                                          value: tactapiController
+                                                .selectedSubCatIdList[i]
+                                                .value,
                                             c_id: tactapiController
                                                 .selectedSubCatIdList[i]
                                                 .catogoryid,
@@ -639,9 +700,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                             from_time: tactapiController
                                                 .selectedSubCatIdList[i]
                                                 .startingTime,
-                                            to_time: _controller2
-                                                .getTime()
-                                                .toString(),
+                                            to_time: "${DateTime.now().hour}:${DateTime.now().minute}:${DateTime.now().second}",
                                             title: 'Cycle$cycle');
                                       }
 
@@ -786,283 +845,287 @@ class _HomeScreenState extends State<HomeScreen> {
 ////
                   ///
 
-                  ListView.builder(
-                    physics: NeverScrollableScrollPhysics(),
-                    shrinkWrap: true,
-                    itemCount: tactapiController.catogorylist.length,
-                    itemBuilder: (BuildContext context, int index) {
-                      return Padding(
-                        padding: const EdgeInsets.only(top: 10, bottom: 20),
-                        child: GestureDetector(
-                          onTap: () {
-                        
-                            if (tactapiController.catogorylist[index].index ==
-                                0) {
-                              tactapiController.catogorylist[index].index = 1;
+                  GetBuilder<TactApiController>(
+                    builder: (_) {
+                      return ListView.builder(
+                        physics: const NeverScrollableScrollPhysics(),
+                        shrinkWrap: true,
+                        itemCount: tactapiController.catogorylist.length,
+                        itemBuilder: (BuildContext context, int index) {
+                          return Padding(
+                            padding: const EdgeInsets.only(top: 10, bottom: 20),
+                            child: GestureDetector(
+                              onTap: () {
+                                if (tactapiController.catogorylist[index].index ==
+                                    0) {
+                                  tactapiController.catogorylist[index].index = 1;
 
-                              // tactapiController.update();
-                            } else {
-                              tactapiController.catogorylist[index].index = 0;
-                              //   tactapiController.update();
-                            }
-                            //  tactapiController.update();
-                          },
-                          child: tactapiController.catogorylist[index].index ==
-                                  0
-                              ? Container(
-                                  width: double.infinity,
-                                  //  height: 300,
-                                  decoration: BoxDecoration(
-                                    color: kwhite,
-                                    borderRadius: BorderRadius.circular(18),
-                                    boxShadow: [
-                                      BoxShadow(
-                                        color: Colors.grey.withOpacity(0.5),
-                                        spreadRadius: 5,
-                                        blurRadius: 7,
-                                        offset: const Offset(
-                                            0, 3), // changes position of shadow
+                                  tactapiController.update();
+                                } else {
+                                  tactapiController.catogorylist[index].index = 0;
+                                    tactapiController.update();
+                                }
+                                //  tactapiController.update();
+                              },
+                              child: tactapiController.catogorylist[index].index ==
+                                      0
+                                  ? Container(
+                                      width: double.infinity,
+                                      //  height: 300,
+                                      decoration: BoxDecoration(
+                                        color: kwhite,
+                                        borderRadius: BorderRadius.circular(18),
+                                        boxShadow: [
+                                          BoxShadow(
+                                            color: Colors.grey.withOpacity(0.5),
+                                            spreadRadius: 5,
+                                            blurRadius: 7,
+                                            offset: const Offset(
+                                                0, 3), // changes position of shadow
+                                          ),
+                                        ],
                                       ),
-                                    ],
-                                  ),
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: Column(
-                                      children: [
-                                        Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
+                                      child: Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: Column(
                                           children: [
-                                            Text(
-                                                'Choose ${tactapiController.catogorylist[index].title}',
-                                                style: maxfont),
-                                            const Icon(
-                                                Icons.arrow_drop_down_rounded)
+                                            Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.spaceBetween,
+                                              children: [
+                                                Text(
+                                                    'Choose ${tactapiController.catogorylist[index].title}',
+                                                    style: maxfont),
+                                                const Icon(
+                                                    Icons.arrow_drop_down_rounded)
+                                              ],
+                                            ),
+                                            ksizedbox10,
+                                            GestureDetector(
+                                              onTap: () {
+                                                var txtControllerrythem =
+                                                    TextEditingController();
+                                                _showTextFieldDialog(
+                                                  context,
+                                                  "Rhythm ",
+                                                  "Enter Rhythm",
+                                                  txtControllerrythem,
+                                                  tactapiController
+                                                      .catogorylist[index].id
+                                                      .toString(),
+                                                );
+                                              },
+                                              child: Row(
+                                                children: [
+                                                  Icon(
+                                                    Icons.edit_square,
+                                                    color: kblue,
+                                                  ),
+                                                  kwidth5,
+                                                  Text('Customize', style: minfont),
+                                                ],
+                                              ),
+                                            ),
+                                            ksizedbox10
                                           ],
                                         ),
-                                        ksizedbox10,
-                                        GestureDetector(
-                                          onTap: () {
-                                            var txtControllerrythem =
-                                                TextEditingController();
-                                            _showTextFieldDialog(
-                                              context,
-                                              "Rhythm ",
-                                              "Enter Rhythm",
-                                              txtControllerrythem,
-                                              tactapiController
-                                                  .catogorylist[index].id
-                                                  .toString(),
-                                            );
-                                          },
-                                          child: Row(
-                                            children: [
-                                              Icon(
-                                                Icons.edit_square,
-                                                color: kblue,
-                                              ),
-                                              kwidth5,
-                                              Text('Customize', style: minfont),
-                                            ],
-                                          ),
-                                        ),
-                                        ksizedbox10
-                                      ],
-                                    ),
-                                  ),
-                                )
-                              : Container(
-                                  width: double.infinity,
-                                  //  height: 300,
-                                  decoration: BoxDecoration(
-                                    color: kwhite,
-                                    borderRadius: BorderRadius.circular(18),
-                                    boxShadow: [
-                                      BoxShadow(
-                                        color: Colors.grey.withOpacity(0.5),
-                                        spreadRadius: 5,
-                                        blurRadius: 7,
-                                        offset: Offset(
-                                            0, 3), // changes position of shadow
                                       ),
-                                    ],
-                                  ),
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: Column(
-                                      children: [
-                                        Padding(
-                                          padding: const EdgeInsets.all(12.0),
-                                          child: Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceBetween,
-                                            children: [
-                                              Text(
-                                                  'Choose ${tactapiController.catogorylist[index].title}',
-                                                  style: maxfont),
-                                              const Icon(
-                                                  Icons.arrow_drop_up_rounded)
-                                            ],
+                                    )
+                                  : Container(
+                                      width: double.infinity,
+                                      //  height: 300,
+                                      decoration: BoxDecoration(
+                                        color: kwhite,
+                                        borderRadius: BorderRadius.circular(18),
+                                        boxShadow: [
+                                          BoxShadow(
+                                            color: Colors.grey.withOpacity(0.5),
+                                            spreadRadius: 5,
+                                            blurRadius: 7,
+                                            offset: const  Offset(
+                                                0, 3), // changes position of shadow
                                           ),
-                                        ),
-                                        ListView.builder(
-                                            physics:
-                                                NeverScrollableScrollPhysics(),
-                                            shrinkWrap: true,
-                                            itemCount: tactapiController
-                                                .getDatList(tactapiController
-                                                    .catogorylist[index].id)
-                                                .length,
-                                            itemBuilder: (context, index2) {
-                                              // The itemBuilder callback is called for each item in the list.
-                                              return Container(
-                                                child: Column(
-                                                  children: [
-                                                    RadioListTile(
-                                                      title: Text(
-                                                          tactapiController
+                                        ],
+                                      ),
+                                      child: Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: Column(
+                                          children: [
+                                            Padding(
+                                              padding: const EdgeInsets.all(12.0),
+                                              child: Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.spaceBetween,
+                                                children: [
+                                                  Text(
+                                                      'Choose ${tactapiController.catogorylist[index].title}',
+                                                      style: maxfont),
+                                                  const Icon(
+                                                      Icons.arrow_drop_up_rounded)
+                                                ],
+                                              ),
+                                            ),
+                                            ListView.builder(
+                                                physics:
+                                                    NeverScrollableScrollPhysics(),
+                                                shrinkWrap: true,
+                                                itemCount: tactapiController
+                                                    .getDatList(tactapiController
+                                                        .catogorylist[index].id)
+                                                    .length,
+                                                itemBuilder: (context, index2) {
+                                                  // The itemBuilder callback is called for each item in the list.
+                                                  return Container(
+                                                    child: Column(
+                                                      children: [
+                                                        RadioListTile(
+                                                          title: Text(
+                                                              tactapiController
+                                                                  .getDatList(
+                                                                      tactapiController
+                                                                          .catogorylist[
+                                                                              index]
+                                                                          .id)[
+                                                                      index2]
+                                                                  .subTitle,
+                                                              style: minfont),
+                                                          value: tactapiController
                                                               .getDatList(
                                                                   tactapiController
                                                                       .catogorylist[
                                                                           index]
-                                                                      .id)[
-                                                                  index2]
-                                                              .subTitle,
-                                                          style: minfont),
-                                                      value: tactapiController
-                                                          .getDatList(
-                                                              tactapiController
-                                                                  .catogorylist[
-                                                                      index]
-                                                                  .id)[index2]
-                                                          .id
-                                                          .toString(),
-                                                      groupValue: tactapiController
-                                                          .getGroupValue(
-                                                              tactapiController
-                                                                  .catogorylist[
-                                                                      index]
-                                                                  .id),
-                                                      onChanged: (
-                                                        String? value,
-                                                      ) {
-                                                        setState(() {
-                                                          tactapiController
-                                                              .addGroupValue(
+                                                                      .id)[index2]
+                                                              .id
+                                                              .toString(),
+                                                          groupValue: tactapiController
+                                                              .getGroupValue(
                                                                   tactapiController
                                                                       .catogorylist[
                                                                           index]
-                                                                      .id,
-                                                                  value!);
+                                                                      .id),
+                                                          onChanged: (
+                                                            String? value,
+                                                          ) {
+                                                            setState(() {
+                                                              tactapiController
+                                                                  .addGroupValue(
+                                                                      tactapiController
+                                                                          .catogorylist[
+                                                                              index]
+                                                                          .id,
+                                                                      value!);
 
-                                                          selectedOption =
-                                                              value;
-                                                          StoreActivityListModel
-                                                              storeActivityListModel =
-                                                              StoreActivityListModel(
-                                                                  catogoryid: tactapiController
-                                                                      .catogorylist[
-                                                                          index]
-                                                                      .id
-                                                                      .toString(),
-                                                                  subid: value,
-                                                                  startingTime:
-                                                                      _controller2
-                                                                          .getTime()
-                                                                          .toString());
-                                                          var tempList = tactapiController
-                                                              .selectedSubCatIdList
-                                                              .where((value2) =>
-                                                                  value2.subid ==
-                                                                      value &&
-                                                                  value2.catogoryid ==
-                                                                      storeActivityListModel
-                                                                          .catogoryid);
-                                                          var tempId;
-                                                          for (int i = 0;
-                                                              i <
-                                                                  tactapiController
-                                                                      .selectedSubCatIdList
-                                                                      .length;
-                                                              i++) {
-                                                            var value2 =
+                                                              selectedOption =
+                                                                  value;
+                                                              StoreActivityListModel
+                                                                  storeActivityListModel =
+                                                                  StoreActivityListModel(
+                                                                    value: "00",
+                                                                      catogoryid: tactapiController
+                                                                          .catogorylist[
+                                                                              index]
+                                                                          .id
+                                                                          .toString(),
+                                                                      subid: value,
+                                                                      startingTime:
+                                                                          _controller2
+                                                                              .getTime()
+                                                                              .toString());
+                                                              var tempList = tactapiController
+                                                                  .selectedSubCatIdList
+                                                                  .where((value2) =>
+                                                                      value2.subid ==
+                                                                          value &&
+                                                                      value2.catogoryid ==
+                                                                          storeActivityListModel
+                                                                              .catogoryid);
+                                                              var tempId;
+                                                              for (int i = 0;
+                                                                  i <
+                                                                      tactapiController
+                                                                          .selectedSubCatIdList
+                                                                          .length;
+                                                                  i++) {
+                                                                var value2 =
+                                                                    tactapiController
+                                                                        .selectedSubCatIdList[i];
+                                                                if (value2
+                                                                        .catogoryid ==
+                                                                    storeActivityListModel
+                                                                        .catogoryid) {
+                                                                  tempId = i;
+                                                                }
+                                                              }
+
+                                                              if (tempId != null) {
                                                                 tactapiController
-                                                                    .selectedSubCatIdList[i];
-                                                            if (value2
-                                                                    .catogoryid ==
-                                                                storeActivityListModel
-                                                                    .catogoryid) {
-                                                              tempId = i;
-                                                            }
-                                                          }
+                                                                    .selectedSubCatIdList
+                                                                    .removeAt(
+                                                                        tempId);
+                                                              } else {
+                                                                tactapiController
+                                                                    .selectedSubCatIdList
+                                                                    .add(
+                                                                        storeActivityListModel);
+                                                              }
 
-                                                          if (tempId != null) {
-                                                            tactapiController
-                                                                .selectedSubCatIdList
-                                                                .removeAt(
-                                                                    tempId);
-                                                          } else {
-                                                            tactapiController
-                                                                .selectedSubCatIdList
-                                                                .add(
-                                                                    storeActivityListModel);
-                                                          }
-
-                                                          print(
-                                                              '${selectedOption}');
-                                                          var sub_id =
-                                                              selectedOption;
-                                                          print(
-                                                              '============${sub_id}===========');
-                                                        });
-                                                      },
+                                                              print(
+                                                                  '${selectedOption}');
+                                                              var sub_id =
+                                                                  selectedOption;
+                                                              print(
+                                                                  '============$sub_id===========');
+                                                            });
+                                                          },
+                                                        ),
+                                                        kwidth5,
+                                                        Divider(
+                                                          height: 1,
+                                                        ),
+                                                        ksizedbox10,
+                                                      ],
+                                                    ),
+                                                  );
+                                                }),
+                                            Padding(
+                                              padding: const EdgeInsets.all(12.0),
+                                              child: GestureDetector(
+                                                onTap: () {
+                                                  var txtControllerrythem =
+                                                      TextEditingController();
+                                                  _showTextFieldDialog(
+                                                    context,
+                                                    "Rhythm",
+                                                    "Enter Rhythm",
+                                                    txtControllerrythem,
+                                                    tactapiController
+                                                        .catogorylist[index].id
+                                                        .toString(),
+                                                  );
+                                                },
+                                                child: Row(
+                                                  children: [
+                                                    Icon(
+                                                      Icons.edit_square,
+                                                      color: kblue,
                                                     ),
                                                     kwidth5,
-                                                    Divider(
-                                                      height: 1,
-                                                    ),
-                                                    ksizedbox10,
+                                                    Text('Customize',
+                                                        style: minfont)
                                                   ],
                                                 ),
-                                              );
-                                            }),
-                                        Padding(
-                                          padding: const EdgeInsets.all(12.0),
-                                          child: GestureDetector(
-                                            onTap: () {
-                                              var txtControllerrythem =
-                                                  TextEditingController();
-                                              _showTextFieldDialog(
-                                                context,
-                                                "Rhythm",
-                                                "Enter Rhythm",
-                                                txtControllerrythem,
-                                                tactapiController
-                                                    .catogorylist[index].id
-                                                    .toString(),
-                                              );
-                                            },
-                                            child: Row(
-                                              children: [
-                                                Icon(
-                                                  Icons.edit_square,
-                                                  color: kblue,
-                                                ),
-                                                kwidth5,
-                                                Text('Customize',
-                                                    style: minfont)
-                                              ],
+                                              ),
                                             ),
-                                          ),
+                                            ksizedbox10
+                                          ],
                                         ),
-                                        ksizedbox10
-                                      ],
+                                      ),
                                     ),
-                                  ),
-                                ),
-                        ),
+                            ),
+                          );
+                        },
                       );
-                    },
+                    }
                   ),
 
                   ksizedbox20,
@@ -1138,12 +1201,17 @@ class _HomeScreenState extends State<HomeScreen> {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
+                            ksizedbox10,
+                            Text(
+                              'Overall CPR Time',
+                              style: minfont,
+                            ),
                             Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 ksizedbox10,
+                                //   if (tactapiController.isNotEmpty)
                                 Text(
-                                  'Actual Time',
+                                  "00:00:00",
                                   style: minfont,
                                 ),
                               ],
@@ -1151,8 +1219,28 @@ class _HomeScreenState extends State<HomeScreen> {
                             Column(
                               children: [
                                 ksizedbox10,
+                                Obx(()=> Text(
+                                    tactapiController.overallCprTime.value,
+                                    style: minfont,
+                                  ),
+                                ),
+                              ],
+                            )
+                          ],
+                        ),
+                        ksizedbox20,
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            ksizedbox10,
+                            Text(
+                              'Actual Time',
+                              style: minfont,
+                            ),
+                            Column(
+                              children: [
+                                ksizedbox10,
                                 //   if (tactapiController.isNotEmpty)
-
                                 Text(
                                   tactapiController.actualtime,
                                   style: minfont,
@@ -1162,9 +1250,10 @@ class _HomeScreenState extends State<HomeScreen> {
                             Column(
                               children: [
                                 ksizedbox10,
-                                Text(
-                                  tactapiController.endingtime,
-                                  style: minfont,
+                                 Obx(()=> Text(
+                                    tactapiController.actualTimetotal.value,
+                                    style: minfont,
+                                  ),
                                 ),
                               ],
                             )

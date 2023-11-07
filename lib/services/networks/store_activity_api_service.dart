@@ -9,7 +9,9 @@ class StoreActivityApiService extends BaseApiServices {
       required String s_id,
       required String from_time,
       required String to_time,
-      required String title}) async {
+      required String title,
+      required String value,
+      }) async {
     dynamic responseJson;
     try {
       var formData = FormData.fromMap({
@@ -18,6 +20,7 @@ class StoreActivityApiService extends BaseApiServices {
         "from_time": from_time,
         "to_time": to_time,
         "title": title,
+        "value": value
       });
       var dio = Dio();
       var response = await dio.post(storeactivityURL,

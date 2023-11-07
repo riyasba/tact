@@ -51,6 +51,7 @@ class Activitylist {
     DateTime updatedAt;
     String categoryTitle;
     String subTitle;
+    String value;
 
     Activitylist({
         required this.id,
@@ -63,6 +64,7 @@ class Activitylist {
         required this.updatedAt,
         required this.categoryTitle,
         required this.subTitle,
+        required this.value,
     });
 
     factory Activitylist.fromJson(Map<String, dynamic> json) => Activitylist(
@@ -72,6 +74,7 @@ class Activitylist {
         subCategory: json["sub_category"],
         fromTime: json["from_time"],
         toTime: json["to_time"],
+        value: json["value"],
         createdAt: DateTime.parse(json["created_at"]),
         updatedAt: DateTime.parse(json["updated_at"]),
         categoryTitle: json["categoryTitle"],

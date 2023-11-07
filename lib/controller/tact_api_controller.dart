@@ -50,6 +50,14 @@ class TactApiController extends GetxController {
   String? selectedValue9;
   String? selectedValue10;
 
+
+
+  RxString overallCprTime = "00:00:00".obs;
+  RxString actualTimetotal = "00:00:00".obs;
+
+
+  
+
   getsubcatogory({required dynamic id}) async {
     dio.Response<dynamic> response =
         await gettypeapiservice.getsubcatogoriestype(id: id.toString());
@@ -169,14 +177,15 @@ class TactApiController extends GetxController {
       required String s_id,
       required String from_time,
       required String to_time,
+      required String value,
       required String title}) async {
-    dio.Response<dynamic> response =
-        await activitylogapiservice.storeactivityapi(
+    dio.Response<dynamic> response =  await activitylogapiservice.storeactivityapi(
             c_id: c_id,
             s_id: s_id,
             from_time: from_time,
             to_time: to_time,
-            title: title);
+            title: title,
+            value: value);
     getactivity();
     update();
   }
@@ -202,7 +211,6 @@ class TactApiController extends GetxController {
   List<CatogoryList> catogorylist = [];
 
   Future getcatogory() async {
-    
      isLoading(true);
     dio.Response<dynamic> response =
         await getcatogoryapiservices.getcatogoryapi();
