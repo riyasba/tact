@@ -5,6 +5,7 @@ import 'package:alarm/alarm.dart';
 import 'package:alarm/model/alarm_settings.dart';
 
 import 'package:flutter_application_1/controller/tact_api_controller.dart';
+
 import 'package:flutter_application_1/models/store_activity_list_model.dart';
 
 import 'package:just_audio/just_audio.dart';
@@ -196,13 +197,6 @@ class _HomeScreenState extends State<HomeScreen> {
     audioPlayer.setReleaseMode(audio.ReleaseMode.loop);
   }
 
-  // timesound() async {
-
-  //   final duration =
-  //       await player.setAsset('assets/images/tick-tock-clock-01-84927.mp3');
-  //   player.play();
-  // }
-
   void playAudio() async {
     String audioPath =
         'images/120BPMMetronome.mp3'; // Replace with your audio file path
@@ -212,23 +206,6 @@ class _HomeScreenState extends State<HomeScreen> {
       volume: 100,
     );
   }
-
-  // Future<void> navigateToAlarmScreen(AlarmSettings? settings) async {
-  //   final res = await showModalBottomSheet<bool?>(
-  //       context: context,
-  //       isScrollControlled: true,
-  //       shape: RoundedRectangleBorder(
-  //         borderRadius: BorderRadius.circular(10.0),
-  //       ),
-  //       builder: (context) {
-  //         return FractionallySizedBox(
-  //           heightFactor: 0.7,
-  //           child: ExampleAlarmEditScreen(alarmSettings: settings),
-  //         );
-  //       });
-
-  //   if (res != null && res == true) loadAlarms();
-  // }
 
   @override
   void dispose() {
@@ -279,6 +256,7 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
+
     return Scaffold(
       backgroundColor: kwhite,
       appBar: PreferredSize(
@@ -571,15 +549,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         ),
                       ),
                       GestureDetector(
-                        onTap: () {
-                          // final alarmSettings = AlarmSettings(
-                          //   id: 42,
-                          //   dateTime: DateTime.now().add(Duration(minutes: 2)),
-                          //   assetAudioPath: 'assets/images/marimba.mp3',
-                          //   volumeMax: false,
-                          // );
-                          // Alarm.set(alarmSettings: alarmSettings);
-                        },
+                        onTap: () {},
                         child: Container(
                           width: size.width * 0.43,
                           height: size.height * 0.35,
@@ -666,8 +636,12 @@ class _HomeScreenState extends State<HomeScreen> {
                                                 .catogoryid,
                                             s_id: tactapiController
                                                 .selectedSubCatIdList[i].subid,
-                                            from_time: starttime,
-                                            to_time: endtime,
+                                            from_time: tactapiController
+                                                .selectedSubCatIdList[i]
+                                                .startingTime,
+                                            to_time: _controller2
+                                                .getTime()
+                                                .toString(),
                                             title: 'Cycle$cycle');
                                       }
 
@@ -821,15 +795,17 @@ class _HomeScreenState extends State<HomeScreen> {
                         padding: const EdgeInsets.only(top: 10, bottom: 20),
                         child: GestureDetector(
                           onTap: () {
+                        
                             if (tactapiController.catogorylist[index].index ==
                                 0) {
                               tactapiController.catogorylist[index].index = 1;
-                              tactapiController.update();
+
+                              // tactapiController.update();
                             } else {
                               tactapiController.catogorylist[index].index = 0;
-                              tactapiController.update();
+                              //   tactapiController.update();
                             }
-                            tactapiController.update();
+                            //  tactapiController.update();
                           },
                           child: tactapiController.catogorylist[index].index ==
                                   0
@@ -959,15 +935,28 @@ class _HomeScreenState extends State<HomeScreen> {
                                                                   .catogorylist[
                                                                       index]
                                                                   .id)[index2]
-                                                          .categoryId,
-                                                      groupValue:
-                                                          selectedOption,
+                                                          .id
+                                                          .toString(),
+                                                      groupValue: tactapiController
+                                                          .getGroupValue(
+                                                              tactapiController
+                                                                  .catogorylist[
+                                                                      index]
+                                                                  .id),
                                                       onChanged: (
                                                         String? value,
                                                       ) {
                                                         setState(() {
+                                                          tactapiController
+                                                              .addGroupValue(
+                                                                  tactapiController
+                                                                      .catogorylist[
+                                                                          index]
+                                                                      .id,
+                                                                  value!);
+
                                                           selectedOption =
-                                                              value!;
+                                                              value;
                                                           StoreActivityListModel
                                                               storeActivityListModel =
                                                               StoreActivityListModel(
@@ -976,7 +965,11 @@ class _HomeScreenState extends State<HomeScreen> {
                                                                           index]
                                                                       .id
                                                                       .toString(),
-                                                                  subid: value);
+                                                                  subid: value,
+                                                                  startingTime:
+                                                                      _controller2
+                                                                          .getTime()
+                                                                          .toString());
                                                           var tempList = tactapiController
                                                               .selectedSubCatIdList
                                                               .where((value2) =>
@@ -995,11 +988,10 @@ class _HomeScreenState extends State<HomeScreen> {
                                                             var value2 =
                                                                 tactapiController
                                                                     .selectedSubCatIdList[i];
-                                                            if (value2.subid ==
-                                                                    value &&
-                                                                value2.catogoryid ==
-                                                                    storeActivityListModel
-                                                                        .catogoryid) {
+                                                            if (value2
+                                                                    .catogoryid ==
+                                                                storeActivityListModel
+                                                                    .catogoryid) {
                                                               tempId = i;
                                                             }
                                                           }
@@ -1077,6 +1069,8 @@ class _HomeScreenState extends State<HomeScreen> {
 
                   GestureDetector(
                     onTap: () {
+                      _disableTorch(context);
+                      tactapiController.deleteactivity();
                       setState(() {
                         isEnable = false;
                         audioPlayer.stop();
@@ -1147,10 +1141,6 @@ class _HomeScreenState extends State<HomeScreen> {
                             Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Text(
-                                  'Overal CPR time',
-                                  style: minfont,
-                                ),
                                 ksizedbox10,
                                 Text(
                                   'Actual Time',
@@ -1160,28 +1150,20 @@ class _HomeScreenState extends State<HomeScreen> {
                             ),
                             Column(
                               children: [
+                                ksizedbox10,
+                                //   if (tactapiController.isNotEmpty)
+
                                 Text(
-                                  '00:00:00',
+                                  tactapiController.actualtime,
                                   style: minfont,
                                 ),
-                                ksizedbox10,
-                                if (tactapiController.activitylist.isNotEmpty)
-                                  Text(
-                                    tactapiController
-                                        .activitylist.first.fromTime,
-                                    style: minfont,
-                                  ),
                               ],
                             ),
                             Column(
                               children: [
-                                Text(
-                                  '00:00:00',
-                                  style: minfont,
-                                ),
                                 ksizedbox10,
                                 Text(
-                                  '00:00:00',
+                                  tactapiController.endingtime,
                                   style: minfont,
                                 ),
                               ],
@@ -1224,12 +1206,12 @@ class _HomeScreenState extends State<HomeScreen> {
                                             style: minfont,
                                           ),
                                           ksizedbox10,
-                                          Text(
-                                            tactapiController
-                                                .activitylist[index]
-                                                .categoryTitle,
-                                            style: minfont,
-                                          ),
+                                          // Text(
+                                          //   tactapiController
+                                          //       .activitylist[index]
+                                          //       .categoryTitle,
+                                          //   style: minfont,
+                                          // ),
                                         ],
                                       ),
                                       Column(
@@ -1240,11 +1222,11 @@ class _HomeScreenState extends State<HomeScreen> {
                                             style: minfont,
                                           ),
                                           ksizedbox10,
-                                          Text(
-                                            tactapiController
-                                                .activitylist[index].fromTime,
-                                            style: minfont,
-                                          ),
+                                          // Text(
+                                          //   tactapiController
+                                          //       .activitylist[index].fromTime,
+                                          //   style: minfont,
+                                          // ),
                                         ],
                                       ),
                                       Column(
@@ -1257,11 +1239,11 @@ class _HomeScreenState extends State<HomeScreen> {
                                             style: minfont,
                                           ),
                                           ksizedbox10,
-                                          Text(
-                                            tactapiController
-                                                .activitylist[index].subTitle,
-                                            style: minfont,
-                                          ),
+                                          // Text(
+                                          //   tactapiController
+                                          //       .activitylist[index].subTitle,
+                                          //   style: minfont,
+                                          // ),
                                         ],
                                       ),
                                     ],

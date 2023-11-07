@@ -1,5 +1,6 @@
 class StoreActivityListModel{
   String catogoryid;
   String subid;
-  StoreActivityListModel({required this.catogoryid,required this.subid});
+  String startingTime;
+  StoreActivityListModel({required this.catogoryid,required this.subid,required this.startingTime});
 }

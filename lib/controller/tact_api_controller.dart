@@ -7,8 +7,7 @@ import 'package:flutter_application_1/models/get_catogory_model.dart';
 
 import 'package:flutter_application_1/models/get_subcatogory_model.dart';
 import 'package:flutter_application_1/models/store_activity_list_model.dart';
-
-
+import 'package:flutter_application_1/services/networks/delete_activity_api_service.dart';
 
 import 'package:flutter_application_1/services/networks/get_activity_api_service.dart';
 import 'package:flutter_application_1/services/networks/get_catogory_api_services.dart';
@@ -23,14 +22,10 @@ import 'package:dio/dio.dart' as dio;
 
 class TactApiController extends GetxController {
 
-bool isloading=true;
 
-GetSubCatogoriesApiServices gettypeapiservice = GetSubCatogoriesApiServices();
-
-
-List<StoreActivityListModel> selectedSubCatIdList = [];
-
-
+  GetSubCatogoriesApiServices gettypeapiservice = GetSubCatogoriesApiServices();
+ RxBool isLoading = false.obs;
+  List<StoreActivityListModel> selectedSubCatIdList = [];
 
   List<Success> subcategorList0 = [];
   List<Success> subcategorList1 = [];
@@ -43,8 +38,17 @@ List<StoreActivityListModel> selectedSubCatIdList = [];
   List<Success> subcategorList8 = [];
   List<Success> subcategorList9 = [];
 
-
-
+  String? selectedValue0;
+  String? selectedValue1;
+  String? selectedValue2;
+  String? selectedValue3;
+  String? selectedValue4;
+  String? selectedValue5;
+  String? selectedValue6;
+  String? selectedValue7;
+  String? selectedValue8;
+  String? selectedValue9;
+  String? selectedValue10;
 
   getsubcatogory({required dynamic id}) async {
     dio.Response<dynamic> response =
@@ -109,18 +113,65 @@ List<StoreActivityListModel> selectedSubCatIdList = [];
     return tempList;
   }
 
+  String? getGroupValue(int id) {
+    if (id == 1) {
+      return selectedValue0;
+    } else if (id == 2) {
+      return selectedValue1;
+    } else if (id == 3) {
+      return selectedValue2;
+    } else if (id == 4) {
+      return selectedValue3;
+    } else if (id == 5) {
+      return selectedValue4;
+    } else if (id == 6) {
+      return selectedValue5;
+    } else if (id == 7) {
+      return selectedValue6;
+    } else if (id == 8) {
+      return selectedValue7;
+    } else if (id == 9) {
+      return selectedValue8;
+    } else {
+      return selectedValue0;
+    }
+  }
+
+  addGroupValue(int id, String value) {
+    if (id == 1) {
+      selectedValue0 = value;
+    } else if (id == 2) {
+      selectedValue1 = value;
+    } else if (id == 3) {
+      selectedValue2 = value;
+    } else if (id == 4) {
+      selectedValue3 = value;
+    } else if (id == 5) {
+      selectedValue4 = value;
+    } else if (id == 6) {
+      selectedValue5 = value;
+    } else if (id == 7) {
+      selectedValue6 = value;
+    } else if (id == 8) {
+      selectedValue7 = value;
+    } else if (id == 9) {
+      selectedValue8 = value;
+    } else {
+      selectedValue0 = value;
+    }
+    update();
+  }
+
   StoreActivityApiService activitylogapiservice = StoreActivityApiService();
 
   Future storeactivity(
-      {
-      required String c_id,
+      {required String c_id,
       required String s_id,
       required String from_time,
       required String to_time,
       required String title}) async {
     dio.Response<dynamic> response =
         await activitylogapiservice.storeactivityapi(
-          
             c_id: c_id,
             s_id: s_id,
             from_time: from_time,
@@ -150,7 +201,9 @@ List<StoreActivityListModel> selectedSubCatIdList = [];
 
   List<CatogoryList> catogorylist = [];
 
-  Future getcatogory() async {isloading=true;
+  Future getcatogory() async {
+    
+     isLoading(true);
     dio.Response<dynamic> response =
         await getcatogoryapiservices.getcatogoryapi();
     if (response.statusCode == 200) {
@@ -162,8 +215,8 @@ List<StoreActivityListModel> selectedSubCatIdList = [];
       for (var categ in catogorylist) {
         getsubcatogory(id: categ.id);
       }
-      isloading=false;
-      //storedatas(title: '', description: '', categoryid: id);
+       isLoading(false);
+    
     } else {
       Get.rawSnackbar(
         backgroundColor: Colors.red,
@@ -179,6 +232,8 @@ List<StoreActivityListModel> selectedSubCatIdList = [];
   GetActivityApiService getactivityapiservice = GetActivityApiService();
 
   List<Activitylist> activitylist = [];
+  var actualtime='00:00:00';
+  var endingtime='00:00:00';
   Future getactivity() async {
     dio.Response<dynamic> response =
         await getactivityapiservice.getactivityapi();
@@ -186,6 +241,16 @@ List<StoreActivityListModel> selectedSubCatIdList = [];
     GetActivityModel getactivitymodel =
         GetActivityModel.fromJson(response.data);
     activitylist = getactivitymodel.data;
+    actualtime = getactivitymodel.actualTime;
+    endingtime = getactivitymodel.totalTime;
     update();
+  }
+
+
+  DeleteActivityApiServices deleteActivityApiServices =
+      DeleteActivityApiServices();
+  Future deleteactivity() async {
+    dio.Response<dynamic> response =
+        await deleteActivityApiServices.deleteactivityapi();
   }
 }
