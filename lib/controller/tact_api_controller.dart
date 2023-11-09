@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 
 import 'package:flutter_application_1/app/data/constands/constands.dart';
@@ -19,12 +21,14 @@ import 'package:flutter_application_1/services/networks/store_subcatogory_api_se
 import 'package:get/get.dart';
 
 import 'package:dio/dio.dart' as dio;
+import 'package:path_provider/path_provider.dart';
+import 'package:pdf/pdf.dart';
+import 'package:pdf/widgets.dart' as pw;
+import 'package:share_plus/share_plus.dart';
 
 class TactApiController extends GetxController {
-
-
   GetSubCatogoriesApiServices gettypeapiservice = GetSubCatogoriesApiServices();
- RxBool isLoading = false.obs;
+  RxBool isLoading = false.obs;
   List<StoreActivityListModel> selectedSubCatIdList = [];
 
   List<Success> subcategorList0 = [];
@@ -50,13 +54,8 @@ class TactApiController extends GetxController {
   String? selectedValue9;
   String? selectedValue10;
 
-
-
   RxString overallCprTime = "00:00:00".obs;
   RxString actualTimetotal = "00:00:00".obs;
-
-
-  
 
   getsubcatogory({required dynamic id}) async {
     dio.Response<dynamic> response =
@@ -147,6 +146,11 @@ class TactApiController extends GetxController {
 
   addGroupValue(int id, String value) {
     if (id == 1) {
+      // if(already value assigned){
+      //need to null
+      // }else{
+      //assign value
+      // }
       selectedValue0 = value;
     } else if (id == 2) {
       selectedValue1 = value;
@@ -170,22 +174,77 @@ class TactApiController extends GetxController {
     update();
   }
 
+  setDefaultGroupValue() {
+    selectedValue0 = null;
+
+    selectedValue1 = null;
+
+    selectedValue2 = null;
+
+    selectedValue3 = null;
+
+    selectedValue4 = null;
+
+    selectedValue5 = null;
+
+    selectedValue6 = null;
+
+    selectedValue7 = null;
+
+    selectedValue8 = null;
+
+    selectedValue0 = null;
+
+    update();
+  }
+
+  int timeToSeconds(String time) {
+    List<String> parts = time.split(':');
+    int hours = int.parse(parts[0]);
+    int minutes = int.parse(parts[1]);
+    int seconds = int.parse(parts[2]);
+    return (hours * 3600) + (minutes * 60) + seconds;
+  }
+
+  int getEfficiency({required String actualTime, required String overallTime}) {
+    // Convert the time strings to seconds
+    int seconds1 = timeToSeconds(actualTime);
+    int seconds2 = timeToSeconds(overallTime);
+
+    // Perform the division
+    double result = seconds1 / seconds2;
+
+    double finalResult = result * 100;
+
+    print(finalResult.round());
+
+    return finalResult.round();
+  }
+
   StoreActivityApiService activitylogapiservice = StoreActivityApiService();
 
-  Future storeactivity(
+  storeactivity(
       {required String c_id,
       required String s_id,
       required String from_time,
       required String to_time,
       required String value,
       required String title}) async {
-    dio.Response<dynamic> response =  await activitylogapiservice.storeactivityapi(
+    dio.Response<dynamic> response =
+        await activitylogapiservice.storeactivityapi(
             c_id: c_id,
             s_id: s_id,
             from_time: from_time,
             to_time: to_time,
             title: title,
             value: value);
+    // Get.snackbar(
+    //   response.statusCode.toString(),
+    //     response.data.toString(),
+    //     backgroundColor: Colors.red,
+    //     snackPosition: SnackPosition.BOTTOM
+    // );
+
     getactivity();
     update();
   }
@@ -211,7 +270,7 @@ class TactApiController extends GetxController {
   List<CatogoryList> catogorylist = [];
 
   Future getcatogory() async {
-     isLoading(true);
+    isLoading(true);
     dio.Response<dynamic> response =
         await getcatogoryapiservices.getcatogoryapi();
     if (response.statusCode == 200) {
@@ -223,8 +282,7 @@ class TactApiController extends GetxController {
       for (var categ in catogorylist) {
         getsubcatogory(id: categ.id);
       }
-       isLoading(false);
-    
+      isLoading(false);
     } else {
       Get.rawSnackbar(
         backgroundColor: Colors.red,
@@ -239,26 +297,251 @@ class TactApiController extends GetxController {
 
   GetActivityApiService getactivityapiservice = GetActivityApiService();
 
-  List<Activitylist> activitylist = [];
-  var actualtime='00:00:00';
-  var endingtime='00:00:00';
-  Future getactivity() async {
+  List<ActivityCycleList> activitylist = [];
+  var actualtime = '00:00:00';
+  var endingtime = '00:00:00';
+  getactivity() async {
+    activitylist.clear();
     dio.Response<dynamic> response =
         await getactivityapiservice.getactivityapi();
 
-    GetActivityModel getactivitymodel =
-        GetActivityModel.fromJson(response.data);
-    activitylist = getactivitymodel.data;
-    actualtime = getactivitymodel.actualTime;
-    endingtime = getactivitymodel.totalTime;
+    if (response.statusCode == 200) {
+      GetActivityModel getactivitymodel =
+          GetActivityModel.fromJson(response.data);
+      List<Activitylist> tempActivityList = [];
+      List<String> tempCycleList = [];
+
+      // tempActivityList = getactivitymodel.data;
+      getactivitymodel.data.forEach((element) {
+        if (tempCycleList.contains(element.title) == false) {
+          tempCycleList.add(element.title);
+        }
+      });
+      print("----------------------------->>>>>>>>");
+      print("----------------------------->>>>>>>>");
+      print("----------------------------->>>>>>>>");
+      print("----------------------------->>>>>>>>");
+      print("----------------------------->>>>>>>>");
+      print("----------------------------->>>>>>>>");
+      print("----------------------------->>>>>>>>");
+      print("----------------------------->>>>>>>>");
+      print("----------------------------->>>>>>>>");
+      print("----------------------------->>>>>>>>");
+      print("----------------------------->>>>>>>>");
+      print("----------------------------->>>>>>>>");
+      print("----------------------------->>>>>>>>");
+      print("----------------------------->>>>>>>>");
+      print(tempCycleList.length);
+
+      activitylist.clear();
+      for (var i = 0; i < tempCycleList.length; i++) {
+        print(
+            '------------------------->>>>>>>>>>>>>>>>>>>>>>>>>>>>****************************************************************************************************************************');
+
+        List<Activitylist> tempList = [];
+        for (var j = 0; j < getactivitymodel.data.length; j++) {
+          if (tempCycleList[i] == getactivitymodel.data[j].title) {
+            tempList.add(getactivitymodel.data[j]);
+          }
+        }
+        ActivityCycleList activityCycleList = ActivityCycleList(
+            activityList: tempList,
+            cycleName: tempCycleList[i],
+            cycleTime: tempList.first.toTime);
+        activitylist.add(activityCycleList);
+      }
+
+      update();
+    }
+    // actualtime = getactivitymodel.actualTime;
+    // endingtime = getactivitymodel.totalTime;
     update();
   }
-
 
   DeleteActivityApiServices deleteActivityApiServices =
       DeleteActivityApiServices();
   Future deleteactivity() async {
     dio.Response<dynamic> response =
         await deleteActivityApiServices.deleteactivityapi();
+
+    print(
+        "---------::::::::::::::::::::::::::::::::::::::::::::::::::_______________;");
+    print("delete response ");
+    print(response.statusCode);
+    print(response.data);
+
+    getactivity();
+  }
+
+  sharePdf() async {
+    final pdf = pw.Document();
+
+    pdf.addPage(pw.Page(
+        pageFormat: PdfPageFormat.a4,
+        build: (pw.Context context) {
+          return pw.Column(
+            children: [
+              pw.SizedBox(
+                height: 10,
+              ),
+              pw.Row(
+                mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
+                children: [
+                  pw.SizedBox(
+                    height: 10,
+                  ),
+                  pw.Container(
+                    width: 110,
+                    alignment: pw.Alignment.centerLeft,
+                    child: pw.Text(
+                      'Overall CPR Time',
+                      style: pw.TextStyle(color: PdfColors.grey),
+                    ),
+                  ),
+                  pw.SizedBox(
+                    height: 10,
+                  ),
+                  //   if (tactapiController.isNotEmpty)
+                  pw.Container(
+                    width: 100,
+                    alignment: pw.Alignment.centerLeft,
+                    child: pw.Text(
+                      "00:00:00",
+                      style: pw.TextStyle(color: PdfColors.grey),
+                    ),
+                  ),
+                  pw.SizedBox(
+                    height: 10,
+                  ),
+                  pw.Container(
+                    width: 100,
+                    alignment: pw.Alignment.centerLeft,
+                    child: pw.Text(
+                      overallCprTime.value,
+                      style: const pw.TextStyle(color: PdfColors.grey),
+                    ),
+                  )
+                ],
+              ),
+              pw.SizedBox(
+                height: 20,
+              ),
+              pw.Row(
+                mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
+                children: [
+                  pw.SizedBox(
+                    height: 10,
+                  ),
+                  pw.Container(
+                    width: 110,
+                    alignment: pw.Alignment.centerLeft,
+                    child: pw.Text(
+                      'Actual Time',
+                      style: pw.TextStyle(color: PdfColors.grey),
+                    ),
+                  ),
+                  pw.SizedBox(
+                    height: 10,
+                  ),
+                  //   if (tactapiController.isNotEmpty)
+                  pw.Container(
+                    width: 100,
+                    alignment: pw.Alignment.centerLeft,
+                    child: pw.Text(
+                      actualtime,
+                      style: pw.TextStyle(color: PdfColors.grey),
+                    ),
+                  ),
+                  pw.SizedBox(
+                    height: 10,
+                  ),
+                  pw.Container(
+                    width: 100,
+                    alignment: pw.Alignment.centerLeft,
+                    child: pw.Text(
+                      actualTimetotal.value,
+                      style: pw.TextStyle(color: PdfColors.grey),
+                    ),
+                  )
+                ],
+              ),
+              pw.SizedBox(
+                height: 20,
+              ),
+              for (int index = 0; index < activitylist.length; index++)
+                pw.Column(
+                  children: [
+                    pw.Row(
+                      children: [
+                        pw.Text(
+                          "${activitylist[index].cycleName} - ${activitylist[index].cycleTime}",
+                          style: pw.TextStyle(
+                              fontWeight: pw.FontWeight.bold,
+                              fontSize: 18,
+                              color: PdfColors.blue),
+                        ),
+                      ],
+                    ),
+                    pw.SizedBox(height: 10),
+                    for (int i = 0;
+                        i < activitylist[index].activityList.length;
+                        i++)
+                      pw.Row(
+                        mainAxisAlignment: pw.MainAxisAlignment.start,
+                        children: [
+                          pw.Container(
+                            width: 100,
+                            alignment: pw.Alignment.centerLeft,
+                            child: pw.Text(
+                              activitylist[index].activityList[i].categoryTitle,
+                              style: pw.TextStyle(color: PdfColors.grey),
+                            ),
+                          ),
+                          pw.SizedBox(
+                            height: 10,
+                          ),
+                          pw.Container(
+                            width: 100,
+                            alignment: pw.Alignment.centerLeft,
+                            child: pw.Text(
+                              activitylist[index].activityList[i].subTitle,
+                              style: pw.TextStyle(color: PdfColors.grey),
+                            ),
+                          ),
+                          pw.SizedBox(
+                            height: 10,
+                          ),
+                          pw.Container(
+                            width: 100,
+                            alignment: pw.Alignment.centerLeft,
+                            child: pw.Text(
+                              activitylist[index].activityList[i].value ==
+                                      "null"
+                                  ? " "
+                                  : activitylist[index].activityList[i].value,
+                              style: pw.TextStyle(color: PdfColors.grey),
+                            ),
+                          ),
+                          pw.SizedBox(
+                            height: 10,
+                          ),
+                        ],
+                      ),
+                  ],
+                )
+            ],
+          ); // Center
+        })); //
+
+// On Flutter, use the [path_provider](https://pub.dev/packages/path_provider) library:
+    final output = await getTemporaryDirectory();
+    final file = File("${output.path}/tackt_report.pdf");
+    await file.writeAsBytes(await pdf.save());
+
+    await Share.shareXFiles(
+      [XFile(file.path, bytes: await file.readAsBytes())],
+      text: "TACT",
+      subject: "Report Details",
+    );
   }
 }

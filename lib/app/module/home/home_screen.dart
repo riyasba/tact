@@ -47,7 +47,7 @@ class _HomeScreenState extends State<HomeScreen> {
 //  final int duration = 120;
   // final _controller2 = CountDownController();
   String? selectedOption;
-  String selectedOption2 = 'Option 2';
+  String selectedOption2 = '150mg';
   bool _isRunning = true;
   bool isflashon = false;
   bool isplay1 = false;
@@ -382,7 +382,11 @@ String formatHHMMSS(int seconds) {
                         _startFlashlightTimer();
                         playAudio();
                         audioSoundManage();
+
                         loop();
+                      tactapiController.deleteactivity();
+                      tactapiController.setDefaultGroupValue();
+                      tactapiController.selectedSubCatIdList.clear();
                       },
                       child: Container(
                         height: 40,
@@ -688,20 +692,61 @@ String formatHHMMSS(int seconds) {
                                               tactapiController
                                                   .selectedSubCatIdList.length;
                                           i++) {
-                                        tactapiController.storeactivity(
-                                          value: tactapiController
-                                                .selectedSubCatIdList[i]
-                                                .value,
-                                            c_id: tactapiController
-                                                .selectedSubCatIdList[i]
-                                                .catogoryid,
-                                            s_id: tactapiController
-                                                .selectedSubCatIdList[i].subid,
-                                            from_time: tactapiController
-                                                .selectedSubCatIdList[i]
-                                                .startingTime,
-                                            to_time: "${DateTime.now().hour}:${DateTime.now().minute}:${DateTime.now().second}",
-                                            title: 'Cycle$cycle');
+
+                                          await Future.delayed(const Duration(milliseconds: 500));
+
+                                       if (tactapiController
+           .selectedSubCatIdList[i]
+           .name == "CPP") {
+  await tactapiController.storeactivity(
+     value: _currentSliderValue.round().toString(),
+       c_id: tactapiController
+           .selectedSubCatIdList[i]
+           .catogoryid,
+       s_id: tactapiController
+           .selectedSubCatIdList[i].subid,
+       from_time: tactapiController
+           .selectedSubCatIdList[i]
+           .startingTime,
+       to_time: "${DateTime.now().hour}:${DateTime.now().minute}:${DateTime.now().second}",
+       title: 'Cycle$cycle');
+}else 
+                                       if (tactapiController
+           .selectedSubCatIdList[i]
+           .name == "Amiodarone"){
+             await tactapiController.storeactivity(
+     value: selectedOption2,
+       c_id: tactapiController
+           .selectedSubCatIdList[i]
+           .catogoryid,
+       s_id: tactapiController
+           .selectedSubCatIdList[i].subid,
+       from_time: tactapiController
+           .selectedSubCatIdList[i]
+           .startingTime,
+       to_time: "${DateTime.now().hour}:${DateTime.now().minute}:${DateTime.now().second}",
+       title: 'Cycle$cycle');
+            }else{
+   await tactapiController.storeactivity(
+     value: tactapiController
+           .selectedSubCatIdList[i]
+           .value,
+       c_id: tactapiController
+           .selectedSubCatIdList[i]
+           .catogoryid,
+       s_id: tactapiController
+           .selectedSubCatIdList[i].subid,
+       from_time: tactapiController
+           .selectedSubCatIdList[i]
+           .startingTime,
+       to_time: "${DateTime.now().hour}:${DateTime.now().minute}:${DateTime.now().second}",
+       title: 'Cycle$cycle');
+}
+
+                                        // Get.rawSnackbar(
+                                        //   message: "Stored Cycle - ${tactapiController
+                                        //         .selectedSubCatIdList[i].name}"
+                                        // );
                                       }
 
                                       setState(
@@ -711,7 +756,7 @@ String formatHHMMSS(int seconds) {
                                           isreaload = true;
                                         },
                                       );
-
+                                      // tactapiController.selectedSubCatIdList.clear();
                                       // _controller.restart();
                                       // final alarmSettings =
                                       //     AlarmSettings(
@@ -759,6 +804,7 @@ String formatHHMMSS(int seconds) {
                                                     isreaload = false;
                                                   });
                                                   _controller.restart();
+                                                  // tactapiController.setDefaultGroupValue();
                                                   // player.stop();
                                                   // playAudio();
                                                   // loop();
@@ -967,7 +1013,7 @@ String formatHHMMSS(int seconds) {
                                             ),
                                             ListView.builder(
                                                 physics:
-                                                    NeverScrollableScrollPhysics(),
+                                                   const NeverScrollableScrollPhysics(),
                                                 shrinkWrap: true,
                                                 itemCount: tactapiController
                                                     .getDatList(tactapiController
@@ -1015,30 +1061,29 @@ String formatHHMMSS(int seconds) {
                                                                           .id,
                                                                       value!);
 
-                                                              selectedOption =
-                                                                  value;
+                                                              // selectedOption =
+                                                              //     value;
                                                               StoreActivityListModel
                                                                   storeActivityListModel =
                                                                   StoreActivityListModel(
-                                                                    value: "00",
+                                                                    value: "null",
                                                                       catogoryid: tactapiController
                                                                           .catogorylist[
                                                                               index]
                                                                           .id
                                                                           .toString(),
+                                                                          name: tactapiController
+                                                              .getDatList(
+                                                                  tactapiController
+                                                                      .catogorylist[
+                                                                          index]
+                                                                      .id)[index2].subTitle,
                                                                       subid: value,
                                                                       startingTime:
                                                                           _controller2
                                                                               .getTime()
                                                                               .toString());
-                                                              var tempList = tactapiController
-                                                                  .selectedSubCatIdList
-                                                                  .where((value2) =>
-                                                                      value2.subid ==
-                                                                          value &&
-                                                                      value2.catogoryid ==
-                                                                          storeActivityListModel
-                                                                              .catogoryid);
+                                                             
                                                               var tempId;
                                                               for (int i = 0;
                                                                   i <
@@ -1062,24 +1107,129 @@ String formatHHMMSS(int seconds) {
                                                                     .selectedSubCatIdList
                                                                     .removeAt(
                                                                         tempId);
+                                                                      // Get.rawSnackbar(
+                                                                      //   message: "Removed from list index $tempId"
+                                                                      // );
+                                                                      tactapiController
+                                                                    .selectedSubCatIdList
+                                                                    .add(
+                                                                        storeActivityListModel);
+                                                                      //   Get.rawSnackbar(
+                                                                      //   message: "Added to list "
+                                                                      // );
                                                               } else {
                                                                 tactapiController
                                                                     .selectedSubCatIdList
                                                                     .add(
                                                                         storeActivityListModel);
+                                                                      //   Get.rawSnackbar(
+                                                                      //   message: "Added to list "
+                                                                      // );
                                                               }
 
-                                                              print(
-                                                                  '${selectedOption}');
-                                                              var sub_id =
-                                                                  selectedOption;
-                                                              print(
-                                                                  '============$sub_id===========');
+                                                             
                                                             });
                                                           },
                                                         ),
                                                         kwidth5,
-                                                        Divider(
+                                                         ksizedbox10,
+                                                    if (tactapiController.getDatList(
+                                                                      tactapiController
+                                                                          .catogorylist[
+                                                                              index]
+                                                                          .id)[
+                                                                      index2]
+                                                                  .subTitle == "CPP" &&  tactapiController
+                                                                  .getGroupValue(
+                                                                      tactapiController
+                                                                          .catogorylist[
+                                                                              index]
+                                                                          .id
+                                                                     ) == tactapiController
+                                                                  .getDatList(
+                                                                      tactapiController
+                                                                          .catogorylist[
+                                                                              index]
+                                                                          .id)[
+                                                                      index2]
+                                                                  .id.toString())
+                                              Slider(
+                                                value: _currentSliderValue,
+                                                max: 100,
+                                                divisions: 100,
+                                                label: _currentSliderValue
+                                                    .round()
+                                                    .toString(),
+                                                onChanged: (double value) async{
+                                                  setState(() {
+                                                    _currentSliderValue = value;
+                                                  });
+                                                   
+        
+                                                },
+                                              ),
+                                                if (tactapiController.getDatList(
+                                                                      tactapiController
+                                                                          .catogorylist[
+                                                                              index]
+                                                                          .id)[
+                                                                      index2]
+                                                                  .subTitle == "Amiodarone" &&  tactapiController
+                                                                  .getGroupValue(
+                                                                      tactapiController
+                                                                          .catogorylist[
+                                                                              index]
+                                                                          .id
+                                                                     ) == tactapiController
+                                                                  .getDatList(
+                                                                      tactapiController
+                                                                          .catogorylist[
+                                                                              index]
+                                                                          .id)[
+                                                                      index2]
+                                                                  .id.toString())
+                                                                  Padding(
+                                                                    padding: const EdgeInsets.symmetric(horizontal: 50),
+                                                                    child: Column(
+                                                                      children: [
+                                                                  
+                                                                         RadioListTile(
+                                                                                                                            title: Text(
+                                                                                                                                "150mg",
+                                                                                                                                style: minfont),
+                                                                                                                            value: "150mg",
+                                                                                                                            groupValue: selectedOption2,
+                                                                                                                            onChanged: (
+                                                                                                                              String? value,
+                                                                                                                            ) {
+                                                                                                                              //update value here
+                                                                                                                              setState(() {
+                                                                                                                                selectedOption2 = value!;
+                                                                                                                              });
+                                                                                                                            },
+                                                                                                                          ),
+                                                                                                                          RadioListTile(
+                                                                                                                            title: Text(
+                                                                                                                                "300mg",
+                                                                                                                                style: minfont),
+                                                                                                                            value: "300mg",
+                                                                                                                            groupValue: selectedOption2,
+                                                                                                                            onChanged: (
+                                                                                                                              String? value,
+                                                                                                                            ) {
+                                                                                                                              //update value here
+                                                                                                                              setState(() {
+                                                                                                                                selectedOption2 = value!;
+                                                                                                                              });
+                                                                                                                            },
+                                                                                                                          ),
+                                                                  
+                                                                   ],
+                                                                    ),
+                                                                  ),
+                                            ksizedbox10,
+
+                                                       const Divider(
                                                           height: 1,
                                                         ),
                                                         ksizedbox10,
@@ -1095,8 +1245,8 @@ String formatHHMMSS(int seconds) {
                                                       TextEditingController();
                                                   _showTextFieldDialog(
                                                     context,
-                                                    "Rhythm",
-                                                    "Enter Rhythm",
+                                                    "Customize",
+                                                    "Enter value",
                                                     txtControllerrythem,
                                                     tactapiController
                                                         .catogorylist[index].id
@@ -1134,13 +1284,17 @@ String formatHHMMSS(int seconds) {
                     onTap: () {
                       _disableTorch(context);
                       tactapiController.deleteactivity();
+                      tactapiController.setDefaultGroupValue();
                       setState(() {
                         isEnable = false;
                         audioPlayer.stop();
                         audioPlayer2.stop();
                         player.stop();
                       });
-                      Get.off(const SuccessScreen());
+                      int efficiency = tactapiController.getEfficiency(actualTime: tactapiController.actualTimetotal.value, overallTime: tactapiController.overallCprTime.value);
+                      Get.off(SuccessScreen(
+                        efficiency: efficiency.toString(),
+                      ));
                     },
                     child: Container(
                       height: 50,
@@ -1199,69 +1353,78 @@ String formatHHMMSS(int seconds) {
                         ),
                         ksizedbox20,
                         Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             ksizedbox10,
-                            Text(
-                              'Overall CPR Time',
-                              style: minfont,
+                            Container(
+                                width: size.width * 0.3,
+                               alignment: Alignment.centerLeft,
+                              child: Text(
+                                'Overall CPR Time',
+                                style: minfont,
+                              ),
                             ),
-                            Column(
-                              children: [
-                                ksizedbox10,
-                                //   if (tactapiController.isNotEmpty)
-                                Text(
-                                  "00:00:00",
+                            ksizedbox10,
+                            //   if (tactapiController.isNotEmpty)
+                            Container(
+                                width: size.width * 0.28,
+                                        alignment: Alignment.centerLeft,
+                              child: Text(
+                                "00:00:00",
+                                style: minfont,
+                              ),
+                            ),
+                            ksizedbox10,
+                            Container(
+                                width: size.width * 0.28,
+                                        alignment: Alignment.centerLeft,
+                              child: Obx(()=> Text(
+                                  tactapiController.overallCprTime.value,
                                   style: minfont,
                                 ),
-                              ],
-                            ),
-                            Column(
-                              children: [
-                                ksizedbox10,
-                                Obx(()=> Text(
-                                    tactapiController.overallCprTime.value,
-                                    style: minfont,
-                                  ),
-                                ),
-                              ],
+                              ),
                             )
                           ],
                         ),
                         ksizedbox20,
                         Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             ksizedbox10,
-                            Text(
-                              'Actual Time',
-                              style: minfont,
+                                Container(
+                                width: size.width * 0.3,
+                                        alignment: Alignment.centerLeft,
+                              
+                              child: Text(
+                                'Actual Time',
+                                style: minfont,
+                              ),
                             ),
-                            Column(
-                              children: [
-                                ksizedbox10,
-                                //   if (tactapiController.isNotEmpty)
-                                Text(
-                                  tactapiController.actualtime,
+                            ksizedbox10,
+                            //   if (tactapiController.isNotEmpty)
+                                  Container(
+                                width: size.width * 0.28,
+                                        alignment: Alignment.centerLeft,
+                              child: Text(
+                                tactapiController.actualtime,
+                                style: minfont,
+                              ),
+                            ),
+                            ksizedbox10,
+                            Container(
+                                width: size.width * 0.28,
+                                        alignment: Alignment.centerLeft,
+                               child: Obx(()=> Text(
+                                  tactapiController.actualTimetotal.value,
                                   style: minfont,
                                 ),
-                              ],
-                            ),
-                            Column(
-                              children: [
-                                ksizedbox10,
-                                 Obx(()=> Text(
-                                    tactapiController.actualTimetotal.value,
-                                    style: minfont,
-                                  ),
-                                ),
-                              ],
-                            )
+                                                         ),
+                             )
                           ],
                         ),
                         ksizedbox20,
                         ListView.builder(
-                            physics: NeverScrollableScrollPhysics(),
+                            physics: const NeverScrollableScrollPhysics(),
                             shrinkWrap: true,
                             itemCount: tactapiController.activitylist.length,
                             itemBuilder: (BuildContext context, int index) {
@@ -1270,8 +1433,9 @@ String formatHHMMSS(int seconds) {
                                   Row(
                                     children: [
                                       Text(
-                                        tactapiController
-                                            .activitylist[index].title,
+                                        "${tactapiController
+                                            .activitylist[index].cycleName} - ${tactapiController
+                                            .activitylist[index].cycleTime}",
                                         style: TextStyle(
                                             fontWeight: FontWeight.w700,
                                             fontSize: 18,
@@ -1280,61 +1444,44 @@ String formatHHMMSS(int seconds) {
                                     ],
                                   ),
                                   ksizedbox10,
+                                  for(int i =0;i<tactapiController
+                                            .activitylist[index].activityList.length;i++)
                                   Row(
                                     mainAxisAlignment:
-                                        MainAxisAlignment.spaceEvenly,
+                                        MainAxisAlignment.start,
                                     children: [
-                                      Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          Text(
-                                            tactapiController
-                                                .activitylist[index]
-                                                .categoryTitle,
-                                            style: minfont,
-                                          ),
-                                          ksizedbox10,
-                                          // Text(
-                                          //   tactapiController
-                                          //       .activitylist[index]
-                                          //       .categoryTitle,
-                                          //   style: minfont,
-                                          // ),
-                                        ],
+                                      Container(
+                                        width: size.width * 0.28,
+                                        alignment: Alignment.centerLeft,
+                                        child: Text(
+                                          tactapiController
+                                          .activitylist[index].activityList[i]
+                                              .categoryTitle,
+                                          style: minfont,
+                                        ),
                                       ),
-                                      Column(
-                                        children: [
-                                          Text(
-                                            tactapiController
-                                                .activitylist[index].toTime,
-                                            style: minfont,
-                                          ),
-                                          ksizedbox10,
-                                          // Text(
-                                          //   tactapiController
-                                          //       .activitylist[index].fromTime,
-                                          //   style: minfont,
-                                          // ),
-                                        ],
+                                      ksizedbox10,
+                                       Container(
+                                          width: size.width * 0.28,
+                                        alignment: Alignment.centerLeft,
+                                        child: Text(
+                                          tactapiController
+                                          .activitylist[index].activityList[i].subTitle,
+                                          style: minfont,
+                                        ),
                                       ),
-                                      Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.end,
-                                        children: [
-                                          Text(
-                                            tactapiController
-                                                .activitylist[index].subTitle,
-                                            style: minfont,
-                                          ),
-                                          ksizedbox10,
-                                          // Text(
-                                          //   tactapiController
-                                          //       .activitylist[index].subTitle,
-                                          //   style: minfont,
-                                          // ),
-                                        ],
+                                      ksizedbox10,
+                                          Container(
+                                              width: size.width * 0.28,
+                                        alignment: Alignment.centerLeft,
+                                        child: Text(
+                                         tactapiController
+                                          .activitylist[index].activityList[i].value == "null" ? " ": tactapiController
+                                          .activitylist[index].activityList[i].value,
+                                          style: minfont,
+                                        ),
                                       ),
+                                      ksizedbox10,
                                     ],
                                   ),
                                 ],

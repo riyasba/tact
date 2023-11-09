@@ -36,30 +36,6 @@ class StoreActivityApiService extends BaseApiServices {
 
       responseJson = response;
 
-      print(
-          "::::::::<--TACT  store activity   api-->::::::::status code:::::::::");
-      print(
-          "::::::::<--TACT  store activity   api-->::::::::status code:::::::::");
-      print(
-          "::::::::<--TACT  store activity   api-->::::::::status code:::::::::");
-      print(
-          "::::::::<--TACT  store activity   api-->::::::::status code:::::::::");
-      print(
-          "::::::::<--TACT  store activity   api-->::::::::status code:::::::::");
-      print(
-          "::::::::<--TACT  store activity   api-->::::::::status code:::::::::");
-      print(
-          "::::::::<--TACT  store activity   api-->::::::::status code:::::::::");
-      print(
-          "::::::::<--TACT  store activity   api-->::::::::status code:::::::::");
-      print(
-          "::::::::<--TACT  store activity   api-->::::::::status code:::::::::");
-      print(
-          "::::::::<--TACT  store activity   api-->::::::::status code:::::::::");
-      print(
-          "::::::::<--TACT  store activity   api-->::::::::status code:::::::::");
-      print(
-          "::::::::<--TACT  store activity   api-->::::::::status code:::::::::");
       print(response.data);
     } on SocketException {
       print("no internet");

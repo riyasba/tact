@@ -46,6 +46,9 @@ dependencies:
   just_audio: ^0.9.35
   audioplayers: ^5.1.0
   dio: ^5.3.3
+  pdf: 
+  share_plus: 
+  path_provider:
  
 
 dev_dependencies:

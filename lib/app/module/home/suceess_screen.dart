@@ -9,7 +9,8 @@ import 'package:get/get_navigation/get_navigation.dart';
 
 
 class SuccessScreen extends StatefulWidget {
-  const SuccessScreen({super.key});
+  String efficiency;
+   SuccessScreen({super.key,required this.efficiency});
 
   @override
   State<SuccessScreen> createState() => _SuccessScreenState();
@@ -25,7 +26,7 @@ class _SuccessScreenState extends State<SuccessScreen> {
 
   toHomePage() async {
     await Future.delayed(const Duration(seconds: 3));
-    Get.offAll(HomeScreen ());
+    Get.offAll(HomeScreen());
   }
 
   //
@@ -46,7 +47,7 @@ class _SuccessScreenState extends State<SuccessScreen> {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Text(
-                  'Congratulations you have Achieved 80% Efficiency',
+                  'Congratulations you have Achieved ${widget.efficiency}% Efficiency',
                   textAlign: TextAlign.center,
                  style: TextStyle(fontWeight: FontWeight.bold,fontSize: 25,color: kblue),
                 ),

@@ -40,6 +40,27 @@ class GetActivityModel {
     };
 }
 
+
+ class ActivityCycleList{
+
+  String cycleName;
+  String cycleTime;
+  List<Activitylist> activityList;
+
+  ActivityCycleList({
+   required this.cycleName,
+   required this.cycleTime,
+   required this.activityList
+
+  });
+
+
+ }
+
+
+
+
+
 class Activitylist {
     int id;
     String title;
