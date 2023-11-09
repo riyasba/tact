@@ -298,6 +298,7 @@ class TactApiController extends GetxController {
   GetActivityApiService getactivityapiservice = GetActivityApiService();
 
   List<ActivityCycleList> activitylist = [];
+  List<ActivityCycleList> activitylistCurrent = [];
   var actualtime = '00:00:00';
   var endingtime = '00:00:00';
   getactivity() async {
@@ -335,6 +336,8 @@ class TactApiController extends GetxController {
 
       activitylist.clear();
       for (var i = 0; i < tempCycleList.length; i++) {
+
+
         print(
             '------------------------->>>>>>>>>>>>>>>>>>>>>>>>>>>>****************************************************************************************************************************');
 
@@ -350,12 +353,61 @@ class TactApiController extends GetxController {
             cycleTime: tempList.first.toTime);
         activitylist.add(activityCycleList);
       }
-
+       activitylistCurrent.clear();
       update();
     }
     // actualtime = getactivitymodel.actualTime;
     // endingtime = getactivitymodel.totalTime;
     update();
+  }
+
+
+  getactivityLocal() async {
+    activitylistCurrent.clear();
+     List<Activitylist> tempActivityList = [];
+      List<String> tempCycleList = [];
+
+      // tempActivityList = getactivitymodel.data;
+     selectedSubCatIdList.forEach((element) {
+        if (tempCycleList.contains(element.title) == false) {
+          tempCycleList.add(element.title);
+        }
+      });
+      
+      print(tempCycleList.length);
+
+      // activitylist.clear();
+       for (var i = 0; i < tempCycleList.length; i++) {
+        
+
+
+        List<Activitylist> tempList = [];
+
+        for (var j = 0; j < selectedSubCatIdList.length; j++) {
+          Activitylist activitylist = Activitylist(
+            categoryId: selectedSubCatIdList[j].catogoryid,
+            categoryTitle: selectedSubCatIdList[j].categoryName,
+            createdAt: DateTime.now(),
+            fromTime: "00:00:00",
+            id: 0,
+            subCategory: selectedSubCatIdList[j].name,
+            subTitle: selectedSubCatIdList[j].name,
+            title: selectedSubCatIdList[j].title,
+            toTime: "00:00:00",
+            updatedAt: DateTime.now(),
+            value: ""
+           );
+            tempList.add(activitylist);
+        }
+
+        ActivityCycleList activityCycleList = ActivityCycleList(
+            activityList: tempList,
+            cycleName: tempCycleList[i],
+            cycleTime: tempList.first.toTime);
+        activitylistCurrent.add(activityCycleList);
+      }
+
+      update();
   }
 
   DeleteActivityApiServices deleteActivityApiServices =
@@ -373,7 +425,7 @@ class TactApiController extends GetxController {
     getactivity();
   }
 
-  sharePdf() async {
+  sharePdf({required String aminDrome,required String cppValue,required DateTime cycleTime}) async {
     final pdf = pw.Document();
 
     pdf.addPage(pw.Page(
@@ -519,6 +571,83 @@ class TactApiController extends GetxController {
                                       "null"
                                   ? " "
                                   : activitylist[index].activityList[i].value,
+                              style: pw.TextStyle(color: PdfColors.grey),
+                            ),
+                          ),
+                          pw.SizedBox(
+                            height: 10,
+                          ),
+                        ],
+                      ),
+                  ],
+                ),
+                 pw.SizedBox(
+                height: 20,
+              ),
+              for (int index = 0; index < activitylistCurrent.length; index++)
+                pw.Column(
+                  children: [
+                    pw.Row(
+                      children: [
+                        pw.Text(
+                          "${activitylistCurrent[index].cycleName} - ${cycleTime.hour}:${cycleTime.minute}:${cycleTime.second}",
+                          style: pw.TextStyle(
+                              fontWeight: pw.FontWeight.bold,
+                              fontSize: 18,
+                              color: PdfColors.blue),
+                        ),
+                      ],
+                    ),
+                    pw.SizedBox(height: 10),
+                    for (int i = 0;
+                        i < activitylistCurrent[index].activityList.length;
+                        i++)
+                      pw.Row(
+                        mainAxisAlignment: pw.MainAxisAlignment.start,
+                        children: [
+                          pw.Container(
+                            width: 100,
+                            alignment: pw.Alignment.centerLeft,
+                            child: pw.Text(
+                              activitylistCurrent[index].activityList[i].categoryTitle,
+                              style: const pw.TextStyle(color: PdfColors.grey),
+                            ),
+                          ),
+                          pw.SizedBox(
+                            height: 10,
+                          ),
+                          pw.Container(
+                            width: 100,
+                            alignment: pw.Alignment.centerLeft,
+                            child: pw.Text(
+                              activitylistCurrent[index].activityList[i].subTitle,
+                              style: const pw.TextStyle(color: PdfColors.grey),
+                            ),
+                          ),
+                          pw.SizedBox(
+                            height: 10,
+                          ),
+                        if(activitylistCurrent[index].activityList[i].subTitle == "Amiodarone")  pw.Container(
+                            width: 100,
+                            alignment: pw.Alignment.centerLeft,
+                            child: pw.Text(
+                              aminDrome,
+                              style: pw.TextStyle(color: PdfColors.grey),
+                            ),
+                          ),
+                           if(activitylistCurrent[index].activityList[i].subTitle == "CPP")  pw.Container(
+                            width: 100,
+                            alignment: pw.Alignment.centerLeft,
+                            child: pw.Text(
+                              cppValue,
+                              style: pw.TextStyle(color: PdfColors.grey),
+                            ),
+                          ),
+                           if(activitylistCurrent[index].activityList[i].subTitle == "Amiodarone" && activitylistCurrent[index].activityList[i].subTitle != "CPP")  pw.Container(
+                            width: 100,
+                            alignment: pw.Alignment.centerLeft,
+                            child: pw.Text(
+                             " ",
                               style: pw.TextStyle(color: PdfColors.grey),
                             ),
                           ),

@@ -5,7 +5,10 @@ import 'package:flutter_application_1/controller/tact_api_controller.dart';
 import 'package:get/get.dart';
 
 class ReportDetails extends StatefulWidget {
-  const ReportDetails({super.key});
+  String aminDrome;
+  String cppValue;
+  DateTime cycleTime;
+  ReportDetails({super.key,required this.aminDrome,required this.cppValue,required this.cycleTime});
 
   @override
   State<ReportDetails> createState() => _ReportDetailsState();
@@ -29,8 +32,12 @@ class _ReportDetailsState extends State<ReportDetails> {
         title: Text('Report Details'),
         actions: [
           IconButton(onPressed: (){
-            tactapiController.sharePdf();
-          }, icon: Icon(Icons.share))
+            tactapiController.sharePdf(
+              aminDrome: widget.aminDrome,
+              cppValue: widget.cppValue,
+              cycleTime: widget.cycleTime
+            );
+          }, icon:const Icon(Icons.share))
         ],
       ),
       body: Padding(
@@ -111,7 +118,7 @@ class _ReportDetailsState extends State<ReportDetails> {
                           ],
                         ),
                         ksizedbox20,
-                ListView.builder(
+                                    ListView.builder(
                                     physics: const NeverScrollableScrollPhysics(),
                                     shrinkWrap: true,
                                     itemCount: tactapiController.activitylist.length,
@@ -139,7 +146,7 @@ class _ReportDetailsState extends State<ReportDetails> {
                                                 MainAxisAlignment.start,
                                             children: [
                                               Container(
-                                                width: size.width * 0.28,
+                                                width: size.width * 0.3,
                                                 alignment: Alignment.centerLeft,
                                                 child: Text(
                                                   tactapiController
@@ -175,6 +182,89 @@ class _ReportDetailsState extends State<ReportDetails> {
                                         ],
                                       );
                                     }),
+                                     ksizedbox10,
+                         ListView.builder(
+                          physics: const NeverScrollableScrollPhysics(),
+                          shrinkWrap: true,
+                          itemCount: tactapiController.activitylistCurrent.length,
+                          itemBuilder: (BuildContext context, int index) {
+                            return Column(
+                              children: [
+                                Row(
+                                  children: [
+                                    Text(
+                                      "${tactapiController.activitylistCurrent[index].cycleName} - ${widget.cycleTime.hour}:${widget.cycleTime.minute}:${widget.cycleTime.second}",
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.w700,
+                                          fontSize: 18,
+                                          color: kblue),
+                                    ),
+                                  ],
+                                ),
+                                ksizedbox10,
+                                for (int i = 0;
+                                    i <
+                                        tactapiController.activitylistCurrent[index]
+                                            .activityList.length;
+                                    i++)
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    children: [
+                                      Container(
+                                        width: size.width * 0.3,
+                                        alignment: Alignment.centerLeft,
+                                        child: Text(
+                                          tactapiController.activitylistCurrent[index]
+                                              .activityList[i].categoryTitle,
+                                          style: minfont,
+                                        ),
+                                      ),
+                                      ksizedbox10,
+                                      Container(
+                                        width: size.width * 0.28,
+                                        alignment: Alignment.centerLeft,
+                                        child: Text(
+                                          tactapiController.activitylistCurrent[index]
+                                              .activityList[i].subTitle,
+                                          style: minfont,
+                                        ),
+                                      ),
+                                      ksizedbox10,
+                                   if(tactapiController.activitylistCurrent[index]
+                                              .activityList[i].subTitle == "Amiodarone")   Container(
+                                        width: size.width * 0.28,
+                                        alignment: Alignment.centerLeft,
+                                        child: Text(
+                                          widget.aminDrome,
+                                          style: minfont,
+                                        ),
+                                      ),
+                                       if(tactapiController.activitylistCurrent[index]
+                                              .activityList[i].subTitle == "CPP")   Container(
+                                        width: size.width * 0.28,
+                                        alignment: Alignment.centerLeft,
+                                        child: Text(
+                                         widget.cppValue,
+                                          style: minfont,
+                                        ),
+                                      ),
+                                          if(tactapiController.activitylistCurrent[index]
+                                              .activityList[i].subTitle != "CPP" && tactapiController.activitylistCurrent[index]
+                                              .activityList[i].subTitle != "Amiodarone")   Container(
+                                        width: size.width * 0.28,
+                                        alignment: Alignment.centerLeft,
+                                        child: Text(
+                                         " ",
+                                          style: minfont,
+                                        ),
+                                      ),
+                                      ksizedbox10,
+                                    ],
+                                  ),
+                              ],
+                            );
+                          },
+                        ),
               ],
             );
           }
