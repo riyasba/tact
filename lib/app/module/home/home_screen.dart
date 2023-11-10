@@ -3,10 +3,12 @@ import 'dart:async';
 import 'package:alarm/alarm.dart';
 
 import 'package:alarm/model/alarm_settings.dart';
+import 'package:flutter_application_1/app/module/home/view_all_screen.dart';
 
 import 'package:flutter_application_1/controller/tact_api_controller.dart';
 
 import 'package:flutter_application_1/models/store_activity_list_model.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 import 'package:just_audio/just_audio.dart';
 
@@ -16,11 +18,12 @@ import 'package:flutter/cupertino.dart';
 
 import 'package:flutter/material.dart';
 
+
 import 'package:flutter_application_1/app/data/constands/constands.dart';
 
-import 'package:flutter_application_1/app/module/home/report_details.dart';
 
 import 'package:flutter_application_1/app/module/home/ring.dart';
+
 
 import 'package:flutter_application_1/app/module/home/suceess_screen.dart';
 
@@ -288,6 +291,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
+    
     var size = MediaQuery.of(context).size;
 
     return Scaffold(
@@ -340,14 +344,15 @@ class _HomeScreenState extends State<HomeScreen> {
                                   ],
                                 ),
                                 GestureDetector(
-                                    onTap: () async {
-                                      if (controller.count != 120) {
-                                        controller.increment();
-                                        audioSoundManage();
-                                      }
-                                    },
-                                    child: const Icon(Icons.add_circle_outline,
-                                        size: 25)),
+                                  onTap: () async {
+                                    if (controller.count != 120) {
+                                      controller.increment();
+                                      audioSoundManage();
+                                    }
+                                  },
+                                  child: const Icon(Icons.add_circle_outline,
+                                      size: 25),
+                                ),
                               ],
                             ),
                             const Text(
@@ -691,10 +696,6 @@ class _HomeScreenState extends State<HomeScreen> {
                                         await Future.delayed(
                                             const Duration(milliseconds: 500));
 
-
-
-
-
                                         if (tactapiController
                                                 .selectedSubCatIdList[i].name ==
                                             "CPP") {
@@ -732,8 +733,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                                   "${cyclestarttime.hour}:${cyclestarttime.minute}:${cyclestarttime.second}",
                                               title: 'Cycle$cycle');
                                         } else {
-                                          await 
-                                          tactapiController.storeactivity(
+                                          await tactapiController.storeactivity(
                                               value: tactapiController
                                                   .selectedSubCatIdList[i]
                                                   .value,
@@ -764,7 +764,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                           isreaload = true;
                                         },
                                       );
-                                      tactapiController.selectedSubCatIdList.clear();
+                                      tactapiController.selectedSubCatIdList
+                                          .clear();
                                       // _controller.restart();
                                       // final alarmSettings =
                                       //     AlarmSettings(
@@ -814,7 +815,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                                     isreaload = false;
                                                   });
                                                   _controller.restart();
-                                                  tactapiController.setDefaultGroupValue();
+                                                  tactapiController
+                                                      .setDefaultGroupValue();
                                                   // player.stop();
                                                   // playAudio();
                                                   // loop();
@@ -950,8 +952,14 @@ class _HomeScreenState extends State<HomeScreen> {
                                                 MainAxisAlignment.spaceBetween,
                                             children: [
                                               Text(
-                                                  'Choose ${tactapiController.catogorylist[index].title}',
-                                                  style: maxfont),
+                                                'Choose ${tactapiController.catogorylist[index].title}',
+                                                style: GoogleFonts.poppins(
+                                                  textStyle: TextStyle(
+                                                      fontSize: 16,
+                                                      fontWeight:
+                                                          FontWeight.w600),
+                                                ),
+                                              ),
                                               const Icon(
                                                   Icons.arrow_drop_down_rounded)
                                             ],
@@ -1016,8 +1024,14 @@ class _HomeScreenState extends State<HomeScreen> {
                                                       .spaceBetween,
                                               children: [
                                                 Text(
-                                                    'Choose ${tactapiController.catogorylist[index].title}',
-                                                    style: maxfont),
+                                                  'Choose ${tactapiController.catogorylist[index].title}',
+                                                  style: GoogleFonts.poppins(
+                                                    textStyle: TextStyle(
+                                                        fontSize: 16,
+                                                        fontWeight:
+                                                            FontWeight.w600),
+                                                  ),
+                                                ),
                                                 const Icon(
                                                     Icons.arrow_drop_up_rounded)
                                               ],
@@ -1038,15 +1052,24 @@ class _HomeScreenState extends State<HomeScreen> {
                                                     children: [
                                                       RadioListTile(
                                                         title: Text(
-                                                            tactapiController
-                                                                .getDatList(
-                                                                    tactapiController
-                                                                        .catogorylist[
-                                                                            index]
-                                                                        .id)[
-                                                                    index2]
-                                                                .subTitle,
-                                                            style: minfont),
+                                                          tactapiController
+                                                              .getDatList(
+                                                                  tactapiController
+                                                                      .catogorylist[
+                                                                          index]
+                                                                      .id)[
+                                                                  index2]
+                                                              .subTitle,
+                                                          style: GoogleFonts
+                                                              .poppins(
+                                                            textStyle: TextStyle(
+                                                                fontSize: 13,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w500,
+                                                                color: kgrey),
+                                                          ),
+                                                        ),
                                                         value: tactapiController
                                                             .getDatList(
                                                                 tactapiController
@@ -1076,12 +1099,14 @@ class _HomeScreenState extends State<HomeScreen> {
                                                             // selectedOption =
                                                             //     value;
                                                             StoreActivityListModel storeActivityListModel = StoreActivityListModel(
-                                                              title: "Cycle$cycle",
+                                                                title:
+                                                                    "Cycle$cycle",
                                                                 value: "null",
-                                                                categoryName:  tactapiController
-                                                                    .catogorylist[
-                                                                        index]
-                                                                    .title,
+                                                                categoryName:
+                                                                    tactapiController
+                                                                        .catogorylist[
+                                                                            index]
+                                                                        .title,
                                                                 catogoryid: tactapiController
                                                                     .catogorylist[
                                                                         index]
@@ -1132,7 +1157,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                                                   .selectedSubCatIdList
                                                                   .add(
                                                                       storeActivityListModel);
-                                                            tactapiController
+                                                              tactapiController
                                                                   .getactivityLocal();
                                                               //   Get.rawSnackbar(
                                                               //   message: "Added to list "
@@ -1142,7 +1167,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                                                   .selectedSubCatIdList
                                                                   .add(
                                                                       storeActivityListModel);
-                                                                tactapiController
+                                                              tactapiController
                                                                   .getactivityLocal();
                                                               //   Get.rawSnackbar(
                                                               //   message: "Added to list "
@@ -1317,7 +1342,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   GestureDetector(
                     onTap: () {
                       _disableTorch(context);
-                      tactapiController.deleteactivity();
+                      //  tactapiController.deleteactivity();
                       tactapiController.setDefaultGroupValue();
                       setState(() {
                         isEnable = false;
@@ -1338,10 +1363,12 @@ class _HomeScreenState extends State<HomeScreen> {
                       child: Center(
                         child: Text(
                           'ROSC Achieved',
-                          style: TextStyle(
-                              color: kwhite,
-                              fontSize: 17,
-                              fontWeight: FontWeight.w700),
+                          style: GoogleFonts.poppins(
+                            textStyle: TextStyle(
+                                color: kwhite,
+                                fontSize: 16,
+                                fontWeight: FontWeight.w600),
+                          ),
                         ),
                       ),
                       decoration: BoxDecoration(
@@ -1368,16 +1395,19 @@ class _HomeScreenState extends State<HomeScreen> {
                           children: [
                             Text(
                               'Activity Log',
-                              style: TextStyle(
-                                  fontSize: 24,
-                                  fontWeight: FontWeight.bold,
-                                  color: kblue),
+                              style: GoogleFonts.poppins(
+                                textStyle: TextStyle(
+                                    color: kblue,
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.w700),
+                              ),
                             ),
                             GestureDetector(
                               onTap: () {
-                                Get.to(ReportDetails(
+                                Get.to(ViewAllScreen(
                                   aminDrome: selectedOption2,
-                                  cppValue: _currentSliderValue.round().toString(),
+                                  cppValue:
+                                      _currentSliderValue.round().toString(),
                                   cycleTime: cyclestarttime,
                                 ));
                               },
@@ -1534,10 +1564,11 @@ class _HomeScreenState extends State<HomeScreen> {
                           },
                         ),
                         ksizedbox10,
-                         ListView.builder(
+                        ListView.builder(
                           physics: const NeverScrollableScrollPhysics(),
                           shrinkWrap: true,
-                          itemCount: tactapiController.activitylistCurrent.length,
+                          itemCount:
+                              tactapiController.activitylistCurrent.length,
                           itemBuilder: (BuildContext context, int index) {
                             return Column(
                               children: [
@@ -1555,8 +1586,10 @@ class _HomeScreenState extends State<HomeScreen> {
                                 ksizedbox10,
                                 for (int i = 0;
                                     i <
-                                        tactapiController.activitylistCurrent[index]
-                                            .activityList.length;
+                                        tactapiController
+                                            .activitylistCurrent[index]
+                                            .activityList
+                                            .length;
                                     i++)
                                   Row(
                                     mainAxisAlignment: MainAxisAlignment.start,
@@ -1565,8 +1598,10 @@ class _HomeScreenState extends State<HomeScreen> {
                                         width: size.width * 0.28,
                                         alignment: Alignment.centerLeft,
                                         child: Text(
-                                          tactapiController.activitylistCurrent[index]
-                                              .activityList[i].categoryTitle,
+                                          tactapiController
+                                              .activitylistCurrent[index]
+                                              .activityList[i]
+                                              .categoryTitle,
                                           style: minfont,
                                         ),
                                       ),
@@ -1575,32 +1610,42 @@ class _HomeScreenState extends State<HomeScreen> {
                                         width: size.width * 0.28,
                                         alignment: Alignment.centerLeft,
                                         child: Text(
-                                          tactapiController.activitylistCurrent[index]
-                                              .activityList[i].subTitle,
+                                          tactapiController
+                                              .activitylistCurrent[index]
+                                              .activityList[i]
+                                              .subTitle,
                                           style: minfont,
                                         ),
                                       ),
                                       ksizedbox10,
-                                   if(tactapiController.activitylistCurrent[index]
-                                              .activityList[i].subTitle == "Amiodarone")   Container(
-                                        width: size.width * 0.28,
-                                        alignment: Alignment.centerLeft,
-                                        child: Text(
-                                          selectedOption2,
-                                          style: minfont,
+                                      if (tactapiController
+                                              .activitylistCurrent[index]
+                                              .activityList[i]
+                                              .subTitle ==
+                                          "Amiodarone")
+                                        Container(
+                                          width: size.width * 0.28,
+                                          alignment: Alignment.centerLeft,
+                                          child: Text(
+                                            selectedOption2,
+                                            style: minfont,
+                                          ),
                                         ),
-                                      ),
-                                       if(tactapiController.activitylistCurrent[index]
-                                              .activityList[i].subTitle == "CPP")   Container(
-                                        width: size.width * 0.28,
-                                        alignment: Alignment.centerLeft,
-                                        child: Text(
-                                          _currentSliderValue
-                                                  .round()
-                                                  .toString(),
-                                          style: minfont,
+                                      if (tactapiController
+                                              .activitylistCurrent[index]
+                                              .activityList[i]
+                                              .subTitle ==
+                                          "CPP")
+                                        Container(
+                                          width: size.width * 0.28,
+                                          alignment: Alignment.centerLeft,
+                                          child: Text(
+                                            _currentSliderValue
+                                                .round()
+                                                .toString(),
+                                            style: minfont,
+                                          ),
                                         ),
-                                      ),
                                       ksizedbox10,
                                     ],
                                   ),

@@ -1,16 +1,15 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/app/data/constands/constands.dart';
-import 'package:flutter_application_1/app/module/home/home_screen.dart';
 import 'package:flutter_application_1/controller/tact_api_controller.dart';
 import 'package:get/get.dart';
 
-class ReportDetails extends StatefulWidget {
+class ViewAllScreen extends StatefulWidget {
   String aminDrome;
   String cppValue;
   DateTime cycleTime;
   var efficiency;
-  ReportDetails({
+  ViewAllScreen({
     super.key,
     required this.aminDrome,
     required this.cppValue,
@@ -19,16 +18,24 @@ class ReportDetails extends StatefulWidget {
   });
 
   @override
-  State<ReportDetails> createState() => _ReportDetailsState();
+  State<ViewAllScreen> createState() => _ViewAllScreenState();
 }
 
-class _ReportDetailsState extends State<ReportDetails> {
+class _ViewAllScreenState extends State<ViewAllScreen> {
   final tactapiController = Get.find<TactApiController>();
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
     return Scaffold(
       appBar: AppBar(
+        leading: InkWell(
+          onTap: () {
+            Get.back();
+          },
+          child: Icon(
+            Icons.arrow_back_ios,
+          ),
+        ),
         title: Text('Report Details'),
         actions: [
           IconButton(
@@ -277,43 +284,10 @@ class _ReportDetailsState extends State<ReportDetails> {
                   );
                 },
               ),
-              ksizedbox30,
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Text(
-                    'Congratulations you have Achieved ${widget.efficiency}% Efficiency',
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 25,
-                        color: kblue),
-                  ),
-                ],
-              ),
+         
             ],
           );
         }),
-      ),
-      bottomNavigationBar: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: InkWell(
-          onTap: () {
-            tactapiController.deleteactivity();
-            Get.offAll(HomeScreen());
-          },
-          child: Container(
-            child: Center(
-                child: Text(
-              'Go To Home ',
-              style: TextStyle(fontWeight: FontWeight.w600, color: kwhite),
-            )),
-            height: 50,
-            width: 50,
-            decoration: BoxDecoration(
-                color: kblue, borderRadius: BorderRadius.circular(16)),
-          ),
-        ),
       ),
     );
   }

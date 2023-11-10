@@ -1,22 +1,30 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_application_1/app/data/constands/constands.dart';
-import 'package:flutter_application_1/app/module/home/home_screen.dart';
+import 'package:flutter_application_1/app/module/home/report_details.dart';
+import 'package:flutter_application_1/controller/tact_api_controller.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:get/get.dart';
 import 'package:get/get_core/get_core.dart';
 import 'package:get/get_navigation/get_navigation.dart';
 
-
-
 class SuccessScreen extends StatefulWidget {
   String efficiency;
-   SuccessScreen({super.key,required this.efficiency});
+  SuccessScreen({super.key, required this.efficiency});
 
   @override
   State<SuccessScreen> createState() => _SuccessScreenState();
 }
 
 class _SuccessScreenState extends State<SuccessScreen> {
+
+
+    final tactapiController = Get.find<TactApiController>();
+  DateTime cyclestarttime = DateTime.now();
+  double _currentSliderValue = 20;
+  String selectedOption2 = '150mg';
+
+
   @override
   void initState() {
     super.initState();
@@ -25,8 +33,18 @@ class _SuccessScreenState extends State<SuccessScreen> {
   }
 
   toHomePage() async {
-    await Future.delayed(const Duration(seconds: 3));
-    Get.offAll(HomeScreen());
+    await Future.delayed(const Duration(seconds: 2));
+
+
+ int efficiency = tactapiController.getEfficiency(
+                          actualTime: tactapiController.actualTimetotal.value,
+                          overallTime: tactapiController.overallCprTime.value);
+
+    Get.offAll(ReportDetails(
+      aminDrome: selectedOption2,
+      cppValue: _currentSliderValue.round().toString(),
+      cycleTime: cyclestarttime, efficiency: efficiency,
+    ));
   }
 
   //
@@ -49,7 +67,8 @@ class _SuccessScreenState extends State<SuccessScreen> {
                 Text(
                   'Congratulations you have Achieved ${widget.efficiency}% Efficiency',
                   textAlign: TextAlign.center,
-                 style: TextStyle(fontWeight: FontWeight.bold,fontSize: 25,color: kblue),
+                  style: TextStyle(
+                      fontWeight: FontWeight.bold, fontSize: 25, color: kblue),
                 ),
               ],
             ),
