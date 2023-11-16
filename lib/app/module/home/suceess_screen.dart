@@ -53,31 +53,33 @@ class _SuccessScreenState extends State<SuccessScreen> {
     return Scaffold(
       backgroundColor: Colors.white,
       body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Container(
-              child: SvgPicture.asset('assets/images/Group 33.svg'),
-            ),
-
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Text(
-                  'Congratulations you have Achieved ${widget.efficiency}% Efficiency',
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                      fontWeight: FontWeight.bold, fontSize: 25, color: kblue),
-                ),
-              ],
-            ),
-            //  Column(
-            //    children: [
-            //      Text('Congratulations you have Achieved 80% Efficiency',style: TextStyle(fontWeight: FontWeight.bold,fontSize: 25),),
-            //    ],
-            //  )
-          ],
+        child: SingleChildScrollView(physics: BouncingScrollPhysics(),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Container(
+                child: SvgPicture.asset('assets/images/Group 33.svg'),
+              ),
+        
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Text(
+                    'Congratulations you have Achieved ${widget.efficiency}% Efficiency',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                        fontWeight: FontWeight.bold, fontSize: 25, color: kblue),
+                  ),
+                ],
+              ),
+              //  Column(
+              //    children: [
+              //      Text('Congratulations you have Achieved 80% Efficiency',style: TextStyle(fontWeight: FontWeight.bold,fontSize: 25),),
+              //    ],
+              //  )
+            ],
+          ),
         ),
       ),
     );

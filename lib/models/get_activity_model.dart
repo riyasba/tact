@@ -45,7 +45,7 @@ class GetActivityModel {
 
   String cycleName;
   String cycleTime;
-  List<Activitylist> activityList;
+     List<Activitylist> activityList;
 
   ActivityCycleList({
    required this.cycleName,

@@ -52,7 +52,7 @@ class _ViewAllScreenState extends State<ViewAllScreen> {
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 20),
         child: GetBuilder<TactApiController>(builder: (_) {
-          return Column(
+          return ListView(physics: BouncingScrollPhysics(),
             children: [
               ksizedbox20,
               Row(
@@ -284,7 +284,6 @@ class _ViewAllScreenState extends State<ViewAllScreen> {
                   );
                 },
               ),
-         
             ],
           );
         }),
