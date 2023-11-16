@@ -113,6 +113,7 @@ class _HomeScreenState extends State<HomeScreen> {
       () {
         alarms = Alarm.getAlarms();
         alarms.sort((a, b) => a.dateTime.isBefore(b.dateTime) ? 0 : 1);
+         
       },
     );
   }
@@ -213,6 +214,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   void dispose() {
+      iscycleStart = false;
     _timer!.cancel();
     subscription?.cancel();
     audioPlayer.stop();
@@ -291,47 +293,47 @@ class _HomeScreenState extends State<HomeScreen> {
 
 
 
-  cyclegettingRestarted() {
-                     _disableTorch(context);
-                      //  tactapiController.deleteactivity();
-                      tactapiController.setDefaultGroupValue();
-                      setState(() {
-                        isEnable = false;
-                        audioPlayer.stop();
-                        audioPlayer2.stop();
-                        player.stop();
-                        _disableTorch(context);
-                      });
+  // cyclegettingRestarted() {
+  //                    _disableTorch(context);
+  //                     //  tactapiController.deleteactivity();
+  //                     tactapiController.setDefaultGroupValue();
+  //                     setState(() {
+  //                       isEnable = false;
+  //                       audioPlayer.stop();
+  //                       audioPlayer2.stop();
+  //                       player.stop();
+  //                       _disableTorch(context);
+  //                     });
 
 
-              setState(() {
-                cycle = 1;
-                          isplay1 = true;
-                          isplay = true;
-                          isEnable = true;
-                          iscycleStart = true;
-                          cyclestarttime = DateTime.now();
-                        });
-                        _controller2.start();
-                        _controller.start();
-                        startTimer();
-                        _startFlashlightTimer();
-                        playAudio();
-                        audioSoundManage();
+  //             setState(() {
+  //               cycle = 1;
+  //                         isplay1 = true;
+  //                         isplay = true;
+  //                         isEnable = true;
+  //                         iscycleStart = true;
+  //                         cyclestarttime = DateTime.now();
+  //                       });
+  //                       _controller2.start();
+  //                       _controller.start();
+  //                       startTimer();
+  //                       _startFlashlightTimer();
+  //                       playAudio();
+  //                       audioSoundManage();
 
-                        loop();
-                        tactapiController.deleteactivity();
-                        tactapiController.setDefaultGroupValue();
-                        tactapiController.selectedSubCatIdList.clear();
-                        tactapiController.activitylistCurrent.clear();
-                        ActivityCycleList activityCycleList = ActivityCycleList(
-                            activityList: [],
-                            cycleName: "Cycle$cycle",
-                            cycleTime:
-                                "${cyclestarttime.hour}:${cyclestarttime.minute}:${cyclestarttime.second}");
-                        tactapiController.activitylistCurrent
-                            .add(activityCycleList);
-  }
+  //                       loop();
+  //                       tactapiController.deleteactivity();
+  //                       tactapiController.setDefaultGroupValue();
+  //                       tactapiController.selectedSubCatIdList.clear();
+  //                       tactapiController.activitylistCurrent.clear();
+  //                       ActivityCycleList activityCycleList = ActivityCycleList(
+  //                           activityList: [],
+  //                           cycleName: "Cycle$cycle",
+  //                           cycleTime:
+  //                               "${cyclestarttime.hour}:${cyclestarttime.minute}:${cyclestarttime.second}");
+  //                       tactapiController.activitylistCurrent
+  //                           .add(activityCycleList);
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -814,7 +816,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
                                       setState(
                                         () {
-                                          iscycleStart = false;
+                                        //  iscycleStart = false;
                                           cycle++;
                                           showPlayButtom = true;
                                           isreaload = true;
@@ -943,27 +945,27 @@ class _HomeScreenState extends State<HomeScreen> {
                                               color: Colors.amber[700],
                                             ),
                                           ),
-                                    isplay == true
-                                        ? Container()
-                                        : Padding(
-                                            padding: const EdgeInsets.symmetric(
-                                                horizontal: 5),
-                                            child: GestureDetector(
-                                              onTap: () {
-                                                setState(() {
-                                                  isplay = true;
-                                                });
-                                                _controller.restart(
-                                                    duration: 120);
-                                                    cyclegettingRestarted();
-                                                //  _startFlashlightTimer();
-                                              },
-                                              child: Icon(
-                                                Icons.restart_alt,
-                                                color: Colors.amber[700],
-                                              ),
-                                            ),
-                                          ),
+                                    // isplay == true
+                                    //     ? Container()
+                                    //     : Padding(
+                                    //         padding: const EdgeInsets.symmetric(
+                                    //             horizontal: 5),
+                                    //         child: GestureDetector(
+                                    //           onTap: () {
+                                    //             setState(() {
+                                    //               isplay = true;
+                                    //             });
+                                    //             _controller.restart(
+                                    //                 duration: 120);
+                                    //                 cyclegettingRestarted();
+                                    //             //  _startFlashlightTimer();
+                                    //           },
+                                    //           child: Icon(
+                                    //             Icons.restart_alt,
+                                    //             color: Colors.amber[700],
+                                    //           ),
+                                    //         ),
+                                    //       ),
                                   ],
                                 ),
                               ],
