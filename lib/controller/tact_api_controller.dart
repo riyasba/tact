@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/app/data/constands/constands.dart';
 import 'package:flutter_application_1/models/get_activity_model.dart';
@@ -6,6 +7,7 @@ import 'package:flutter_application_1/models/get_catogory_model.dart';
 import 'package:flutter_application_1/models/get_subcatogory_model.dart';
 import 'package:flutter_application_1/models/store_activity_list_model.dart';
 import 'package:flutter_application_1/services/networks/delete_activity_api_service.dart';
+import 'package:flutter_application_1/services/networks/delete_subcatogory_apisercvice.dart';
 import 'package:flutter_application_1/services/networks/get_activity_api_service.dart';
 import 'package:flutter_application_1/services/networks/get_catogory_api_services.dart';
 import 'package:flutter_application_1/services/networks/get_getsubcatogory_api_services.dart';
@@ -89,6 +91,14 @@ class TactApiController extends GetxController {
       );
     }
     update();
+  }
+
+  deviceinfo() async {
+    DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
+    AndroidDeviceInfo androidInfo = await deviceInfo.androidInfo;
+    print(
+        'Running on ${androidInfo.id}-------------------------------build id---------------------------------------');
+        return androidInfo.id;
   }
 
   List<Success> getDatList(int id) {
@@ -224,7 +234,8 @@ class TactApiController extends GetxController {
       required String from_time,
       required String to_time,
       required String value,
-      required String title}) async {
+      required String title,
+      required String appid}) async {
     dio.Response<dynamic> response =
         await activitylogapiservice.storeactivityapi(
             c_id: c_id,
@@ -232,7 +243,8 @@ class TactApiController extends GetxController {
             from_time: from_time,
             to_time: to_time,
             title: title,
-            value: value);
+            value: value,
+            appid: appid);
     // Get.snackbar(
     //   response.statusCode.toString(),
     //     response.data.toString(),
@@ -240,7 +252,7 @@ class TactApiController extends GetxController {
     //     snackPosition: SnackPosition.BOTTOM
     // );
 
-    getactivity();
+    getactivity(appid:  deviceinfo());
     update();
   }
 
@@ -299,10 +311,10 @@ class TactApiController extends GetxController {
   List<ActivityCycleList> activitylistCurrent = [];
   var actualtime = '00:00:00';
   var endingtime = '00:00:00';
-  getactivity() async {
+  getactivity({required String appid}) async {
     activitylist.clear();
     dio.Response<dynamic> response =
-        await getactivityapiservice.getactivityapi();
+        await getactivityapiservice.getactivityapi(appid: appid);
 
     if (response.statusCode == 200) {
       GetActivityModel getactivitymodel =
@@ -401,11 +413,24 @@ class TactApiController extends GetxController {
     update();
   }
 
+  DeleteSubcatogoryApiServices deleteSubcatogoryApiServices =
+      DeleteSubcatogoryApiServices();
+  Future deletesubcatogory() async {
+    dio.Response<dynamic> response =
+        await deleteSubcatogoryApiServices.deletesubcatogoryapi();
+
+    print(
+        "---------::::::::::::::::delete sub catogory response:::::::::::::::::::::::::_______________;");
+    print("delete sub catogory response ");
+    print(response.statusCode);
+    print(response.data);
+  }
+
   DeleteActivityApiServices deleteActivityApiServices =
       DeleteActivityApiServices();
   Future deleteactivity() async {
     dio.Response<dynamic> response =
-        await deleteActivityApiServices.deleteactivityapi();
+        await deleteActivityApiServices.deleteactivityapi(appid: '8888');
 
     print(
         "---------::::::::::::::::::::::::::::::::::::::::::::::::::_______________;");
@@ -413,20 +438,21 @@ class TactApiController extends GetxController {
     print(response.statusCode);
     print(response.data);
 
-    getactivity();
+    getactivity(appid:  deviceinfo());
   }
 
-  sharePdf(
-      {required String aminDrome,
-      required String cppValue,
-      required DateTime cycleTime,
-      }) async {
+  sharePdf({
+    required String aminDrome,
+    required String cppValue,
+    required DateTime cycleTime,
+  }) async {
     final pdf = pw.Document();
 
     List<List<ActivityCycleList>> subLists = [];
 
     print("changes --------------------->>");
-    print("-----------------------------------------------------------------------------------------------------------------");
+    print(
+        "-----------------------------------------------------------------------------------------------------------------");
 
     print(activitylist.length);
 

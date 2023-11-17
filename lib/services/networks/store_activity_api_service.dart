@@ -11,6 +11,7 @@ class StoreActivityApiService extends BaseApiServices {
       required String to_time,
       required String title,
       required String value,
+       required String appid
       }) async {
     dynamic responseJson;
     try {
@@ -20,7 +21,8 @@ class StoreActivityApiService extends BaseApiServices {
         "from_time": from_time,
         "to_time": to_time,
         "title": title,
-        "value": value
+        "value": value,
+        "app_id":"21345",
       });
       var dio = Dio();
       var response = await dio.post(storeactivityURL,

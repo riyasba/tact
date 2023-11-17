@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:alarm/alarm.dart';
 
 import 'package:alarm/model/alarm_settings.dart';
+import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter_application_1/app/module/home/view_all_screen.dart';
 
 import 'package:flutter_application_1/controller/tact_api_controller.dart';
@@ -41,6 +42,11 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+
+
+
+
+
   DateTime cyclestarttime = DateTime.now();
 
   final controller = Get.put(counterController());
@@ -92,6 +98,7 @@ class _HomeScreenState extends State<HomeScreen> {
   void initState() {
     super.initState();
     tactapiController.getcatogory();
+   tactapiController. deviceinfo();
     // tactapiController.getactivity();
 // startTimer();
     loadAlarms();
@@ -113,7 +120,6 @@ class _HomeScreenState extends State<HomeScreen> {
       () {
         alarms = Alarm.getAlarms();
         alarms.sort((a, b) => a.dateTime.isBefore(b.dateTime) ? 0 : 1);
-         
       },
     );
   }
@@ -214,7 +220,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   void dispose() {
-      iscycleStart = false;
+   
     _timer!.cancel();
     subscription?.cancel();
     audioPlayer.stop();
@@ -291,8 +297,6 @@ class _HomeScreenState extends State<HomeScreen> {
     return "$hoursStr:$minutesStr:$secondsStr";
   }
 
-
-
   // cyclegettingRestarted() {
   //                    _disableTorch(context);
   //                     //  tactapiController.deleteactivity();
@@ -304,7 +308,6 @@ class _HomeScreenState extends State<HomeScreen> {
   //                       player.stop();
   //                       _disableTorch(context);
   //                     });
-
 
   //             setState(() {
   //               cycle = 1;
@@ -424,6 +427,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           isEnable = true;
                           cyclestarttime = DateTime.now();
                         });
+
                         _controller2.start();
                         _controller.start();
                         startTimer();
@@ -753,6 +757,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                                 .selectedSubCatIdList[i].name ==
                                             "CPP") {
                                           await tactapiController.storeactivity(
+                                            appid:tactapiController.deviceinfo(),
                                               value: _currentSliderValue
                                                   .round()
                                                   .toString(),
@@ -787,7 +792,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                                   .startingTime,
                                               to_time:
                                                   "${cyclestarttime.hour}:${cyclestarttime.minute}:${cyclestarttime.second}",
-                                              title: 'Cycle$cycle');
+                                              title: 'Cycle$cycle', appid:tactapiController.deviceinfo());
                                         } else {
                                           await tactapiController.storeactivity(
                                               value: tactapiController
@@ -805,7 +810,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                               //     .startingTime,
                                               to_time:
                                                   "${cyclestarttime.hour}:${cyclestarttime.minute}:${cyclestarttime.second}",
-                                              title: 'Cycle$cycle');
+                                              title: 'Cycle$cycle',  appid:tactapiController.deviceinfo());
                                         }
 
                                         // Get.rawSnackbar(
@@ -816,14 +821,20 @@ class _HomeScreenState extends State<HomeScreen> {
 
                                       setState(
                                         () {
-                                        //  iscycleStart = false;
+                                          
+                                            iscycleStart = false;
                                           cycle++;
                                           showPlayButtom = true;
                                           isreaload = true;
+                                             
+                                      
                                         },
                                       );
-                                      tactapiController.selectedSubCatIdList
+                                   
+                               //   tactapiController.deletesubcatogory();
+                                           tactapiController.selectedSubCatIdList
                                           .clear();
+                                          tactapiController.update();
                                       // _controller.restart();
                                       // final alarmSettings =
                                       //     AlarmSettings(
@@ -903,7 +914,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                                 onTap: () {
                                                   setState(() {
                                                     isplay = false;
-                                                     iscycleStart = false;
+                                                    iscycleStart = false;
                                                     //isplay1 = false;
                                                   });
                                                   //audioPlayer.stop();
@@ -921,7 +932,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                             onTap: () {
                                               setState(() {
                                                 isplay = true;
-                                                 iscycleStart = true;
+                                                iscycleStart = true;
                                                 //isplay1 = true;
                                               });
                                               //_controller2.resume();
@@ -989,7 +1000,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           padding: const EdgeInsets.only(top: 10, bottom: 20),
                           child: GestureDetector(
                             onTap: () {
-                                      if (tactapiController.catogorylist[index].index ==
+                              if (tactapiController.catogorylist[index].index ==
                                   0) {
                                 for (int i = 0;
                                     i < tactapiController.catogorylist.length;
@@ -1005,7 +1016,8 @@ class _HomeScreenState extends State<HomeScreen> {
                               }
                               //  tactapiController.update();
                             },
-                            child: tactapiController.catogorylist[index].index ==
+                            child: tactapiController
+                                        .catogorylist[index].index ==
                                     0
                                 ? Container(
                                     width: double.infinity,

@@ -9,4 +9,7 @@ abstract class BaseApiServices {
       'https://bci.batechnology.in/api/store_activity';
   final String deleteactivityURL =
       "https://bci.batechnology.in/api/delete_activity";
+
+  final String deletetempsubcatogory =
+      "https://bci.batechnology.in/api/delete_subcategory";
 }

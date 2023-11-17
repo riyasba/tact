@@ -4,21 +4,23 @@ import 'package:dio/dio.dart';
 import 'package:flutter_application_1/services/base_url/base_url.dart';
 
 class GetActivityApiService extends BaseApiServices {
-  Future getactivityapi() async {
+  Future getactivityapi({required String appid}) async {
     dynamic responseJson;
     try {
+      var formData = FormData.fromMap({
+        "app_id": "21345",
+      });
       var dio = Dio();
-      var response = await dio.get(
-        getactivitysURL,
-        options: Options(
-            headers: {
-              'Accept': 'application/json',
-            },
-            followRedirects: false,
-            validateStatus: (status) {
-              return status! <= 500;
-            }),
-      );
+      var response = await dio.get(getactivitysURL,
+          options: Options(
+              headers: {
+                'Accept': 'application/json',
+              },
+              followRedirects: false,
+              validateStatus: (status) {
+                return status! <= 500;
+              }),
+          data: formData);
       responseJson = response;
 
       print(
@@ -26,9 +28,10 @@ class GetActivityApiService extends BaseApiServices {
     } on SocketException {
       print('no internet');
     }
-     return responseJson;
+    return responseJson;
   }
-    dynamic returnResponse(Response<dynamic> response) {
+
+  dynamic returnResponse(Response<dynamic> response) {
     switch (response.statusCode) {
       case 200:
         dynamic responseJson = response.data;

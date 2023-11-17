@@ -3,22 +3,16 @@ import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:flutter_application_1/services/base_url/base_url.dart';
 
-class DeleteActivityApiServices extends BaseApiServices {
+class DeleteSubcatogoryApiServices extends BaseApiServices {
 
-  Future deleteactivityapi({required String appid}) async { 
+  Future deletesubcatogoryapi() async { 
 
     dynamic responseJson;
 
     try {
-
-   var formData = FormData.fromMap({
-       "appid":"21345"
-      });
-
-
       var dio = Dio();
-      var response = await dio.post(
-        deleteactivityURL,
+      var response = await dio.delete(
+        deletetempsubcatogory,
         options: Options(
            headers: {
               'Accept': 'application/json',
@@ -27,12 +21,12 @@ class DeleteActivityApiServices extends BaseApiServices {
             validateStatus: (status) {
               return status! <= 500;
             }),
-    data: formData   );     
+      );     
       responseJson = response;
 
 
       print(
-          "::::::::<<<<<- delete  activity  api-->>>>>::::::::status code:::::::::");
+          "::::::::<<<<<- delete  SUBCATOHORY   api-->>>>>::::::::status code:::::::::");
 
 
 
