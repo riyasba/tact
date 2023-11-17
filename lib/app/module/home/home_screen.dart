@@ -3,13 +3,15 @@ import 'dart:async';
 import 'package:alarm/alarm.dart';
 
 import 'package:alarm/model/alarm_settings.dart';
-import 'package:device_info_plus/device_info_plus.dart';
+
 import 'package:flutter_application_1/app/module/home/view_all_screen.dart';
 
 import 'package:flutter_application_1/controller/tact_api_controller.dart';
+
 import 'package:flutter_application_1/models/get_activity_model.dart';
 
 import 'package:flutter_application_1/models/store_activity_list_model.dart';
+
 import 'package:google_fonts/google_fonts.dart';
 
 import 'package:just_audio/just_audio.dart';
@@ -80,11 +82,14 @@ class _HomeScreenState extends State<HomeScreen> {
       print('============${sub_id}===========');
     });
   }
+  
 
   void handleRadioValueChanged2(String? value) {
+
     setState(() {
       selectedOption2 = value!;
     });
+
   }
 
   int cycle = 1;
@@ -98,7 +103,7 @@ class _HomeScreenState extends State<HomeScreen> {
   void initState() {
     super.initState();
     tactapiController.getcatogory();
-   tactapiController. deviceinfo();
+   //tactapiController. deviceinfo();
     // tactapiController.getactivity();
 // startTimer();
     loadAlarms();
@@ -757,7 +762,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                                 .selectedSubCatIdList[i].name ==
                                             "CPP") {
                                           await tactapiController.storeactivity(
-                                            appid:tactapiController.deviceinfo(),
+                                            appid:"21345",
                                               value: _currentSliderValue
                                                   .round()
                                                   .toString(),
@@ -792,7 +797,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                                   .startingTime,
                                               to_time:
                                                   "${cyclestarttime.hour}:${cyclestarttime.minute}:${cyclestarttime.second}",
-                                              title: 'Cycle$cycle', appid:tactapiController.deviceinfo());
+                                              title: 'Cycle$cycle', appid:'21345');
                                         } else {
                                           await tactapiController.storeactivity(
                                               value: tactapiController
@@ -810,7 +815,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                               //     .startingTime,
                                               to_time:
                                                   "${cyclestarttime.hour}:${cyclestarttime.minute}:${cyclestarttime.second}",
-                                              title: 'Cycle$cycle',  appid:tactapiController.deviceinfo());
+                                              title: 'Cycle$cycle',  appid:'21345');
                                         }
 
                                         // Get.rawSnackbar(

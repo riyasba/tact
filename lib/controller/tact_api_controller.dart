@@ -252,7 +252,7 @@ class TactApiController extends GetxController {
     //     snackPosition: SnackPosition.BOTTOM
     // );
 
-    getactivity(appid:  deviceinfo());
+    getactivity(appid:  '21345');
     update();
   }
 
@@ -430,7 +430,7 @@ class TactApiController extends GetxController {
       DeleteActivityApiServices();
   Future deleteactivity() async {
     dio.Response<dynamic> response =
-        await deleteActivityApiServices.deleteactivityapi(appid: '8888');
+        await deleteActivityApiServices.deleteactivityapi(appid: '21345');
 
     print(
         "---------::::::::::::::::::::::::::::::::::::::::::::::::::_______________;");
@@ -438,7 +438,7 @@ class TactApiController extends GetxController {
     print(response.statusCode);
     print(response.data);
 
-    getactivity(appid:  deviceinfo());
+    getactivity(appid: '21345');
   }
 
   sharePdf({
