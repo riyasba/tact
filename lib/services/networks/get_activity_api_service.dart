@@ -2,16 +2,20 @@ import 'dart:io';
 
 import 'package:dio/dio.dart';
 import 'package:flutter_application_1/services/base_url/base_url.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class GetActivityApiService extends BaseApiServices {
   Future getactivityapi({required String appid}) async {
     dynamic responseJson;
     try {
+      
+       final prefs = await SharedPreferences.getInstance();
+      String? appId = prefs.getString("auth_token");
       var formData = FormData.fromMap({
-        "app_id": "21345",
+        "app_id": appId,
       });
       var dio = Dio();
-      var response = await dio.get(getactivitysURL,
+      var response = await dio.post(getactivitysURL,
           options: Options(
               headers: {
                 'Accept': 'application/json',
@@ -20,7 +24,9 @@ class GetActivityApiService extends BaseApiServices {
               validateStatus: (status) {
                 return status! <= 500;
               }),
-          data: formData);
+          data: {
+        "app_id": appId,
+      });
       responseJson = response;
 
       print(

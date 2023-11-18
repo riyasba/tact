@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:dio/dio.dart';
 import 'package:flutter_application_1/services/base_url/base_url.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class StoreActivityApiService extends BaseApiServices {
   Future storeactivityapi(
@@ -15,6 +16,8 @@ class StoreActivityApiService extends BaseApiServices {
       }) async {
     dynamic responseJson;
     try {
+         final prefs = await SharedPreferences.getInstance();
+      String? appId = prefs.getString("auth_token");
       var formData = FormData.fromMap({
         "c_id": c_id,
         "s_id": s_id,
@@ -22,7 +25,7 @@ class StoreActivityApiService extends BaseApiServices {
         "to_time": to_time,
         "title": title,
         "value": value,
-        "app_id":"21345",
+        "app_id": appId,
       });
       var dio = Dio();
       var response = await dio.post(storeactivityURL,

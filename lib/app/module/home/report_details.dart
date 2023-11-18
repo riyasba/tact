@@ -145,7 +145,12 @@ class _ReportDetailsState extends State<ReportDetails> {
                                   tactapiController
                                       .activitylist[index].activityList.length;
                               i++)
-                            Row(
+                            tactapiController
+                                                  .activitylist[index]
+                                                  .activityList[i]
+                                                  .value == "empty" ? Container(
+                                                    height: 5,
+                                                  ) : Row(
                               mainAxisAlignment: MainAxisAlignment.start,
                               children: [
                                 Container(
@@ -302,6 +307,7 @@ class _ReportDetailsState extends State<ReportDetails> {
         child: InkWell(
           onTap: () {
             tactapiController.deleteactivity();
+            // tactapiController.deleteactivity();
             Get.offAll(HomeScreen());
           },
           child: Container(

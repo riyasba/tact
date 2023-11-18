@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:dio/dio.dart';
 import 'package:flutter_application_1/services/base_url/base_url.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class StoreSubCatogoryApiService extends BaseApiServices {
   Future storesubcatogoryapi({
@@ -12,10 +13,13 @@ class StoreSubCatogoryApiService extends BaseApiServices {
     dynamic responseJson;
 
     try {
+        final prefs = await SharedPreferences.getInstance();
+      String? appId = prefs.getString("auth_token");
       var formData = FormData.fromMap({
         "title": title,
         "description": description,
         "category_id": categoryid,
+         "app_id" : appId,
       });
       var dio = Dio();
       var response = await dio.post(storesubcatogoryURL,

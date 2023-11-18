@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:dio/dio.dart';
 import 'package:flutter_application_1/services/base_url/base_url.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class DeleteActivityApiServices extends BaseApiServices {
 
@@ -10,9 +11,11 @@ class DeleteActivityApiServices extends BaseApiServices {
     dynamic responseJson;
 
     try {
+      final prefs = await SharedPreferences.getInstance();
+      String? appId = prefs.getString("auth_token");
 
    var formData = FormData.fromMap({
-       "appid":"21345"
+       "app_id":appId
       });
 
 
@@ -21,7 +24,7 @@ class DeleteActivityApiServices extends BaseApiServices {
         deleteactivityURL,
         options: Options(
            headers: {
-              'Accept': 'application/json',
+               'Content-Type': 'application/json'
             },
             followRedirects: false,
             validateStatus: (status) {

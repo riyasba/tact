@@ -229,7 +229,8 @@ class TactApiController extends GetxController {
   StoreActivityApiService activitylogapiservice = StoreActivityApiService();
 
   storeactivity(
-      {required String c_id,
+      {
+      required String c_id,
       required String s_id,
       required String from_time,
       required String to_time,
@@ -252,7 +253,7 @@ class TactApiController extends GetxController {
     //     snackPosition: SnackPosition.BOTTOM
     // );
 
-    getactivity(appid:  '21345');
+    getactivity(appid:  '21346');
     update();
   }
 
@@ -369,6 +370,65 @@ class TactApiController extends GetxController {
     update();
   }
 
+
+  getactivityonStart({required String appid}) async {
+    activitylist.clear();
+    dio.Response<dynamic> response =
+        await getactivityapiservice.getactivityapi(appid: appid);
+
+    if (response.statusCode == 200) {
+      GetActivityModel getactivitymodel =
+          GetActivityModel.fromJson(response.data);
+      List<Activitylist> tempActivityList = [];
+      List<String> tempCycleList = [];
+
+      // tempActivityList = getactivitymodel.data;
+      getactivitymodel.data.forEach((element) {
+        if (tempCycleList.contains(element.title) == false) {
+          tempCycleList.add(element.title);
+        }
+      });
+      print("----------------------------->>>>>>>>");
+      print("----------------------------->>>>>>>>");
+      print("----------------------------->>>>>>>>");
+      print("----------------------------->>>>>>>>");
+      print("----------------------------->>>>>>>>");
+      print("----------------------------->>>>>>>>");
+      print("----------------------------->>>>>>>>");
+      print("----------------------------->>>>>>>>");
+      print("----------------------------->>>>>>>>");
+      print("----------------------------->>>>>>>>");
+      print("----------------------------->>>>>>>>");
+      print("----------------------------->>>>>>>>");
+      print("----------------------------->>>>>>>>");
+      print("----------------------------->>>>>>>>");
+      print(tempCycleList.length);
+
+      activitylist.clear();
+      for (var i = 0; i < tempCycleList.length; i++) {
+        print(
+            '------------------------->>>>>>>>>>>>>>>>>>>>>>>>>>>>****************************************************************************************************************************');
+
+        List<Activitylist> tempList = [];
+        for (var j = 0; j < getactivitymodel.data.length; j++) {
+          if (tempCycleList[i] == getactivitymodel.data[j].title) {
+            tempList.add(getactivitymodel.data[j]);
+          }
+        }
+        ActivityCycleList activityCycleList = ActivityCycleList(
+            activityList: tempList,
+            cycleName: tempCycleList[i],
+            cycleTime: tempList.first.toTime);
+        activitylist.add(activityCycleList);
+      }
+      // activitylistCurrent.clear();
+      update();
+    }
+    // actualtime = getactivitymodel.actualTime;
+    // endingtime = getactivitymodel.totalTime;
+    update();
+  }
+
   getactivityLocal() async {
     activitylistCurrent.clear();
     List<Activitylist> tempActivityList = [];
@@ -422,7 +482,15 @@ class TactApiController extends GetxController {
     print(
         "---------::::::::::::::::delete sub catogory response:::::::::::::::::::::::::_______________;");
     print("delete sub catogory response ");
+      getcatogory();
     print(response.statusCode);
+
+//     Get.snackbar(
+//       response.statusCode.toString(),
+//       response.data.toString(),
+//      backgroundColor: Colors.red,
+
+// snackPosition: SnackPosition.BOTTOM    );
     print(response.data);
   }
 
@@ -430,15 +498,44 @@ class TactApiController extends GetxController {
       DeleteActivityApiServices();
   Future deleteactivity() async {
     dio.Response<dynamic> response =
-        await deleteActivityApiServices.deleteactivityapi(appid: '21345');
+        await deleteActivityApiServices.deleteactivityapi(appid: '21346');
 
     print(
         "---------::::::::::::::::::::::::::::::::::::::::::::::::::_______________;");
     print("delete response ");
     print(response.statusCode);
     print(response.data);
+    
 
-    getactivity(appid: '21345');
+
+//     Get.snackbar(
+//       response.statusCode.toString(),
+//       response.data.toString(),
+//      backgroundColor: Colors.red,
+
+// snackPosition: SnackPosition.BOTTOM);
+    getactivity(appid: '21346');
+  }
+
+  Future deleteactivityOnStart() async {
+    dio.Response<dynamic> response =
+        await deleteActivityApiServices.deleteactivityapi(appid: '21346');
+
+    print(
+        "---------::::::::::::::::::::::::::::::::::::::::::::::::::_______________;");
+    print("delete response ");
+    print(response.statusCode);
+    print(response.data);
+    
+
+
+//     Get.snackbar(
+//       response.statusCode.toString(),
+//       response.data.toString(),
+//      backgroundColor: Colors.red,
+
+// snackPosition: SnackPosition.BOTTOM);
+    getactivityonStart(appid: '21346');
   }
 
   sharePdf({
@@ -609,7 +706,10 @@ class TactApiController extends GetxController {
                       for (int i = 0;
                           i < subLists[p][index].activityList.length;
                           i++)
-                        pw.Row(
+                        subLists[p][index].activityList[i]
+                                                  .value == "empty" ? pw.Container(
+                                                    height: 5,
+                                                  ) : pw.Row(
                           mainAxisAlignment: pw.MainAxisAlignment.start,
                           children: [
                             pw.Container(

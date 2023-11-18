@@ -226,11 +226,12 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void dispose() {
    
-    _timer!.cancel();
+  
+    super.dispose();
+      _timer!.cancel();
     subscription?.cancel();
     audioPlayer.stop();
     player.stop();
-    super.dispose();
   }
 
   audioSoundManage() async {
@@ -425,7 +426,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       ],
                     ),
                     GestureDetector(
-                      onTap: () {
+                      onTap: () async{
                         setState(() {
                           isplay1 = true;
                           isplay = true;
@@ -441,17 +442,23 @@ class _HomeScreenState extends State<HomeScreen> {
                         audioSoundManage();
 
                         loop();
-                        tactapiController.deleteactivity();
+                        tactapiController.deleteactivityOnStart();
                         tactapiController.setDefaultGroupValue();
                         tactapiController.selectedSubCatIdList.clear();
                         tactapiController.activitylistCurrent.clear();
+                       
                         ActivityCycleList activityCycleList = ActivityCycleList(
-                            activityList: [],
+                            activityList: [
+                              Activitylist(categoryId: "",categoryTitle: "",createdAt: DateTime.now(),fromTime: "",
+                              id: 0,subCategory:"" ,subTitle: "",title: "",toTime: "",updatedAt: DateTime.now(),value: "")
+                            ],
                             cycleName: "Cycle$cycle",
                             cycleTime:
                                 "${cyclestarttime.hour}:${cyclestarttime.minute}:${cyclestarttime.second}");
                         tactapiController.activitylistCurrent
                             .add(activityCycleList);
+                         
+                      tactapiController.update();
                       },
                       child: Container(
                         height: 40,
@@ -762,7 +769,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                                 .selectedSubCatIdList[i].name ==
                                             "CPP") {
                                           await tactapiController.storeactivity(
-                                            appid:"21345",
+                                            appid:"21346",
                                               value: _currentSliderValue
                                                   .round()
                                                   .toString(),
@@ -797,7 +804,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                                   .startingTime,
                                               to_time:
                                                   "${cyclestarttime.hour}:${cyclestarttime.minute}:${cyclestarttime.second}",
-                                              title: 'Cycle$cycle', appid:'21345');
+                                              title: 'Cycle$cycle', appid:'21346');
                                         } else {
                                           await tactapiController.storeactivity(
                                               value: tactapiController
@@ -815,7 +822,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                               //     .startingTime,
                                               to_time:
                                                   "${cyclestarttime.hour}:${cyclestarttime.minute}:${cyclestarttime.second}",
-                                              title: 'Cycle$cycle',  appid:'21345');
+                                              title: 'Cycle$cycle',  appid:'21346');
                                         }
 
                                         // Get.rawSnackbar(
@@ -824,19 +831,33 @@ class _HomeScreenState extends State<HomeScreen> {
                                         // );
                                       }
 
+                                      if(tactapiController
+                                                  .selectedSubCatIdList.isEmpty){
+                                                     await tactapiController.storeactivity(
+                                              value: "empty",
+                                              c_id: "1",
+                                              s_id: "2",
+                                              from_time: "00:00:00",
+                                              // tactapiController
+                                              //     .selectedSubCatIdList[i]
+                                              //     .startingTime,
+                                              to_time:
+                                                  "${cyclestarttime.hour}:${cyclestarttime.minute}:${cyclestarttime.second}",
+                                              title: 'Cycle$cycle',  appid:'21346');
+
+                                                  }
+
                                       setState(
                                         () {
-                                          
-                                            iscycleStart = false;
+                                          iscycleStart = false;
                                           cycle++;
                                           showPlayButtom = true;
                                           isreaload = true;
-                                             
-                                      
                                         },
                                       );
                                    
-                               //   tactapiController.deletesubcatogory();
+                                tactapiController.deletesubcatogory();
+                              //   tactapiController.getsubcatogory(id: id)
                                            tactapiController.selectedSubCatIdList
                                           .clear();
                                           tactapiController.update();
@@ -882,7 +903,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                     isplay == true
                                         ? _controller.getTime() == "00:02:00"
                                             ? InkWell(
-                                                onTap: () {
+                                                onTap: () async {
+                                                  await Future.delayed(const Duration(milliseconds: 500));
                                                   setState(() {
                                                     iscycleStart = true;
                                                     cyclestarttime =
@@ -898,7 +920,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                                   ActivityCycleList
                                                       activityCycleList =
                                                       ActivityCycleList(
-                                                          activityList: [],
+                                                          activityList: [], 
                                                           cycleName:
                                                               "Cycle$cycle",
                                                           cycleTime:
@@ -1623,7 +1645,12 @@ class _HomeScreenState extends State<HomeScreen> {
                                         tactapiController.activitylist[index]
                                             .activityList.length;
                                     i++)
-                                  Row(
+                                tactapiController
+                                                  .activitylist[index]
+                                                  .activityList[i]
+                                                  .value == "empty" ? Container(
+                                                    height: 5,
+                                                  ) :   Row(
                                     mainAxisAlignment: MainAxisAlignment.start,
                                     children: [
                                       Container(
@@ -1669,94 +1696,99 @@ class _HomeScreenState extends State<HomeScreen> {
                           },
                         ),
                         ksizedbox10,
-                        ListView.builder(
-                          physics: const NeverScrollableScrollPhysics(),
-                          shrinkWrap: true,
-                          itemCount:
-                              tactapiController.activitylistCurrent.length,
-                          itemBuilder: (BuildContext context, int index) {
-                            return Column(
-                              children: [
-                                Row(
+                        // Text("length of the list---->> ${tactapiController.activitylistCurrent.length}"),
+                        GetBuilder<TactApiController>(
+                          builder: (_) {
+                            return ListView.builder(
+                              physics: const NeverScrollableScrollPhysics(),
+                              shrinkWrap: true,
+                              itemCount:
+                                  tactapiController.activitylistCurrent.length,
+                              itemBuilder: (BuildContext context, int index) {
+                                return Column(
                                   children: [
-                                    Text(
-                                      "${tactapiController.activitylistCurrent[index].cycleName} - ${cyclestarttime.hour}:${cyclestarttime.minute}:${cyclestarttime.second}",
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.w700,
-                                          fontSize: 18,
-                                          color: kblue),
+                                    Row(
+                                      children: [
+                                        Text(
+                                          "${tactapiController.activitylistCurrent[index].cycleName} - ${cyclestarttime.hour}:${cyclestarttime.minute}:${cyclestarttime.second}",
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.w700,
+                                              fontSize: 18,
+                                              color: kblue),
+                                        ),
+                                      ],
                                     ),
+                                    ksizedbox10,
+                                    for (int i = 0;
+                                        i <
+                                            tactapiController
+                                                .activitylistCurrent[index]
+                                                .activityList
+                                                .length;
+                                        i++)
+                                    Row(
+                                        mainAxisAlignment: MainAxisAlignment.start,
+                                        children: [
+                                          Container(
+                                            width: size.width * 0.28,
+                                            alignment: Alignment.centerLeft,
+                                            child: Text(
+                                              tactapiController
+                                                  .activitylistCurrent[index]
+                                                  .activityList[i]
+                                                  .categoryTitle,
+                                              style: minfont,
+                                            ),
+                                          ),
+                                          ksizedbox10,
+                                          Container(
+                                            width: size.width * 0.28,
+                                            alignment: Alignment.centerLeft,
+                                            child: Text(
+                                              tactapiController
+                                                  .activitylistCurrent[index]
+                                                  .activityList[i]
+                                                  .subTitle,
+                                              style: minfont,
+                                            ),
+                                          ),
+                                          ksizedbox10,
+                                          if (tactapiController
+                                                  .activitylistCurrent[index]
+                                                  .activityList[i]
+                                                  .subTitle ==
+                                              "Amiodarone")
+                                            Container(
+                                              width: size.width * 0.28,
+                                              alignment: Alignment.centerLeft,
+                                              child: Text(
+                                                selectedOption2,
+                                                style: minfont,
+                                              ),
+                                            ),
+                                          if (tactapiController
+                                                  .activitylistCurrent[index]
+                                                  .activityList[i]
+                                                  .subTitle ==
+                                              "CPP")
+                                            Container(
+                                              width: size.width * 0.28,
+                                              alignment: Alignment.centerLeft,
+                                              child: Text(
+                                                _currentSliderValue
+                                                    .round()
+                                                    .toString(),
+                                                style: minfont,
+                                              ),
+                                            ),
+                                          ksizedbox10,
+                                        ],
+                                      ),
                                   ],
-                                ),
-                                ksizedbox10,
-                                for (int i = 0;
-                                    i <
-                                        tactapiController
-                                            .activitylistCurrent[index]
-                                            .activityList
-                                            .length;
-                                    i++)
-                                  Row(
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    children: [
-                                      Container(
-                                        width: size.width * 0.28,
-                                        alignment: Alignment.centerLeft,
-                                        child: Text(
-                                          tactapiController
-                                              .activitylistCurrent[index]
-                                              .activityList[i]
-                                              .categoryTitle,
-                                          style: minfont,
-                                        ),
-                                      ),
-                                      ksizedbox10,
-                                      Container(
-                                        width: size.width * 0.28,
-                                        alignment: Alignment.centerLeft,
-                                        child: Text(
-                                          tactapiController
-                                              .activitylistCurrent[index]
-                                              .activityList[i]
-                                              .subTitle,
-                                          style: minfont,
-                                        ),
-                                      ),
-                                      ksizedbox10,
-                                      if (tactapiController
-                                              .activitylistCurrent[index]
-                                              .activityList[i]
-                                              .subTitle ==
-                                          "Amiodarone")
-                                        Container(
-                                          width: size.width * 0.28,
-                                          alignment: Alignment.centerLeft,
-                                          child: Text(
-                                            selectedOption2,
-                                            style: minfont,
-                                          ),
-                                        ),
-                                      if (tactapiController
-                                              .activitylistCurrent[index]
-                                              .activityList[i]
-                                              .subTitle ==
-                                          "CPP")
-                                        Container(
-                                          width: size.width * 0.28,
-                                          alignment: Alignment.centerLeft,
-                                          child: Text(
-                                            _currentSliderValue
-                                                .round()
-                                                .toString(),
-                                            style: minfont,
-                                          ),
-                                        ),
-                                      ksizedbox10,
-                                    ],
-                                  ),
-                              ],
+                                );
+                              },
                             );
-                          },
+                          }
                         ),
                         ksizedbox20,
                         ksizedbox10,
@@ -1800,9 +1832,10 @@ class _HomeScreenState extends State<HomeScreen> {
       _showMessage('Could not disable torch', context);
     }
   }
-}
 
-Future<void> _showTextFieldDialog(
+
+
+  Future<void> _showTextFieldDialog(
     BuildContext context,
     String text,
     String label,
@@ -1853,7 +1886,8 @@ Future<void> _showTextFieldDialog(
                       description: 'test',
                       categoryid: id);
 
-                  // selectedOption =
+                  if(iscycleStart){
+                    // selectedOption =
                   //     value;
                   StoreActivityListModel storeActivityListModel =
                       StoreActivityListModel(
@@ -1900,6 +1934,7 @@ Future<void> _showTextFieldDialog(
 
                   tactapiController.addGroupValue(
                       int.parse(id), subId.toString());
+                  }
                   tactapiController.update();
                 }
                 Navigator.of(context).pop();
@@ -1911,6 +1946,9 @@ Future<void> _showTextFieldDialog(
     },
   );
 }
+}
+
+
 
 class counterController extends GetxController {
   final count = 110.obs;

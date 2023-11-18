@@ -151,7 +151,12 @@ class _ViewAllScreenState extends State<ViewAllScreen> {
                                 tactapiController
                                     .activitylist[index].activityList.length;
                             i++)
-                          Row(
+                          tactapiController
+                                                  .activitylist[index]
+                                                  .activityList[i]
+                                                  .value == "empty" ? Container(
+                                                    height: 5,
+                                                  ) :  Row(
                             mainAxisAlignment: MainAxisAlignment.start,
                             children: [
                               Container(

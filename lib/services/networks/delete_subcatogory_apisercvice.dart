@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:dio/dio.dart';
 import 'package:flutter_application_1/services/base_url/base_url.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class DeleteSubcatogoryApiServices extends BaseApiServices {
 
@@ -10,8 +11,14 @@ class DeleteSubcatogoryApiServices extends BaseApiServices {
     dynamic responseJson;
 
     try {
+       final prefs = await SharedPreferences.getInstance();
+      String? appId = prefs.getString("auth_token");
+
+        var formData = FormData.fromMap({
+       "app_id":appId
+      });
       var dio = Dio();
-      var response = await dio.delete(
+      var response = await dio.post(
         deletetempsubcatogory,
         options: Options(
            headers: {
@@ -21,6 +28,7 @@ class DeleteSubcatogoryApiServices extends BaseApiServices {
             validateStatus: (status) {
               return status! <= 500;
             }),
+       data: formData 
       );     
       responseJson = response;
 
