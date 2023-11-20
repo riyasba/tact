@@ -751,135 +751,17 @@ class _HomeScreenState extends State<HomeScreen> {
                                       print("-------------------->>>>>>>>>>>>");
                                       print("-------------------->>>>>>>>>>>>");
                                       print("-------------------->>>>>>>>>>>>");
-                                      print("-------------------->>>>>>>>>>>>");
-                                      print("-------------------->>>>>>>>>>>>");
-                                      print("-------------------->>>>>>>>>>>>");
-                                      print("-------------------->>>>>>>>>>>>");
-                                      print("-------------------->>>>>>>>>>>>");
-
-                                      for (int i = 0;
-                                          i <
-                                              tactapiController
-                                                  .selectedSubCatIdList.length;
-                                          i++) {
-                                        await Future.delayed(
-                                            const Duration(milliseconds: 500));
-
-                                        if (tactapiController
-                                                .selectedSubCatIdList[i].name ==
-                                            "CPP") {
-                                          await tactapiController.storeactivity(
-                                              appid: "21346",
-                                              value: _currentSliderValue
-                                                  .round()
-                                                  .toString(),
-                                              c_id: tactapiController
-                                                  .selectedSubCatIdList[i]
-                                                  .catogoryid,
-                                              s_id: tactapiController
-                                                  .selectedSubCatIdList[i]
-                                                  .subid,
-                                              from_time: tactapiController
-                                                  .selectedSubCatIdList[i]
-                                                  .startingTime,
-                                              to_time:
-                                                  "${cyclestarttime.hour}:${cyclestarttime.minute}:${cyclestarttime.second}",
-                                              title: 'Cycle$cycle');
-
-                                          print(
-                                              '==========================store activitry============${tactapiController.selectedSubCatIdList[i].subid}===============================================');
-                                        } else if (tactapiController
-                                                .selectedSubCatIdList[i].name ==
-                                            "Amiodarone") {
-                                          await tactapiController.storeactivity(
-                                              value: selectedOption2,
-                                              c_id: tactapiController
-                                                  .selectedSubCatIdList[i]
-                                                  .catogoryid,
-                                              s_id: tactapiController
-                                                  .selectedSubCatIdList[i]
-                                                  .subid,
-                                              from_time: tactapiController
-                                                  .selectedSubCatIdList[i]
-                                                  .startingTime,
-                                              to_time:
-                                                  "${cyclestarttime.hour}:${cyclestarttime.minute}:${cyclestarttime.second}",
-                                              title: 'Cycle$cycle',
-                                              appid: '21346');
-                                        } else {
-                                          await tactapiController.storeactivity(
-                                              value: tactapiController
-                                                  .selectedSubCatIdList[i]
-                                                  .value,
-                                              c_id: tactapiController
-                                                  .selectedSubCatIdList[i]
-                                                  .catogoryid,
-                                              s_id: tactapiController
-                                                  .selectedSubCatIdList[i]
-                                                  .subid,
-                                              from_time: "00:00:00",
-                                              // tactapiController
-                                              //     .selectedSubCatIdList[i]
-                                              //     .startingTime,
-                                              to_time:
-                                                  "${cyclestarttime.hour}:${cyclestarttime.minute}:${cyclestarttime.second}",
-                                              title: 'Cycle$cycle',
-                                              appid: '21346');
-                                        }
-
-                                        // Get.rawSnackbar(
-                                        //   message: "Stored Cycle - ${tactapiController
-                                        //         .selectedSubCatIdList[i].name}"
-                                        // );
-                                      }
-
-                                      if (tactapiController
-                                          .selectedSubCatIdList.isEmpty) {
-                                        await tactapiController.storeactivity(
-                                            value: "empty",
-                                            c_id: "1",
-                                            s_id: "2",
-                                            from_time: "00:00:00",
-                                            // tactapiController
-                                            //     .selectedSubCatIdList[i]
-                                            //     .startingTime,
-                                            to_time:
-                                                "${cyclestarttime.hour}:${cyclestarttime.minute}:${cyclestarttime.second}",
-                                            title: 'Cycle$cycle',
-                                            appid: '21346');
-                                      }
 
                                       setState(
                                         () {
-                                    //      iscycleStart = false;
-                                          cycle++;
+                                          //      iscycleStart = false;
+
                                           showPlayButtom = true;
                                           isreaload = true;
                                         },
                                       );
 
-                                      tactapiController.deletesubcatogory();
-                                      //   tactapiController.getsubcatogory(id: id)
-                                      tactapiController.selectedSubCatIdList
-                                          .clear();
-                                      tactapiController.update();
-                                      // _controller.restart();
-                                      // final alarmSettings =
-                                      //     AlarmSettings(
-                                      //   id: 42,
-                                      //   dateTime: DateTime.now().subtract(Duration(
-                                      //     seconds: 12
-                                      //   )),
-                                      //   assetAudioPath:
-                                      //       'assets/images/marimba.mp3',
-                                      //   volumeMax: false,
-                                      // );
-                                      // Alarm.set(
-                                      //     alarmSettings:
-                                      //         alarmSettings);
-
-                                      // await player.play(AssetSource(
-                                      //     'assets/images/-154921.mp3'));
+                                 
                                     }
                                   },
                                   onChange: (String timeStamp) async {
@@ -906,11 +788,136 @@ class _HomeScreenState extends State<HomeScreen> {
                                         ? _controller.getTime() == "00:02:00"
                                             ? InkWell(
                                                 onTap: () async {
+                                                  for (int i = 0;
+                                                      i <
+                                                          tactapiController
+                                                              .selectedSubCatIdList
+                                                              .length;
+                                                      i++) {
+                                                    await Future.delayed(
+                                                        const Duration(
+                                                            milliseconds: 500));
+
+                                                    if (tactapiController
+                                                            .selectedSubCatIdList[
+                                                                i]
+                                                            .name ==
+                                                        "CPP") {
+                                                      await tactapiController.storeactivity(
+                                                          appid: "21346",
+                                                          value:
+                                                              _currentSliderValue
+                                                                  .round()
+                                                                  .toString(),
+                                                          c_id: tactapiController
+                                                              .selectedSubCatIdList[
+                                                                  i]
+                                                              .catogoryid,
+                                                          s_id: tactapiController
+                                                              .selectedSubCatIdList[
+                                                                  i]
+                                                              .subid,
+                                                          from_time: tactapiController
+                                                              .selectedSubCatIdList[
+                                                                  i]
+                                                              .startingTime,
+                                                          to_time:
+                                                              "${cyclestarttime.hour}:${cyclestarttime.minute}:${cyclestarttime.second}",
+                                                          title: 'Cycle$cycle');
+
+                                                      print(
+                                                          '==========================store activitry============${tactapiController.selectedSubCatIdList[i].subid}===============================================');
+                                                    } else if (tactapiController
+                                                            .selectedSubCatIdList[
+                                                                i]
+                                                            .name ==
+                                                        "Amiodarone") {
+                                                      await tactapiController.storeactivity(
+                                                          value:
+                                                              selectedOption2,
+                                                          c_id: tactapiController
+                                                              .selectedSubCatIdList[
+                                                                  i]
+                                                              .catogoryid,
+                                                          s_id: tactapiController
+                                                              .selectedSubCatIdList[
+                                                                  i]
+                                                              .subid,
+                                                          from_time:
+                                                              tactapiController
+                                                                  .selectedSubCatIdList[
+                                                                      i]
+                                                                  .startingTime,
+                                                          to_time:
+                                                              "${cyclestarttime.hour}:${cyclestarttime.minute}:${cyclestarttime.second}",
+                                                          title: 'Cycle$cycle',
+                                                          appid: '21346');
+                                                    } else {
+                                                      await tactapiController
+                                                          .storeactivity(
+                                                              value: tactapiController
+                                                                  .selectedSubCatIdList[
+                                                                      i]
+                                                                  .value,
+                                                              c_id: tactapiController
+                                                                  .selectedSubCatIdList[
+                                                                      i]
+                                                                  .catogoryid,
+                                                              s_id: tactapiController
+                                                                  .selectedSubCatIdList[
+                                                                      i]
+                                                                  .subid,
+                                                              from_time:
+                                                                  "00:00:00",
+                                                              // tactapiController
+                                                              //     .selectedSubCatIdList[i]
+                                                              //     .startingTime,
+                                                              to_time:
+                                                                  "${cyclestarttime.hour}:${cyclestarttime.minute}:${cyclestarttime.second}",
+                                                              title:
+                                                                  'Cycle$cycle',
+                                                              appid: '21346');
+                                                    }
+                                                    tactapiController
+                                                        .deletesubcatogory();
+                                                    //   tactapiController.getsubcatogory(id: id)
+                                                    tactapiController
+                                                        .selectedSubCatIdList
+                                                        .clear();
+                                                    tactapiController.update();
+
+                                                    // Get.rawSnackbar(
+                                                    //   message: "Stored Cycle - ${tactapiController
+                                                    //         .selectedSubCatIdList[i].name}"
+                                                    // );
+                                                  }
+
+                                                  if (tactapiController
+                                                      .selectedSubCatIdList
+                                                      .isEmpty) {
+                                                    await tactapiController
+                                                        .storeactivity(
+                                                            value: "empty",
+                                                            c_id: "1",
+                                                            s_id: "2",
+                                                            from_time:
+                                                                "00:00:00",
+                                                            // tactapiController
+                                                            //     .selectedSubCatIdList[i]
+                                                            //     .startingTime,
+                                                            to_time:
+                                                                "${cyclestarttime.hour}:${cyclestarttime.minute}:${cyclestarttime.second}",
+                                                            title:
+                                                                'Cycle$cycle',
+                                                            appid: '21346');
+                                                  }
+
                                                   await Future.delayed(
                                                       const Duration(
                                                           milliseconds: 500));
                                                   setState(() {
-                                               //     iscycleStart = true;
+                                                    cycle++;
+                                                    //     iscycleStart = true;
                                                     cyclestarttime =
                                                         DateTime.now();
                                                     isreaload = false;
@@ -945,7 +952,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                                 onTap: () {
                                                   setState(() {
                                                     isplay = false;
-                                           //         iscycleStart = false;
+                                                    //         iscycleStart = false;
                                                     //isplay1 = false;
                                                   });
                                                   //audioPlayer.stop();
@@ -963,7 +970,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                             onTap: () {
                                               setState(() {
                                                 isplay = true;
-                                            //    iscycleStart = true;
+                                                //    iscycleStart = true;
                                                 //isplay1 = true;
                                               });
                                               //_controller2.resume();
@@ -1213,95 +1220,93 @@ class _HomeScreenState extends State<HomeScreen> {
                                                         onChanged: (
                                                           String? value,
                                                         ) {
-                                                         
-                                                            setState(
-                                                              () {
-                                                                tactapiController
-                                                                    .addGroupValue(
-                                                                        tactapiController
-                                                                            .catogorylist[index]
-                                                                            .id,
-                                                                        value!);
-
-                                                                // selectedOption =
-                                                                //     value;
-                                                                StoreActivityListModel storeActivityListModel = StoreActivityListModel(
-                                                                    title:
-                                                                        "Cycle$cycle",
-                                                                    value:
-                                                                        "null",
-                                                                    categoryName: tactapiController
-                                                                        .catogorylist[
-                                                                            index]
-                                                                        .title,
-                                                                    catogoryid: tactapiController
-                                                                        .catogorylist[
-                                                                            index]
-                                                                        .id
-                                                                        .toString(),
-                                                                    name: tactapiController
-                                                                        .getDatList(
-                                                                            tactapiController
-                                                                                .catogorylist[index].id)[
-                                                                            index2]
-                                                                        .subTitle,
-                                                                    subid:
-                                                                        value,
-                                                                    startingTime:
-                                                                        _controller2
-                                                                            .getTime()
-                                                                            .toString());
-
-                                                                var tempId;
-                                                                for (int i = 0;
-                                                                    i <
-                                                                        tactapiController
-                                                                            .selectedSubCatIdList
-                                                                            .length;
-                                                                    i++) {
-                                                                  var value2 =
+                                                          setState(
+                                                            () {
+                                                              tactapiController
+                                                                  .addGroupValue(
                                                                       tactapiController
-                                                                          .selectedSubCatIdList[i];
-                                                                  if (value2
-                                                                          .catogoryid ==
-                                                                      storeActivityListModel
-                                                                          .catogoryid) {
-                                                                    tempId = i;
-                                                                  }
-                                                                }
+                                                                          .catogorylist[
+                                                                              index]
+                                                                          .id,
+                                                                      value!);
 
-                                                                if (tempId !=
-                                                                    null) {
-                                                                  tactapiController
-                                                                      .selectedSubCatIdList
-                                                                      .removeAt(
-                                                                          tempId);
-                                                                  // Get.rawSnackbar(
-                                                                  //   message: "Removed from list index $tempId"
-                                                                  // );
-                                                                  tactapiController
-                                                                      .selectedSubCatIdList
-                                                                      .add(
-                                                                          storeActivityListModel);
-                                                                  tactapiController
-                                                                      .getactivityLocal();
-                                                                  //   Get.rawSnackbar(
-                                                                  //   message: "Added to list "
-                                                                  // );
-                                                                } else {
-                                                                  tactapiController
-                                                                      .selectedSubCatIdList
-                                                                      .add(
-                                                                          storeActivityListModel);
-                                                                  tactapiController
-                                                                      .getactivityLocal();
-                                                                  //   Get.rawSnackbar(
-                                                                  //   message: "Added to list "
-                                                                  // );
+                                                              // selectedOption =
+                                                              //     value;
+                                                              StoreActivityListModel storeActivityListModel = StoreActivityListModel(
+                                                                  title:
+                                                                      "Cycle$cycle",
+                                                                  value: "null",
+                                                                  categoryName:
+                                                                      tactapiController
+                                                                          .catogorylist[
+                                                                              index]
+                                                                          .title,
+                                                                  catogoryid: tactapiController
+                                                                      .catogorylist[
+                                                                          index]
+                                                                      .id
+                                                                      .toString(),
+                                                                  name: tactapiController
+                                                                      .getDatList(
+                                                                          tactapiController
+                                                                              .catogorylist[index].id)[
+                                                                          index2]
+                                                                      .subTitle,
+                                                                  subid: value,
+                                                                  startingTime:
+                                                                      _controller2
+                                                                          .getTime()
+                                                                          .toString());
+
+                                                              var tempId;
+                                                              for (int i = 0;
+                                                                  i <
+                                                                      tactapiController
+                                                                          .selectedSubCatIdList
+                                                                          .length;
+                                                                  i++) {
+                                                                var value2 =
+                                                                    tactapiController
+                                                                        .selectedSubCatIdList[i];
+                                                                if (value2
+                                                                        .catogoryid ==
+                                                                    storeActivityListModel
+                                                                        .catogoryid) {
+                                                                  tempId = i;
                                                                 }
-                                                              },
-                                                            );
-                                                          
+                                                              }
+
+                                                              if (tempId !=
+                                                                  null) {
+                                                                tactapiController
+                                                                    .selectedSubCatIdList
+                                                                    .removeAt(
+                                                                        tempId);
+                                                                // Get.rawSnackbar(
+                                                                //   message: "Removed from list index $tempId"
+                                                                // );
+                                                                tactapiController
+                                                                    .selectedSubCatIdList
+                                                                    .add(
+                                                                        storeActivityListModel);
+                                                                tactapiController
+                                                                    .getactivityLocal();
+                                                                //   Get.rawSnackbar(
+                                                                //   message: "Added to list "
+                                                                // );
+                                                              } else {
+                                                                tactapiController
+                                                                    .selectedSubCatIdList
+                                                                    .add(
+                                                                        storeActivityListModel);
+                                                                tactapiController
+                                                                    .getactivityLocal();
+                                                                //   Get.rawSnackbar(
+                                                                //   message: "Added to list "
+                                                                // );
+                                                              }
+                                                            },
+                                                          );
                                                         },
                                                       ),
                                                       kwidth5,
@@ -1917,56 +1922,54 @@ class _HomeScreenState extends State<HomeScreen> {
                         description: 'test',
                         categoryid: id);
 
-                
-                      // selectedOption =
-                      //     value;
-                      StoreActivityListModel storeActivityListModel =
-                          StoreActivityListModel(
-                              title: "Cycle$cycle",
-                              value: "null",
-                              categoryName:
-                                  tactapiController.catogorylist[index].title,
-                              catogoryid: tactapiController
-                                  .catogorylist[index].id
-                                  .toString(),
-                              name: textController.text,
-                              subid: subId.toString(),
-                              startingTime: "");
+                    // selectedOption =
+                    //     value;
+                    StoreActivityListModel storeActivityListModel =
+                        StoreActivityListModel(
+                            title: "Cycle$cycle",
+                            value: "null",
+                            categoryName:
+                                tactapiController.catogorylist[index].title,
+                            catogoryid: tactapiController.catogorylist[index].id
+                                .toString(),
+                            name: textController.text,
+                            subid: subId.toString(),
+                            startingTime: "");
 
-                      var tempId;
-                      for (int i = 0;
-                          i < tactapiController.selectedSubCatIdList.length;
-                          i++) {
-                        var value2 = tactapiController.selectedSubCatIdList[i];
-                        if (value2.catogoryid ==
-                            storeActivityListModel.catogoryid) {
-                          tempId = i;
-                        }
+                    var tempId;
+                    for (int i = 0;
+                        i < tactapiController.selectedSubCatIdList.length;
+                        i++) {
+                      var value2 = tactapiController.selectedSubCatIdList[i];
+                      if (value2.catogoryid ==
+                          storeActivityListModel.catogoryid) {
+                        tempId = i;
                       }
+                    }
 
-                      if (tempId != null) {
-                        tactapiController.selectedSubCatIdList.removeAt(tempId);
-                        // Get.rawSnackbar(
-                        //   message: "Removed from list index $tempId"
-                        // );
-                        tactapiController.selectedSubCatIdList
-                            .add(storeActivityListModel);
-                        tactapiController.getactivityLocal();
-                        //   Get.rawSnackbar(
-                        //   message: "Added to list "
-                        // );
-                      } else {
-                        tactapiController.selectedSubCatIdList
-                            .add(storeActivityListModel);
-                        tactapiController.getactivityLocal();
-                        //   Get.rawSnackbar(
-                        //   message: "Added to list "
-                        // );
-                      }
+                    if (tempId != null) {
+                      tactapiController.selectedSubCatIdList.removeAt(tempId);
+                      // Get.rawSnackbar(
+                      //   message: "Removed from list index $tempId"
+                      // );
+                      tactapiController.selectedSubCatIdList
+                          .add(storeActivityListModel);
+                      tactapiController.getactivityLocal();
+                      //   Get.rawSnackbar(
+                      //   message: "Added to list "
+                      // );
+                    } else {
+                      tactapiController.selectedSubCatIdList
+                          .add(storeActivityListModel);
+                      tactapiController.getactivityLocal();
+                      //   Get.rawSnackbar(
+                      //   message: "Added to list "
+                      // );
+                    }
 
-                      tactapiController.addGroupValue(
-                          int.parse(id), subId.toString());
-                    
+                    tactapiController.addGroupValue(
+                        int.parse(id), subId.toString());
+
                     tactapiController.update();
                   }
                   Navigator.of(context).pop();
