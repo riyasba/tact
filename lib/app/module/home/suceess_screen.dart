@@ -9,7 +9,7 @@ import 'package:get/get_core/get_core.dart';
 import 'package:get/get_navigation/get_navigation.dart';
 
 class SuccessScreen extends StatefulWidget {
-  String efficiency;
+  int efficiency;
   SuccessScreen({super.key, required this.efficiency});
 
   @override
@@ -17,13 +17,10 @@ class SuccessScreen extends StatefulWidget {
 }
 
 class _SuccessScreenState extends State<SuccessScreen> {
-
-
-    final tactapiController = Get.find<TactApiController>();
+  final tactapiController = Get.find<TactApiController>();
   DateTime cyclestarttime = DateTime.now();
   double _currentSliderValue = 20;
   String selectedOption2 = '150mg';
-
 
   @override
   void initState() {
@@ -35,15 +32,15 @@ class _SuccessScreenState extends State<SuccessScreen> {
   toHomePage() async {
     await Future.delayed(const Duration(seconds: 2));
 
-
- int efficiency = tactapiController.getEfficiency(
-                          actualTime: tactapiController.actualTimetotal.value,
-                          overallTime: tactapiController.overallCprTime.value);
+    int efficiency = tactapiController.getEfficiency(
+        actualTime: tactapiController.actualTimetotal.value,
+        overallTime: tactapiController.overallCprTime.value);
 
     Get.offAll(ReportDetails(
       aminDrome: selectedOption2,
       cppValue: _currentSliderValue.round().toString(),
-      cycleTime: cyclestarttime, efficiency: efficiency,
+      cycleTime: cyclestarttime,
+      efficiency: efficiency,
     ));
   }
 
@@ -53,7 +50,8 @@ class _SuccessScreenState extends State<SuccessScreen> {
     return Scaffold(
       backgroundColor: Colors.white,
       body: Center(
-        child: SingleChildScrollView(physics: BouncingScrollPhysics(),
+        child: SingleChildScrollView(
+          physics: BouncingScrollPhysics(),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
@@ -61,23 +59,67 @@ class _SuccessScreenState extends State<SuccessScreen> {
               Container(
                 child: SvgPicture.asset('assets/images/Group 33.svg'),
               ),
-        
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Text(
-                    'Congratulations you have Achieved ${widget.efficiency}% Efficiency',
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                        fontWeight: FontWeight.bold, fontSize: 25, color: kblue),
-                  ),
-                ],
+              Text(
+                'Congratulations you have Achieved ${widget.efficiency}% Efficiency',
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                    fontWeight: FontWeight.bold, fontSize: 25, color: kblue),
               ),
-              //  Column(
-              //    children: [
-              //      Text('Congratulations you have Achieved 80% Efficiency',style: TextStyle(fontWeight: FontWeight.bold,fontSize: 25),),
-              //    ],
-              //  )
+                           ksizedbox30,
+              widget.efficiency >= 0 && widget.efficiency <= 59
+                  ? Text(
+                      'Poor',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 27,
+                          color: Colors.red),
+                    )
+                  : widget.efficiency >= 60 && widget.efficiency <= 79
+                      ? Text(
+                          "Better",
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 27,
+                              color: korange),
+                        )
+                      : widget.efficiency >= 80 && widget.efficiency <= 89
+                          ? Text(
+                              "Good",
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 27,
+                                  color: Colors.orange),
+                            )
+                          : widget.efficiency >= 90 && widget.efficiency <= 95
+                              ? Text(
+                                  "Excellent",
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 27,
+                                      color:Colors.green),
+                                )
+                              : widget.efficiency >= 96 &&
+                                      widget.efficiency <= 100
+                                  ? Text(
+                                      "Outstanding",
+                                      textAlign: TextAlign.center,
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 27,
+                                          color:Colors.green),
+                                    )
+                                  : Text(
+                                      "Efficiency out of range",
+                                      textAlign: TextAlign.center,
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 27,
+                                          color: kblue),
+                                    ), 
             ],
           ),
         ),

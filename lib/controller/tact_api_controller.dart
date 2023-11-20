@@ -98,7 +98,7 @@ class TactApiController extends GetxController {
     AndroidDeviceInfo androidInfo = await deviceInfo.androidInfo;
     print(
         'Running on ${androidInfo.id}-------------------------------build id---------------------------------------');
-        return androidInfo.id;
+    return androidInfo.id;
   }
 
   List<Success> getDatList(int id) {
@@ -226,11 +226,26 @@ class TactApiController extends GetxController {
     return finalResult.round();
   }
 
+  // efficiencyResultMessage(int finalResult) {
+  //   if (finalResult >= 0 && finalResult <= 59) {
+  //     Text('You have achieved 50% of efficiency. Poor');
+  //   } else if (finalResult >= 60 && finalResult <= 79) {
+  //     Text('Congratulations you have achieved 85% of efficiency. Better');
+  //   } else if (finalResult >= 80 && finalResult <= 89) {
+  //     Text('Congratulations you have achieved 85% of efficiency. Good');
+  //   } else if (finalResult >= 90 && finalResult <= 95) {
+  //     Text('Congratulations you have achieved 85% of efficiency. Excellent');
+  //   } else if (finalResult >= 96 && finalResult <= 100) {
+  //     Text('Congratulations you have achieved 85% of efficiency. Outstanding');
+  //   } else {
+  //     Text('Efficiency out of range');
+  //   }
+  // }
+
   StoreActivityApiService activitylogapiservice = StoreActivityApiService();
 
   storeactivity(
-      {
-      required String c_id,
+      {required String c_id,
       required String s_id,
       required String from_time,
       required String to_time,
@@ -253,7 +268,7 @@ class TactApiController extends GetxController {
     //     snackPosition: SnackPosition.BOTTOM
     // );
 
-    getactivity(appid:  '21346');
+    getactivity(appid: '21346');
     update();
   }
 
@@ -317,7 +332,7 @@ class TactApiController extends GetxController {
     activitylist.clear();
     dio.Response<dynamic> response =
         await getactivityapiservice.getactivityapi(appid: appid);
-  isLoading(false);
+    isLoading(false);
     if (response.statusCode == 200) {
       GetActivityModel getactivitymodel =
           GetActivityModel.fromJson(response.data);
@@ -371,13 +386,12 @@ class TactApiController extends GetxController {
     update();
   }
 
-
   getactivityonStart({required String appid}) async {
     activitylist.clear();
     isLoading(true);
     dio.Response<dynamic> response =
         await getactivityapiservice.getactivityapi(appid: appid);
- isLoading(false);
+    isLoading(false);
     if (response.statusCode == 200) {
       GetActivityModel getactivitymodel =
           GetActivityModel.fromJson(response.data);
@@ -484,7 +498,7 @@ class TactApiController extends GetxController {
     print(
         "---------::::::::::::::::delete sub catogory response:::::::::::::::::::::::::_______________;");
     print("delete sub catogory response ");
-      getcatogory();
+    getcatogory();
     print(response.statusCode);
 
 //     Get.snackbar(
@@ -507,8 +521,6 @@ class TactApiController extends GetxController {
     print("delete response ");
     print(response.statusCode);
     print(response.data);
-    
-
 
 //     Get.snackbar(
 //       response.statusCode.toString(),
@@ -528,8 +540,6 @@ class TactApiController extends GetxController {
     print("delete response ");
     print(response.statusCode);
     print(response.data);
-    
-
 
 //     Get.snackbar(
 //       response.statusCode.toString(),
@@ -708,52 +718,62 @@ class TactApiController extends GetxController {
                       for (int i = 0;
                           i < subLists[p][index].activityList.length;
                           i++)
-                        subLists[p][index].activityList[i]
-                                                  .value == "empty" ? pw.Container(
-                                                    height: 5,
-                                                  ) : pw.Row(
-                          mainAxisAlignment: pw.MainAxisAlignment.start,
-                          children: [
-                            pw.Container(
-                              width: 100,
-                              alignment: pw.Alignment.centerLeft,
-                              child: pw.Text(
-                                subLists[p][index]
-                                    .activityList[i]
-                                    .categoryTitle,
-                                style: pw.TextStyle(color: PdfColors.grey),
+                        subLists[p][index].activityList[i].value == "empty"
+                            ? pw.Container(
+                                height: 5,
+                              )
+                            : pw.Row(
+                                mainAxisAlignment: pw.MainAxisAlignment.start,
+                                children: [
+                                  pw.Container(
+                                    width: 100,
+                                    alignment: pw.Alignment.centerLeft,
+                                    child: pw.Text(
+                                      subLists[p][index]
+                                          .activityList[i]
+                                          .categoryTitle,
+                                      style:
+                                          pw.TextStyle(color: PdfColors.grey),
+                                    ),
+                                  ),
+                                  pw.SizedBox(
+                                    height: 10,
+                                  ),
+                                  pw.Container(
+                                    width: 100,
+                                    alignment: pw.Alignment.centerLeft,
+                                    child: pw.Text(
+                                      subLists[p][index]
+                                          .activityList[i]
+                                          .subTitle,
+                                      style:
+                                          pw.TextStyle(color: PdfColors.grey),
+                                    ),
+                                  ),
+                                  pw.SizedBox(
+                                    height: 10,
+                                  ),
+                                  pw.Container(
+                                    width: 100,
+                                    alignment: pw.Alignment.centerLeft,
+                                    child: pw.Text(
+                                      subLists[p][index]
+                                                  .activityList[i]
+                                                  .value ==
+                                              "null"
+                                          ? " "
+                                          : subLists[p][index]
+                                              .activityList[i]
+                                              .value,
+                                      style:
+                                          pw.TextStyle(color: PdfColors.grey),
+                                    ),
+                                  ),
+                                  pw.SizedBox(
+                                    height: 10,
+                                  ),
+                                ],
                               ),
-                            ),
-                            pw.SizedBox(
-                              height: 10,
-                            ),
-                            pw.Container(
-                              width: 100,
-                              alignment: pw.Alignment.centerLeft,
-                              child: pw.Text(
-                                subLists[p][index].activityList[i].subTitle,
-                                style: pw.TextStyle(color: PdfColors.grey),
-                              ),
-                            ),
-                            pw.SizedBox(
-                              height: 10,
-                            ),
-                            pw.Container(
-                              width: 100,
-                              alignment: pw.Alignment.centerLeft,
-                              child: pw.Text(
-                                subLists[p][index].activityList[i].value ==
-                                        "null"
-                                    ? " "
-                                    : subLists[p][index].activityList[i].value,
-                                style: pw.TextStyle(color: PdfColors.grey),
-                              ),
-                            ),
-                            pw.SizedBox(
-                              height: 10,
-                            ),
-                          ],
-                        ),
                     ],
                   ),
                 pw.SizedBox(

@@ -760,8 +760,6 @@ class _HomeScreenState extends State<HomeScreen> {
                                           isreaload = true;
                                         },
                                       );
-
-                                 
                                     }
                                   },
                                   onChange: (String timeStamp) async {
@@ -878,13 +876,6 @@ class _HomeScreenState extends State<HomeScreen> {
                                                                   'Cycle$cycle',
                                                               appid: '21346');
                                                     }
-                                                    tactapiController
-                                                        .deletesubcatogory();
-                                                    //   tactapiController.getsubcatogory(id: id)
-                                                    tactapiController
-                                                        .selectedSubCatIdList
-                                                        .clear();
-                                                    tactapiController.update();
 
                                                     // Get.rawSnackbar(
                                                     //   message: "Stored Cycle - ${tactapiController
@@ -928,10 +919,40 @@ class _HomeScreenState extends State<HomeScreen> {
                                                   tactapiController
                                                       .activitylistCurrent
                                                       .clear();
+                                                  // ActivityCycleList
+                                                  //     activityCycleList =
+                                                  //     ActivityCycleList(
+                                                  //         activityList: [],
+                                                  //         cycleName:
+                                                  //             "Cycle$cycle",
+                                                  //         cycleTime:
+                                                  //             "${cyclestarttime.hour}:${cyclestarttime.minute}:${cyclestarttime.second}");
+                                                  // tactapiController
+                                                  //     .activitylistCurrent
+                                                  //     .add(activityCycleList);
+                                                  // player.stop();
+                                                  // playAudio();
+                                                  // loop();
+
                                                   ActivityCycleList
                                                       activityCycleList =
                                                       ActivityCycleList(
-                                                          activityList: [],
+                                                          activityList: [
+                                                        Activitylist(
+                                                            categoryId: "",
+                                                            categoryTitle: "",
+                                                            createdAt:
+                                                                DateTime.now(),
+                                                            fromTime: "",
+                                                            id: 0,
+                                                            subCategory: "",
+                                                            subTitle: "",
+                                                            title: "",
+                                                            toTime: "",
+                                                            updatedAt:
+                                                                DateTime.now(),
+                                                            value: "")
+                                                      ],
                                                           cycleName:
                                                               "Cycle$cycle",
                                                           cycleTime:
@@ -939,9 +960,16 @@ class _HomeScreenState extends State<HomeScreen> {
                                                   tactapiController
                                                       .activitylistCurrent
                                                       .add(activityCycleList);
-                                                  // player.stop();
-                                                  // playAudio();
-                                                  // loop();
+
+                                                  tactapiController.update();
+
+                                                  tactapiController
+                                                      .deletesubcatogory();
+                                                  //   tactapiController.getsubcatogory(id: id)
+                                                  tactapiController
+                                                      .selectedSubCatIdList
+                                                      .clear();
+                                                  tactapiController.update();
                                                 },
                                                 child: Icon(
                                                   Icons.restart_alt,
@@ -1490,7 +1518,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           actualTime: tactapiController.actualTimetotal.value,
                           overallTime: tactapiController.overallCprTime.value);
                       Get.off(SuccessScreen(
-                        efficiency: efficiency.toString(),
+                        efficiency: efficiency,
                       ));
                     },
                     child: Container(
@@ -1678,7 +1706,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                               )
                                             : Row(
                                                 mainAxisAlignment:
-                                                    MainAxisAlignment.start,
+                                                    MainAxisAlignment.spaceAround,
                                                 children: [
                                                   Container(
                                                     width: size.width * 0.28,

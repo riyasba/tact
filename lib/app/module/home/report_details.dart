@@ -295,7 +295,61 @@ class _ReportDetailsState extends State<ReportDetails> {
                           fontSize: 25,
                           color: kblue),
                     ),
-                  ],
+                    ksizedbox30,
+              widget.efficiency >= 0 && widget.efficiency <= 59
+                  ? Text(
+                      'Poor',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 27,
+                          color: Colors.red),
+                    )
+                  : widget.efficiency >= 60 && widget.efficiency <= 79
+                      ? Text(
+                          "Better",
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 27,
+                              color: korange),
+                        )
+                      : widget.efficiency >= 80 && widget.efficiency <= 89
+                          ? Text(
+                              "Good",
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 27,
+                                  color: Colors.orange),
+                            )
+                          : widget.efficiency >= 90 && widget.efficiency <= 95
+                              ? Text(
+                                  "Excellent",
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 27,
+                                      color:Colors.green),
+                                )
+                              : widget.efficiency >= 96 &&
+                                      widget.efficiency <= 100
+                                  ? Text(
+                                      "Outstanding",
+                                      textAlign: TextAlign.center,
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 27,
+                                          color:Colors.green),
+                                    )
+                                  : Text(
+                                      "Efficiency out of range",
+                                      textAlign: TextAlign.center,
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 27,
+                                          color: kblue),
+                                    ),   ],
                 ),
               ],
             );
