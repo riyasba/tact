@@ -44,11 +44,6 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-
-
-
-
-
   DateTime cyclestarttime = DateTime.now();
 
   final controller = Get.put(counterController());
@@ -66,7 +61,7 @@ class _HomeScreenState extends State<HomeScreen> {
   final _controller = CountDownController();
   final _controller2 = CountDownController();
 
-  bool iscycleStart = true;
+//  bool iscycleStart = true;
 
 //String selectedrythem=selectedOption;
 
@@ -82,14 +77,11 @@ class _HomeScreenState extends State<HomeScreen> {
       print('============${sub_id}===========');
     });
   }
-  
 
   void handleRadioValueChanged2(String? value) {
-
     setState(() {
       selectedOption2 = value!;
     });
-
   }
 
   int cycle = 1;
@@ -103,7 +95,7 @@ class _HomeScreenState extends State<HomeScreen> {
   void initState() {
     super.initState();
     tactapiController.getcatogory();
-   //tactapiController. deviceinfo();
+    //tactapiController. deviceinfo();
     // tactapiController.getactivity();
 // startTimer();
     loadAlarms();
@@ -225,10 +217,8 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   void dispose() {
-   
-  
     super.dispose();
-      _timer!.cancel();
+    _timer!.cancel();
     subscription?.cancel();
     audioPlayer.stop();
     player.stop();
@@ -426,7 +416,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       ],
                     ),
                     GestureDetector(
-                      onTap: () async{
+                      onTap: () async {
                         setState(() {
                           isplay1 = true;
                           isplay = true;
@@ -446,19 +436,29 @@ class _HomeScreenState extends State<HomeScreen> {
                         tactapiController.setDefaultGroupValue();
                         tactapiController.selectedSubCatIdList.clear();
                         tactapiController.activitylistCurrent.clear();
-                       
+
                         ActivityCycleList activityCycleList = ActivityCycleList(
                             activityList: [
-                              Activitylist(categoryId: "",categoryTitle: "",createdAt: DateTime.now(),fromTime: "",
-                              id: 0,subCategory:"" ,subTitle: "",title: "",toTime: "",updatedAt: DateTime.now(),value: "")
+                              Activitylist(
+                                  categoryId: "",
+                                  categoryTitle: "",
+                                  createdAt: DateTime.now(),
+                                  fromTime: "",
+                                  id: 0,
+                                  subCategory: "",
+                                  subTitle: "",
+                                  title: "",
+                                  toTime: "",
+                                  updatedAt: DateTime.now(),
+                                  value: "")
                             ],
                             cycleName: "Cycle$cycle",
                             cycleTime:
                                 "${cyclestarttime.hour}:${cyclestarttime.minute}:${cyclestarttime.second}");
                         tactapiController.activitylistCurrent
                             .add(activityCycleList);
-                         
-                      tactapiController.update();
+
+                        tactapiController.update();
                       },
                       child: Container(
                         height: 40,
@@ -769,7 +769,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                                 .selectedSubCatIdList[i].name ==
                                             "CPP") {
                                           await tactapiController.storeactivity(
-                                            appid:"21346",
+                                              appid: "21346",
                                               value: _currentSliderValue
                                                   .round()
                                                   .toString(),
@@ -804,7 +804,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                                   .startingTime,
                                               to_time:
                                                   "${cyclestarttime.hour}:${cyclestarttime.minute}:${cyclestarttime.second}",
-                                              title: 'Cycle$cycle', appid:'21346');
+                                              title: 'Cycle$cycle',
+                                              appid: '21346');
                                         } else {
                                           await tactapiController.storeactivity(
                                               value: tactapiController
@@ -822,7 +823,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                               //     .startingTime,
                                               to_time:
                                                   "${cyclestarttime.hour}:${cyclestarttime.minute}:${cyclestarttime.second}",
-                                              title: 'Cycle$cycle',  appid:'21346');
+                                              title: 'Cycle$cycle',
+                                              appid: '21346');
                                         }
 
                                         // Get.rawSnackbar(
@@ -831,36 +833,36 @@ class _HomeScreenState extends State<HomeScreen> {
                                         // );
                                       }
 
-                                      if(tactapiController
-                                                  .selectedSubCatIdList.isEmpty){
-                                                     await tactapiController.storeactivity(
-                                              value: "empty",
-                                              c_id: "1",
-                                              s_id: "2",
-                                              from_time: "00:00:00",
-                                              // tactapiController
-                                              //     .selectedSubCatIdList[i]
-                                              //     .startingTime,
-                                              to_time:
-                                                  "${cyclestarttime.hour}:${cyclestarttime.minute}:${cyclestarttime.second}",
-                                              title: 'Cycle$cycle',  appid:'21346');
-
-                                                  }
+                                      if (tactapiController
+                                          .selectedSubCatIdList.isEmpty) {
+                                        await tactapiController.storeactivity(
+                                            value: "empty",
+                                            c_id: "1",
+                                            s_id: "2",
+                                            from_time: "00:00:00",
+                                            // tactapiController
+                                            //     .selectedSubCatIdList[i]
+                                            //     .startingTime,
+                                            to_time:
+                                                "${cyclestarttime.hour}:${cyclestarttime.minute}:${cyclestarttime.second}",
+                                            title: 'Cycle$cycle',
+                                            appid: '21346');
+                                      }
 
                                       setState(
                                         () {
-                                          iscycleStart = false;
+                                    //      iscycleStart = false;
                                           cycle++;
                                           showPlayButtom = true;
                                           isreaload = true;
                                         },
                                       );
-                                   
-                                tactapiController.deletesubcatogory();
-                              //   tactapiController.getsubcatogory(id: id)
-                                           tactapiController.selectedSubCatIdList
+
+                                      tactapiController.deletesubcatogory();
+                                      //   tactapiController.getsubcatogory(id: id)
+                                      tactapiController.selectedSubCatIdList
                                           .clear();
-                                          tactapiController.update();
+                                      tactapiController.update();
                                       // _controller.restart();
                                       // final alarmSettings =
                                       //     AlarmSettings(
@@ -904,9 +906,11 @@ class _HomeScreenState extends State<HomeScreen> {
                                         ? _controller.getTime() == "00:02:00"
                                             ? InkWell(
                                                 onTap: () async {
-                                                  await Future.delayed(const Duration(milliseconds: 500));
+                                                  await Future.delayed(
+                                                      const Duration(
+                                                          milliseconds: 500));
                                                   setState(() {
-                                                    iscycleStart = true;
+                                               //     iscycleStart = true;
                                                     cyclestarttime =
                                                         DateTime.now();
                                                     isreaload = false;
@@ -920,7 +924,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                                   ActivityCycleList
                                                       activityCycleList =
                                                       ActivityCycleList(
-                                                          activityList: [], 
+                                                          activityList: [],
                                                           cycleName:
                                                               "Cycle$cycle",
                                                           cycleTime:
@@ -941,7 +945,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                                 onTap: () {
                                                   setState(() {
                                                     isplay = false;
-                                                    iscycleStart = false;
+                                           //         iscycleStart = false;
                                                     //isplay1 = false;
                                                   });
                                                   //audioPlayer.stop();
@@ -959,7 +963,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                             onTap: () {
                                               setState(() {
                                                 isplay = true;
-                                                iscycleStart = true;
+                                            //    iscycleStart = true;
                                                 //isplay1 = true;
                                               });
                                               //_controller2.resume();
@@ -1209,7 +1213,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                                         onChanged: (
                                                           String? value,
                                                         ) {
-                                                          if (iscycleStart) {
+                                                         
                                                             setState(
                                                               () {
                                                                 tactapiController
@@ -1297,7 +1301,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                                                 }
                                                               },
                                                             );
-                                                          }
+                                                          
                                                         },
                                                       ),
                                                       kwidth5,
@@ -1621,175 +1625,204 @@ class _HomeScreenState extends State<HomeScreen> {
                           ],
                         ),
                         ksizedbox20,
-                        ListView.builder(
-                          physics: const NeverScrollableScrollPhysics(),
-                          shrinkWrap: true,
-                          itemCount: tactapiController.activitylist.length,
-                          itemBuilder: (BuildContext context, int index) {
-                            return Column(
-                              children: [
-                                Row(
+                        tactapiController.isLoading.isTrue
+                            ? Container(
+                                height: 80,
+                                width: 50,
+                                child: Column(
                                   children: [
-                                    Text(
-                                      "${tactapiController.activitylist[index].cycleName} - ${tactapiController.activitylist[index].cycleTime}",
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.w700,
-                                          fontSize: 18,
-                                          color: kblue),
+                                    ksizedbox30,
+                                    CircularProgressIndicator(
+                                      color: kgrey,
                                     ),
                                   ],
                                 ),
-                                ksizedbox10,
-                                for (int i = 0;
-                                    i <
-                                        tactapiController.activitylist[index]
-                                            .activityList.length;
-                                    i++)
-                                tactapiController
-                                                  .activitylist[index]
-                                                  .activityList[i]
-                                                  .value == "empty" ? Container(
-                                                    height: 5,
-                                                  ) :   Row(
-                                    mainAxisAlignment: MainAxisAlignment.start,
+                              )
+                            : ListView.builder(
+                                physics: const NeverScrollableScrollPhysics(),
+                                shrinkWrap: true,
+                                itemCount:
+                                    tactapiController.activitylist.length,
+                                itemBuilder: (BuildContext context, int index) {
+                                  return Column(
                                     children: [
-                                      Container(
-                                        width: size.width * 0.28,
-                                        alignment: Alignment.centerLeft,
-                                        child: Text(
-                                          tactapiController.activitylist[index]
-                                              .activityList[i].categoryTitle,
-                                          style: minfont,
-                                        ),
-                                      ),
-                                      ksizedbox10,
-                                      Container(
-                                        width: size.width * 0.28,
-                                        alignment: Alignment.centerLeft,
-                                        child: Text(
-                                          tactapiController.activitylist[index]
-                                              .activityList[i].subTitle,
-                                          style: minfont,
-                                        ),
-                                      ),
-                                      ksizedbox10,
-                                      Container(
-                                        width: size.width * 0.28,
-                                        alignment: Alignment.centerLeft,
-                                        child: Text(
-                                          tactapiController.activitylist[index]
-                                                      .activityList[i].value ==
-                                                  "null"
-                                              ? " "
-                                              : tactapiController
-                                                  .activitylist[index]
-                                                  .activityList[i]
-                                                  .value,
-                                          style: minfont,
-                                        ),
-                                      ),
-                                      ksizedbox10,
-                                    ],
-                                  ),
-                              ],
-                            );
-                          },
-                        ),
-                        ksizedbox10,
-                        // Text("length of the list---->> ${tactapiController.activitylistCurrent.length}"),
-                        GetBuilder<TactApiController>(
-                          builder: (_) {
-                            return ListView.builder(
-                              physics: const NeverScrollableScrollPhysics(),
-                              shrinkWrap: true,
-                              itemCount:
-                                  tactapiController.activitylistCurrent.length,
-                              itemBuilder: (BuildContext context, int index) {
-                                return Column(
-                                  children: [
-                                    Row(
-                                      children: [
-                                        Text(
-                                          "${tactapiController.activitylistCurrent[index].cycleName} - ${cyclestarttime.hour}:${cyclestarttime.minute}:${cyclestarttime.second}",
-                                          style: TextStyle(
-                                              fontWeight: FontWeight.w700,
-                                              fontSize: 18,
-                                              color: kblue),
-                                        ),
-                                      ],
-                                    ),
-                                    ksizedbox10,
-                                    for (int i = 0;
-                                        i <
-                                            tactapiController
-                                                .activitylistCurrent[index]
-                                                .activityList
-                                                .length;
-                                        i++)
-                                    Row(
-                                        mainAxisAlignment: MainAxisAlignment.start,
+                                      Row(
                                         children: [
-                                          Container(
-                                            width: size.width * 0.28,
-                                            alignment: Alignment.centerLeft,
-                                            child: Text(
-                                              tactapiController
-                                                  .activitylistCurrent[index]
-                                                  .activityList[i]
-                                                  .categoryTitle,
-                                              style: minfont,
-                                            ),
+                                          Text(
+                                            "${tactapiController.activitylist[index].cycleName} - ${tactapiController.activitylist[index].cycleTime}",
+                                            style: TextStyle(
+                                                fontWeight: FontWeight.w700,
+                                                fontSize: 18,
+                                                color: kblue),
                                           ),
-                                          ksizedbox10,
-                                          Container(
-                                            width: size.width * 0.28,
-                                            alignment: Alignment.centerLeft,
-                                            child: Text(
-                                              tactapiController
-                                                  .activitylistCurrent[index]
-                                                  .activityList[i]
-                                                  .subTitle,
-                                              style: minfont,
-                                            ),
-                                          ),
-                                          ksizedbox10,
-                                          if (tactapiController
-                                                  .activitylistCurrent[index]
-                                                  .activityList[i]
-                                                  .subTitle ==
-                                              "Amiodarone")
-                                            Container(
-                                              width: size.width * 0.28,
-                                              alignment: Alignment.centerLeft,
-                                              child: Text(
-                                                selectedOption2,
-                                                style: minfont,
-                                              ),
-                                            ),
-                                          if (tactapiController
-                                                  .activitylistCurrent[index]
-                                                  .activityList[i]
-                                                  .subTitle ==
-                                              "CPP")
-                                            Container(
-                                              width: size.width * 0.28,
-                                              alignment: Alignment.centerLeft,
-                                              child: Text(
-                                                _currentSliderValue
-                                                    .round()
-                                                    .toString(),
-                                                style: minfont,
-                                              ),
-                                            ),
-                                          ksizedbox10,
                                         ],
                                       ),
-                                  ],
-                                );
-                              },
-                            );
-                          }
-                        ),
+                                      ksizedbox10,
+                                      for (int i = 0;
+                                          i <
+                                              tactapiController
+                                                  .activitylist[index]
+                                                  .activityList
+                                                  .length;
+                                          i++)
+                                        tactapiController.activitylist[index]
+                                                    .activityList[i].value ==
+                                                "empty"
+                                            ? Container(
+                                                height: 5,
+                                              )
+                                            : Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.start,
+                                                children: [
+                                                  Container(
+                                                    width: size.width * 0.28,
+                                                    alignment:
+                                                        Alignment.centerLeft,
+                                                    child: Text(
+                                                      tactapiController
+                                                          .activitylist[index]
+                                                          .activityList[i]
+                                                          .categoryTitle,
+                                                      style: minfont,
+                                                    ),
+                                                  ),
+                                                  ksizedbox10,
+                                                  Container(
+                                                    width: size.width * 0.28,
+                                                    alignment:
+                                                        Alignment.centerLeft,
+                                                    child: Text(
+                                                      tactapiController
+                                                          .activitylist[index]
+                                                          .activityList[i]
+                                                          .subTitle,
+                                                      style: minfont,
+                                                    ),
+                                                  ),
+                                                  ksizedbox10,
+                                                  Container(
+                                                    width: size.width * 0.28,
+                                                    alignment:
+                                                        Alignment.centerLeft,
+                                                    child: Text(
+                                                      tactapiController
+                                                                  .activitylist[
+                                                                      index]
+                                                                  .activityList[
+                                                                      i]
+                                                                  .value ==
+                                                              "null"
+                                                          ? " "
+                                                          : tactapiController
+                                                              .activitylist[
+                                                                  index]
+                                                              .activityList[i]
+                                                              .value,
+                                                      style: minfont,
+                                                    ),
+                                                  ),
+                                                  ksizedbox10,
+                                                ],
+                                              ),
+                                    ],
+                                  );
+                                },
+                              ),
+                        ksizedbox10,
+                        // Text("length of the list---->> ${tactapiController.activitylistCurrent.length}"),
+                        GetBuilder<TactApiController>(builder: (_) {
+                          return ListView.builder(
+                            physics: const NeverScrollableScrollPhysics(),
+                            shrinkWrap: true,
+                            itemCount:
+                                tactapiController.activitylistCurrent.length,
+                            itemBuilder: (BuildContext context, int index) {
+                              return Column(
+                                children: [
+                                  Row(
+                                    children: [
+                                      Text(
+                                        "${tactapiController.activitylistCurrent[index].cycleName} - ${cyclestarttime.hour}:${cyclestarttime.minute}:${cyclestarttime.second}",
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.w700,
+                                            fontSize: 18,
+                                            color: kblue),
+                                      ),
+                                    ],
+                                  ),
+                                  ksizedbox10,
+                                  for (int i = 0;
+                                      i <
+                                          tactapiController
+                                              .activitylistCurrent[index]
+                                              .activityList
+                                              .length;
+                                      i++)
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
+                                      children: [
+                                        Container(
+                                          width: size.width * 0.28,
+                                          alignment: Alignment.centerLeft,
+                                          child: Text(
+                                            tactapiController
+                                                .activitylistCurrent[index]
+                                                .activityList[i]
+                                                .categoryTitle,
+                                            style: minfont,
+                                          ),
+                                        ),
+                                        ksizedbox10,
+                                        Container(
+                                          width: size.width * 0.28,
+                                          alignment: Alignment.centerLeft,
+                                          child: Text(
+                                            tactapiController
+                                                .activitylistCurrent[index]
+                                                .activityList[i]
+                                                .subTitle,
+                                            style: minfont,
+                                          ),
+                                        ),
+                                        ksizedbox10,
+                                        if (tactapiController
+                                                .activitylistCurrent[index]
+                                                .activityList[i]
+                                                .subTitle ==
+                                            "Amiodarone")
+                                          Container(
+                                            width: size.width * 0.28,
+                                            alignment: Alignment.centerLeft,
+                                            child: Text(
+                                              selectedOption2,
+                                              style: minfont,
+                                            ),
+                                          ),
+                                        if (tactapiController
+                                                .activitylistCurrent[index]
+                                                .activityList[i]
+                                                .subTitle ==
+                                            "CPP")
+                                          Container(
+                                            width: size.width * 0.28,
+                                            alignment: Alignment.centerLeft,
+                                            child: Text(
+                                              _currentSliderValue
+                                                  .round()
+                                                  .toString(),
+                                              style: minfont,
+                                            ),
+                                          ),
+                                        ksizedbox10,
+                                      ],
+                                    ),
+                                ],
+                              );
+                            },
+                          );
+                        }),
                         ksizedbox20,
                         ksizedbox10,
                       ],
@@ -1833,122 +1866,119 @@ class _HomeScreenState extends State<HomeScreen> {
     }
   }
 
-
-
   Future<void> _showTextFieldDialog(
-    BuildContext context,
-    String text,
-    String label,
-    TextEditingController textController,
-    String id,
-    String cycle,
-    int index) async {
-  String textFieldValue = '';
-  //final TextEditingController textController;
-  final tactapiController = Get.find<TactApiController>();
-  return showDialog(
-    context: context,
-    builder: (BuildContext context) {
-      return AlertDialog(
-        title: Text(text),
-        content: Container(
-          height: 50,
-          width: double.infinity,
-          child: TextField(
-            controller: textController,
-            decoration: InputDecoration(
-                label: Text(label), border: OutlineInputBorder()),
-            onChanged: (value) {
-              textFieldValue = value;
-            },
-          ),
-        ),
-        actions: <Widget>[
-          Container(
-            height: 34,
-            width: 70,
-            decoration: BoxDecoration(
-                color: Colors.black, borderRadius: BorderRadius.circular(16)),
-            child: TextButton(
-              child: Center(
-                child: Text(
-                  'OK',
-                  style: TextStyle(fontSize: 16, color: kwhite),
-                ),
-              ),
-              onPressed: () async {
-                //     print('Entered text: ${textEditingController.text}');
-                if (textController.text.isNotEmpty) {
-                  //api call
-
-                  int subId = await tactapiController.storesubcatogory(
-                      title: textController.text,
-                      description: 'test',
-                      categoryid: id);
-
-                  if(iscycleStart){
-                    // selectedOption =
-                  //     value;
-                  StoreActivityListModel storeActivityListModel =
-                      StoreActivityListModel(
-                          title: "Cycle$cycle",
-                          value: "null",
-                          categoryName:
-                              tactapiController.catogorylist[index].title,
-                          catogoryid: tactapiController.catogorylist[index].id
-                              .toString(),
-                          name: textController.text,
-                          subid: subId.toString(),
-                          startingTime: "");
-
-                  var tempId;
-                  for (int i = 0;
-                      i < tactapiController.selectedSubCatIdList.length;
-                      i++) {
-                    var value2 = tactapiController.selectedSubCatIdList[i];
-                    if (value2.catogoryid ==
-                        storeActivityListModel.catogoryid) {
-                      tempId = i;
-                    }
-                  }
-
-                  if (tempId != null) {
-                    tactapiController.selectedSubCatIdList.removeAt(tempId);
-                    // Get.rawSnackbar(
-                    //   message: "Removed from list index $tempId"
-                    // );
-                    tactapiController.selectedSubCatIdList
-                        .add(storeActivityListModel);
-                    tactapiController.getactivityLocal();
-                    //   Get.rawSnackbar(
-                    //   message: "Added to list "
-                    // );
-                  } else {
-                    tactapiController.selectedSubCatIdList
-                        .add(storeActivityListModel);
-                    tactapiController.getactivityLocal();
-                    //   Get.rawSnackbar(
-                    //   message: "Added to list "
-                    // );
-                  }
-
-                  tactapiController.addGroupValue(
-                      int.parse(id), subId.toString());
-                  }
-                  tactapiController.update();
-                }
-                Navigator.of(context).pop();
+      BuildContext context,
+      String text,
+      String label,
+      TextEditingController textController,
+      String id,
+      String cycle,
+      int index) async {
+    String textFieldValue = '';
+    //final TextEditingController textController;
+    final tactapiController = Get.find<TactApiController>();
+    return showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text(text),
+          content: Container(
+            height: 50,
+            width: double.infinity,
+            child: TextField(
+              controller: textController,
+              decoration: InputDecoration(
+                  label: Text(label), border: OutlineInputBorder()),
+              onChanged: (value) {
+                textFieldValue = value;
               },
             ),
           ),
-        ],
-      );
-    },
-  );
-}
-}
+          actions: <Widget>[
+            Container(
+              height: 34,
+              width: 70,
+              decoration: BoxDecoration(
+                  color: Colors.black, borderRadius: BorderRadius.circular(16)),
+              child: TextButton(
+                child: Center(
+                  child: Text(
+                    'OK',
+                    style: TextStyle(fontSize: 16, color: kwhite),
+                  ),
+                ),
+                onPressed: () async {
+                  //     print('Entered text: ${textEditingController.text}');
+                  if (textController.text.isNotEmpty) {
+                    //api call
 
+                    int subId = await tactapiController.storesubcatogory(
+                        title: textController.text,
+                        description: 'test',
+                        categoryid: id);
 
+                
+                      // selectedOption =
+                      //     value;
+                      StoreActivityListModel storeActivityListModel =
+                          StoreActivityListModel(
+                              title: "Cycle$cycle",
+                              value: "null",
+                              categoryName:
+                                  tactapiController.catogorylist[index].title,
+                              catogoryid: tactapiController
+                                  .catogorylist[index].id
+                                  .toString(),
+                              name: textController.text,
+                              subid: subId.toString(),
+                              startingTime: "");
+
+                      var tempId;
+                      for (int i = 0;
+                          i < tactapiController.selectedSubCatIdList.length;
+                          i++) {
+                        var value2 = tactapiController.selectedSubCatIdList[i];
+                        if (value2.catogoryid ==
+                            storeActivityListModel.catogoryid) {
+                          tempId = i;
+                        }
+                      }
+
+                      if (tempId != null) {
+                        tactapiController.selectedSubCatIdList.removeAt(tempId);
+                        // Get.rawSnackbar(
+                        //   message: "Removed from list index $tempId"
+                        // );
+                        tactapiController.selectedSubCatIdList
+                            .add(storeActivityListModel);
+                        tactapiController.getactivityLocal();
+                        //   Get.rawSnackbar(
+                        //   message: "Added to list "
+                        // );
+                      } else {
+                        tactapiController.selectedSubCatIdList
+                            .add(storeActivityListModel);
+                        tactapiController.getactivityLocal();
+                        //   Get.rawSnackbar(
+                        //   message: "Added to list "
+                        // );
+                      }
+
+                      tactapiController.addGroupValue(
+                          int.parse(id), subId.toString());
+                    
+                    tactapiController.update();
+                  }
+                  Navigator.of(context).pop();
+                },
+              ),
+            ),
+          ],
+        );
+      },
+    );
+  }
+}
 
 class counterController extends GetxController {
   final count = 110.obs;

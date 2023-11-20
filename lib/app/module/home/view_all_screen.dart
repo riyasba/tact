@@ -52,7 +52,8 @@ class _ViewAllScreenState extends State<ViewAllScreen> {
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 20),
         child: GetBuilder<TactApiController>(builder: (_) {
-          return ListView(physics: BouncingScrollPhysics(),
+          return ListView(
+            physics: BouncingScrollPhysics(),
             children: [
               ksizedbox20,
               Row(
@@ -151,50 +152,53 @@ class _ViewAllScreenState extends State<ViewAllScreen> {
                                 tactapiController
                                     .activitylist[index].activityList.length;
                             i++)
-                          tactapiController
-                                                  .activitylist[index]
-                                                  .activityList[i]
-                                                  .value == "empty" ? Container(
-                                                    height: 5,
-                                                  ) :  Row(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: [
-                              Container(
-                                width: size.width * 0.3,
-                                alignment: Alignment.centerLeft,
-                                child: Text(
-                                  tactapiController.activitylist[index]
-                                      .activityList[i].categoryTitle,
-                                  style: minfont,
+                          tactapiController.activitylist[index].activityList[i]
+                                      .value ==
+                                  "empty"
+                              ? Container(
+                                  height: 5,
+                                )
+                              : Row(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  children: [
+                                    Container(
+                                      width: size.width * 0.3,
+                                      alignment: Alignment.centerLeft,
+                                      child: Text(
+                                        tactapiController.activitylist[index]
+                                            .activityList[i].categoryTitle,
+                                        style: minfont,
+                                      ),
+                                    ),
+                                    ksizedbox10,
+                                    Container(
+                                      width: size.width * 0.28,
+                                      alignment: Alignment.centerLeft,
+                                      child: Text(
+                                        tactapiController.activitylist[index]
+                                            .activityList[i].subTitle,
+                                        style: minfont,
+                                      ),
+                                    ),
+                                    ksizedbox10,
+                                    Container(
+                                      width: size.width * 0.28,
+                                      alignment: Alignment.centerLeft,
+                                      child: Text(
+                                        tactapiController.activitylist[index]
+                                                    .activityList[i].value ==
+                                                "null"
+                                            ? " "
+                                            : tactapiController
+                                                .activitylist[index]
+                                                .activityList[i]
+                                                .value,
+                                        style: minfont,
+                                      ),
+                                    ),
+                                    ksizedbox10,
+                                  ],
                                 ),
-                              ),
-                              ksizedbox10,
-                              Container(
-                                width: size.width * 0.28,
-                                alignment: Alignment.centerLeft,
-                                child: Text(
-                                  tactapiController.activitylist[index]
-                                      .activityList[i].subTitle,
-                                  style: minfont,
-                                ),
-                              ),
-                              ksizedbox10,
-                              Container(
-                                width: size.width * 0.28,
-                                alignment: Alignment.centerLeft,
-                                child: Text(
-                                  tactapiController.activitylist[index]
-                                              .activityList[i].value ==
-                                          "null"
-                                      ? " "
-                                      : tactapiController.activitylist[index]
-                                          .activityList[i].value,
-                                  style: minfont,
-                                ),
-                              ),
-                              ksizedbox10,
-                            ],
-                          ),
                       ],
                     );
                   }),

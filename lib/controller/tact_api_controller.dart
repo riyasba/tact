@@ -313,10 +313,11 @@ class TactApiController extends GetxController {
   var actualtime = '00:00:00';
   var endingtime = '00:00:00';
   getactivity({required String appid}) async {
+    isLoading(true);
     activitylist.clear();
     dio.Response<dynamic> response =
         await getactivityapiservice.getactivityapi(appid: appid);
-
+  isLoading(false);
     if (response.statusCode == 200) {
       GetActivityModel getactivitymodel =
           GetActivityModel.fromJson(response.data);
@@ -373,9 +374,10 @@ class TactApiController extends GetxController {
 
   getactivityonStart({required String appid}) async {
     activitylist.clear();
+    isLoading(true);
     dio.Response<dynamic> response =
         await getactivityapiservice.getactivityapi(appid: appid);
-
+ isLoading(false);
     if (response.statusCode == 200) {
       GetActivityModel getactivitymodel =
           GetActivityModel.fromJson(response.data);
