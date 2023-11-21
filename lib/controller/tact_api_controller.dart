@@ -24,6 +24,7 @@ class TactApiController extends GetxController {
   GetSubCatogoriesApiServices gettypeapiservice = GetSubCatogoriesApiServices();
 
   RxBool isLoading = false.obs;
+  RxBool isButtonLoading = false.obs;
 
   List<StoreActivityListModel> selectedSubCatIdList = [];
 
@@ -223,24 +224,28 @@ class TactApiController extends GetxController {
 
     print(finalResult.round());
 
+
+     if (finalResult >= 0 && finalResult <= 59) {
+      Text('You have achieved 50% of efficiency. Poor');
+    } else if (finalResult >= 60 && finalResult <= 79) {
+      Text('Congratulations you have achieved 85% of efficiency. Better');
+    } else if (finalResult >= 80 && finalResult <= 89) {
+      Text('Congratulations you have achieved 85% of efficiency. Good');
+    } else if (finalResult >= 90 && finalResult <= 95) {
+      Text('Congratulations you have achieved 85% of efficiency. Excellent');
+    } else if (finalResult >= 96 && finalResult <= 100) {
+      Text('Congratulations you have achieved 85% of efficiency. Outstanding');
+    } else {
+      Text('Efficiency out of range');
+    }
+  
+
     return finalResult.round();
+    
   }
 
-  // efficiencyResultMessage(int finalResult) {
-  //   if (finalResult >= 0 && finalResult <= 59) {
-  //     Text('You have achieved 50% of efficiency. Poor');
-  //   } else if (finalResult >= 60 && finalResult <= 79) {
-  //     Text('Congratulations you have achieved 85% of efficiency. Better');
-  //   } else if (finalResult >= 80 && finalResult <= 89) {
-  //     Text('Congratulations you have achieved 85% of efficiency. Good');
-  //   } else if (finalResult >= 90 && finalResult <= 95) {
-  //     Text('Congratulations you have achieved 85% of efficiency. Excellent');
-  //   } else if (finalResult >= 96 && finalResult <= 100) {
-  //     Text('Congratulations you have achieved 85% of efficiency. Outstanding');
-  //   } else {
-  //     Text('Efficiency out of range');
-  //   }
-  // }
+ 
+   
 
   StoreActivityApiService activitylogapiservice = StoreActivityApiService();
 
@@ -328,11 +333,13 @@ class TactApiController extends GetxController {
   var actualtime = '00:00:00';
   var endingtime = '00:00:00';
   getactivity({required String appid}) async {
+   
     isLoading(true);
     activitylist.clear();
     dio.Response<dynamic> response =
         await getactivityapiservice.getactivityapi(appid: appid);
     isLoading(false);
+     
     if (response.statusCode == 200) {
       GetActivityModel getactivitymodel =
           GetActivityModel.fromJson(response.data);
@@ -883,7 +890,63 @@ class TactApiController extends GetxController {
                               fontSize: 25,
                               color: PdfColors.blue),
                         ),
-                    ],
+
+pw.SizedBox(height: 30,),
+
+               if(getEfficiency(actualTime: actualTimetotal.value, overallTime: overallCprTime.value) >= 0 && getEfficiency(actualTime: actualTimetotal.value, overallTime: overallCprTime.value) <= 59)
+                 pw.Text(
+                      'Poor',
+                      textAlign: pw. TextAlign.center,
+                      style: pw. TextStyle(
+                          fontWeight: pw. FontWeight.bold,
+                          fontSize: 27,
+                          color: PdfColors.red),
+                    ),
+             if(getEfficiency(actualTime: actualTimetotal.value, overallTime: overallCprTime.value) >= 60 && getEfficiency(actualTime: actualTimetotal.value, overallTime: overallCprTime.value) <= 79)
+                           pw.Text(
+                      'Better',
+                      textAlign: pw. TextAlign.center,
+                      style: pw. TextStyle(
+                          fontWeight: pw. FontWeight.bold,
+                          fontSize: 27,
+                          color: PdfColors.orange),
+                    ),
+               if(getEfficiency(actualTime: actualTimetotal.value, overallTime: overallCprTime.value) >= 90 && getEfficiency(actualTime: actualTimetotal.value, overallTime: overallCprTime.value) <= 95)
+                           pw.Text(
+                      'Good',
+                      textAlign: pw. TextAlign.center,
+                      style: pw. TextStyle(
+                          fontWeight: pw. FontWeight.bold,
+                          fontSize: 27,
+                          color: PdfColors.orange),
+                    ),
+                                 if(getEfficiency(actualTime: actualTimetotal.value, overallTime: overallCprTime.value) >= 80 && getEfficiency(actualTime: actualTimetotal.value, overallTime: overallCprTime.value) <= 89)
+                               pw.Text(
+                      'Excellent',
+                      textAlign: pw. TextAlign.center,
+                      style: pw. TextStyle(
+                          fontWeight: pw. FontWeight.bold,
+                          fontSize: 27,
+                          color: PdfColors.green),
+                    ),
+                             if(getEfficiency(actualTime: actualTimetotal.value, overallTime: overallCprTime.value) >= 96 && getEfficiency(actualTime: actualTimetotal.value, overallTime: overallCprTime.value) <= 100)
+                                     pw.Text(
+                      'Outstanding',
+                      textAlign: pw. TextAlign.center,
+                      style: pw. TextStyle(
+                          fontWeight: pw. FontWeight.bold,
+                          fontSize: 27,
+                          color: PdfColors.green),
+                    ),
+                                  //  Text(
+                                  //     "Efficiency out of range",
+                                  //     textAlign: TextAlign.center,
+                                  //     style: TextStyle(
+                                  //         fontWeight: FontWeight.bold,
+                                  //         fontSize: 27,
+                                  //         color: kblue),
+                                  //   ),        
+                                    ],
                   )
               ],
             ); // Center

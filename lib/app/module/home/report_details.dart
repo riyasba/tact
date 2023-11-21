@@ -28,7 +28,7 @@ class _ReportDetailsState extends State<ReportDetails> {
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
     return Scaffold(
-      appBar: AppBar(
+      appBar: AppBar(backgroundColor: kblue,
         title: Text('Report Details'),
         actions: [
           IconButton(
@@ -342,14 +342,16 @@ class _ReportDetailsState extends State<ReportDetails> {
                                           fontSize: 27,
                                           color:Colors.green),
                                     )
-                                  : Text(
+                                  :
+                                   Text(
                                       "Efficiency out of range",
                                       textAlign: TextAlign.center,
                                       style: TextStyle(
                                           fontWeight: FontWeight.bold,
                                           fontSize: 27,
                                           color: kblue),
-                                    ),   ],
+                                    ),   
+                                    ],
                 ),
               ],
             );
