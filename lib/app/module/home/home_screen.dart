@@ -61,7 +61,7 @@ class _HomeScreenState extends State<HomeScreen> {
   final _controller = CountDownController();
   final _controller2 = CountDownController();
 
-//  bool iscycleStart = true;
+  bool iscycleStart = true;
 
 //String selectedrythem=selectedOption;
 
@@ -415,77 +415,79 @@ class _HomeScreenState extends State<HomeScreen> {
                           ),
                       ],
                     ),
-                    GestureDetector(
-                      onTap: () async {
-                        setState(() {
-                          isplay1 = true;
-                          isplay = true;
-                          isEnable = true;
-                          cyclestarttime = DateTime.now();
-                        });
+                    if (iscycleStart == true)
+                      GestureDetector(
+                        onTap: () async {
+                          setState(() {
+                            iscycleStart = false;
+                            isplay1 = true;
+                            isplay = true;
+                            isEnable = true;
+                            cyclestarttime = DateTime.now();
+                          });
 
-                        _controller2.start();
-                        _controller.start();
-                        startTimer();
-                        _startFlashlightTimer();
-                        playAudio();
-                        audioSoundManage();
+                          _controller2.start();
+                          _controller.start();
+                          startTimer();
+                          _startFlashlightTimer();
+                          playAudio();
+                          audioSoundManage();
 
-                        loop();
-                        tactapiController.deleteactivityOnStart();
-                        tactapiController.setDefaultGroupValue();
-                        tactapiController.selectedSubCatIdList.clear();
-                        tactapiController.activitylistCurrent.clear();
+                          loop();
+                          tactapiController.deleteactivityOnStart();
+                          tactapiController.setDefaultGroupValue();
+                          tactapiController.selectedSubCatIdList.clear();
+                          tactapiController.activitylistCurrent.clear();
 
-                        ActivityCycleList activityCycleList = ActivityCycleList(
-                            activityList: [
-                              Activitylist(
-                                  categoryId: "",
-                                  categoryTitle: "",
-                                  createdAt: DateTime.now(),
-                                  fromTime: "",
-                                  id: 0,
-                                  subCategory: "",
-                                  subTitle: "",
-                                  title: "",
-                                  toTime: "",
-                                  updatedAt: DateTime.now(),
-                                  value: "")
-                            ],
-                            cycleName: "Cycle$cycle",
-                            cycleTime:
-                                "${cyclestarttime.hour}:${cyclestarttime.minute}:${cyclestarttime.second}");
-                        tactapiController.activitylistCurrent
-                            .add(activityCycleList);
+                          ActivityCycleList activityCycleList = ActivityCycleList(
+                              activityList: [
+                                Activitylist(
+                                    categoryId: "",
+                                    categoryTitle: "",
+                                    createdAt: DateTime.now(),
+                                    fromTime: "",
+                                    id: 0,
+                                    subCategory: "",
+                                    subTitle: "",
+                                    title: "",
+                                    toTime: "",
+                                    updatedAt: DateTime.now(),
+                                    value: "")
+                              ],
+                              cycleName: "Cycle$cycle",
+                              cycleTime:
+                                  "${cyclestarttime.hour}:${cyclestarttime.minute}:${cyclestarttime.second}");
+                          tactapiController.activitylistCurrent
+                              .add(activityCycleList);
 
-                        tactapiController.update();
-                      },
-                      child: Container(
-                        height: 40,
-                        width: 100,
-                        decoration: BoxDecoration(
-                          color: kOrange,
-                          borderRadius: BorderRadius.circular(16),
-                          gradient: const LinearGradient(
-                            begin: Alignment.centerLeft,
-                            end: Alignment.centerRight,
-                            colors: [
-                              Color.fromARGB(129, 157, 196, 187),
-                              Color(0xff81E89E),
-                            ],
+                          tactapiController.update();
+                        },
+                        child: Container(
+                          height: 40,
+                          width: 100,
+                          decoration: BoxDecoration(
+                            color: kOrange,
+                            borderRadius: BorderRadius.circular(16),
+                            gradient: const LinearGradient(
+                              begin: Alignment.centerLeft,
+                              end: Alignment.centerRight,
+                              colors: [
+                                Color.fromARGB(129, 157, 196, 187),
+                                Color(0xff81E89E),
+                              ],
+                            ),
                           ),
-                        ),
-                        child: const Center(
-                          child: Text(
-                            'Start',
-                            style: TextStyle(
-                                color: Color(0xff12175E),
-                                fontSize: 17,
-                                fontWeight: FontWeight.w700),
+                          child: const Center(
+                            child: Text(
+                              'Start',
+                              style: TextStyle(
+                                  color: Color(0xff12175E),
+                                  fontSize: 17,
+                                  fontWeight: FontWeight.w700),
+                            ),
                           ),
                         ),
                       ),
-                    ),
                     kwidth5,
                     Stack(
                       children: [
@@ -1504,10 +1506,15 @@ class _HomeScreenState extends State<HomeScreen> {
 
                   GestureDetector(
                     onTap: () {
+                      tactapiController.deletesubcatogory();
+                      //   tactapiController.getsubcatogory(id: id)
+                      tactapiController.selectedSubCatIdList.clear();
+                      tactapiController.update();
                       _disableTorch(context);
                       //  tactapiController.deleteactivity();
                       tactapiController.setDefaultGroupValue();
                       setState(() {
+                        iscycleStart = true;
                         isEnable = false;
                         audioPlayer.stop();
                         audioPlayer2.stop();
@@ -1706,7 +1713,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                               )
                                             : Row(
                                                 mainAxisAlignment:
-                                                    MainAxisAlignment.spaceAround,
+                                                    MainAxisAlignment
+                                                        .spaceAround,
                                                 children: [
                                                   Container(
                                                     width: size.width * 0.28,
