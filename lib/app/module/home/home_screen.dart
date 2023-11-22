@@ -303,35 +303,35 @@ class _HomeScreenState extends State<HomeScreen> {
 
   audioSoundManage() async {
     if (controller.count > 120) {
-      await audioPlayer.setPlaybackRate(1);
+      await audioPlayer.setPlaybackRate(2);
       await audioPlayer.setVolume(1);
     } else if (controller.count > 118) {
+      await audioPlayer.setPlaybackRate(1.8);
+      await audioPlayer.setVolume(1);
+    } else if (controller.count > 116) {
+      await audioPlayer.setPlaybackRate(1.6);
+      await audioPlayer.setVolume(1);
+    } else if (controller.count > 114) {
+      await audioPlayer.setPlaybackRate(1.4);
+      await audioPlayer.setVolume(1);
+    } else if (controller.count > 112) {
+      await audioPlayer.setPlaybackRate(1.2);
+      await audioPlayer.setVolume(1);
+    } else if (controller.count > 110) {
+      await audioPlayer.setPlaybackRate(1);
+      await audioPlayer.setVolume(1);
+    } else if (controller.count > 108) {
       await audioPlayer.setPlaybackRate(0.9);
       await audioPlayer.setVolume(0.9);
-    } else if (controller.count > 116) {
+    } else if (controller.count > 106) {
       await audioPlayer.setPlaybackRate(0.8);
       await audioPlayer.setVolume(0.8);
-    } else if (controller.count > 114) {
+    } else if (controller.count > 104) {
       await audioPlayer.setPlaybackRate(0.7);
       await audioPlayer.setVolume(0.7);
-    } else if (controller.count > 112) {
+    } else if (controller.count < 102) {
       await audioPlayer.setPlaybackRate(0.6);
       await audioPlayer.setVolume(0.6);
-    } else if (controller.count > 110) {
-      await audioPlayer.setPlaybackRate(0.5);
-      await audioPlayer.setVolume(0.5);
-    } else if (controller.count > 108) {
-      await audioPlayer.setPlaybackRate(0.4);
-      await audioPlayer.setVolume(0.4);
-    } else if (controller.count > 106) {
-      await audioPlayer.setPlaybackRate(0.3);
-      await audioPlayer.setVolume(0.3);
-    } else if (controller.count > 104) {
-      await audioPlayer.setPlaybackRate(0.2);
-      await audioPlayer.setVolume(0.2);
-    } else if (controller.count < 102) {
-      await audioPlayer.setPlaybackRate(0.1);
-      await audioPlayer.setVolume(0.1);
     }
   }
 
