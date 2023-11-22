@@ -73,8 +73,11 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
             ),
             actions: [
+              
               Row(
+
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
+
                 children: [
                   InkWell(
                     onTap: () {
@@ -574,19 +577,19 @@ class _HomeScreenState extends State<HomeScreen> {
                             children: [
                               GestureDetector(
                                 onTap: () async {
-                                  if (isflashon == false) {
-                                    setState(() {
-                                      isflashon = true;
-                                    });
-                                    print("-----------------> flsh oning");
-                                    _enableTorch(context);
-                                  } else {
-                                    setState(() {
-                                      isflashon = false;
-                                    });
-                                    print("------------>. flash off");
-                                    _disableTorch(context);
-                                  }
+                                  // if (isflashon == false) {
+                                  //   setState(() {
+                                  //     isflashon = true;
+                                  //   });
+                                  //   print("-----------------> flsh oning");
+                                  //   _enableTorch(context);
+                                  // } else {
+                                  //   setState(() {
+                                  //     isflashon = false;
+                                  //   });
+                                  //   print("------------>. flash off");
+                                  //   _disableTorch(context);
+                                  // }
                                 },
                                 child: const Icon(Icons.flash_on),
                               ),
@@ -1828,6 +1831,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                       (BuildContext context, int index) {
                                     return Column(
                                       children: [
+                                          ksizedbox20,
                                         Row(
                                           children: [
                                             Text(
@@ -1918,7 +1922,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                     );
                                   },
                                 ),
-                          ksizedbox10,
+                         
                           // Text("length of the list---->> ${tactapiController.activitylistCurrent.length}"),
                           GetBuilder<TactApiController>(builder: (_) {
                             return ListView.builder(
@@ -1929,6 +1933,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               itemBuilder: (BuildContext context, int index) {
                                 return Column(
                                   children: [
+                                     ksizedbox20,
                                     Row(
                                       children: [
                                         Text(

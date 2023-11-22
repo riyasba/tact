@@ -36,7 +36,9 @@ class _ReportDetailsState extends State<ReportDetails> {
               tactapiController.sharePdf(
                   aminDrome: widget.aminDrome,
                   cppValue: widget.cppValue,
-                  cycleTime: widget.cycleTime);
+                  cycleTime: widget.cycleTime,
+                  efficiency: widget.efficiency
+                  );
             },
             icon: const Icon(Icons.share),
           ),
@@ -128,6 +130,7 @@ class _ReportDetailsState extends State<ReportDetails> {
                     itemBuilder: (BuildContext context, int index) {
                       return Column(
                         children: [
+    ksizedbox20,                    
                           Row(
                             children: [
                               Text(
@@ -192,7 +195,7 @@ class _ReportDetailsState extends State<ReportDetails> {
                         ],
                       );
                     }),
-                ksizedbox10,
+                ksizedbox20,
                 ListView.builder(
                   physics: const NeverScrollableScrollPhysics(),
                   shrinkWrap: true,

@@ -561,6 +561,7 @@ class TactApiController extends GetxController {
     required String aminDrome,
     required String cppValue,
     required DateTime cycleTime,
+    required int efficiency
   }) async {
     final pdf = pw.Document();
 
@@ -710,6 +711,9 @@ class TactApiController extends GetxController {
                 for (int index = 0; index < subLists[p].length; index++)
                   pw.Column(
                     children: [
+                       pw.SizedBox(
+                  height: 20,
+                ),
                       pw.Row(
                         children: [
                           pw.Text(
@@ -844,7 +848,7 @@ class TactApiController extends GetxController {
                                 alignment: pw.Alignment.centerLeft,
                                 child: pw.Text(
                                   aminDrome,
-                                  style: pw.TextStyle(color: PdfColors.grey),
+                                  style: const pw.TextStyle(color: PdfColors.grey),
                                 ),
                               ),
                             if (activitylistCurrent[index]
@@ -883,7 +887,7 @@ class TactApiController extends GetxController {
                       pw.SizedBox(height: 40),
                       if (subLists.length - 1 == p)
                         pw.Text(
-                          'Congratulations you have Achieved ${getEfficiency(actualTime: actualTimetotal.value, overallTime: overallCprTime.value)}% Efficiency',
+                          'Congratulations you have Achieved $efficiency% Efficiency',
                           textAlign: pw.TextAlign.center,
                           style: pw.TextStyle(
                               fontWeight: pw.FontWeight.bold,
@@ -893,7 +897,7 @@ class TactApiController extends GetxController {
 
 pw.SizedBox(height: 30,),
 
-               if(getEfficiency(actualTime: actualTimetotal.value, overallTime: overallCprTime.value) >= 0 && getEfficiency(actualTime: actualTimetotal.value, overallTime: overallCprTime.value) <= 59)
+               if(efficiency >= 0 && efficiency <= 59)
                  pw.Text(
                       'Poor',
                       textAlign: pw. TextAlign.center,
@@ -902,7 +906,7 @@ pw.SizedBox(height: 30,),
                           fontSize: 27,
                           color: PdfColors.red),
                     ),
-             if(getEfficiency(actualTime: actualTimetotal.value, overallTime: overallCprTime.value) >= 60 && getEfficiency(actualTime: actualTimetotal.value, overallTime: overallCprTime.value) <= 79)
+             if(efficiency >= 60 && efficiency <= 79)
                            pw.Text(
                       'Better',
                       textAlign: pw. TextAlign.center,
@@ -911,7 +915,7 @@ pw.SizedBox(height: 30,),
                           fontSize: 27,
                           color: PdfColors.orange),
                     ),
-               if(getEfficiency(actualTime: actualTimetotal.value, overallTime: overallCprTime.value) >= 90 && getEfficiency(actualTime: actualTimetotal.value, overallTime: overallCprTime.value) <= 95)
+               if(efficiency >= 90 && efficiency <= 95)
                            pw.Text(
                       'Good',
                       textAlign: pw. TextAlign.center,
@@ -920,7 +924,7 @@ pw.SizedBox(height: 30,),
                           fontSize: 27,
                           color: PdfColors.orange),
                     ),
-                                 if(getEfficiency(actualTime: actualTimetotal.value, overallTime: overallCprTime.value) >= 80 && getEfficiency(actualTime: actualTimetotal.value, overallTime: overallCprTime.value) <= 89)
+                                 if(efficiency >= 80 && efficiency <= 89)
                                pw.Text(
                       'Excellent',
                       textAlign: pw. TextAlign.center,
@@ -929,7 +933,7 @@ pw.SizedBox(height: 30,),
                           fontSize: 27,
                           color: PdfColors.green),
                     ),
-                             if(getEfficiency(actualTime: actualTimetotal.value, overallTime: overallCprTime.value) >= 96 && getEfficiency(actualTime: actualTimetotal.value, overallTime: overallCprTime.value) <= 100)
+                             if(efficiency >= 96 && efficiency <= 100)
                                      pw.Text(
                       'Outstanding',
                       textAlign: pw. TextAlign.center,
