@@ -39,6 +39,7 @@ class Success {
     String description;
     DateTime createdAt;
     DateTime updatedAt;
+    bool isSelected;
 
     Success({
         required this.id,
@@ -47,6 +48,7 @@ class Success {
         required this.description,
         required this.createdAt,
         required this.updatedAt,
+        required this.isSelected,
     });
 
     factory Success.fromJson(Map<String, dynamic> json) => Success(
@@ -54,6 +56,7 @@ class Success {
         categoryId: json["category_id"],
         subTitle: json["sub_title"],
         description: json["description"]??"",
+        isSelected: false,
         createdAt: DateTime.parse(json["created_at"]),
         updatedAt: DateTime.parse(json["updated_at"]),
     );

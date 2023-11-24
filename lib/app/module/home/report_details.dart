@@ -8,12 +8,14 @@ import 'package:get/get.dart';
 class ReportDetails extends StatefulWidget {
   String aminDrome;
   String cppValue;
+  String etco2;
   DateTime cycleTime;
   var efficiency;
   ReportDetails({
     super.key,
     required this.aminDrome,
     required this.cppValue,
+    required this.etco2,
     required this.cycleTime,
     this.efficiency,
   });
@@ -37,7 +39,8 @@ class _ReportDetailsState extends State<ReportDetails> {
                   aminDrome: widget.aminDrome,
                   cppValue: widget.cppValue,
                   cycleTime: widget.cycleTime,
-                  efficiency: widget.efficiency
+                  efficiency: widget.efficiency,
+                  etCO2: widget.etco2
                   );
             },
             icon: const Icon(Icons.share),

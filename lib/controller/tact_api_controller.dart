@@ -61,25 +61,268 @@ class TactApiController extends GetxController {
     if (response.statusCode == 200) {
       GetSubCatogoryModel getvaluetypemodel =
           GetSubCatogoryModel.fromJson(response.data);
-
+      List<Success> tempSubcategorList = [];
       if (id == 1) {
+        tempSubcategorList = subcategorList0;
         subcategorList0 = getvaluetypemodel.data;
+       
       } else if (id == 2) {
+         tempSubcategorList = subcategorList1;
         subcategorList1 = getvaluetypemodel.data;
+     
       } else if (id == 3) {
+         tempSubcategorList = subcategorList2;
         subcategorList2 = getvaluetypemodel.data;
+       
       } else if (id == 4) {
+         tempSubcategorList = subcategorList3;
         subcategorList3 = getvaluetypemodel.data;
+       
       } else if (id == 5) {
+         tempSubcategorList = subcategorList4;
         subcategorList4 = getvaluetypemodel.data;
+      
       } else if (id == 6) {
+         tempSubcategorList = subcategorList5;
         subcategorList5 = getvaluetypemodel.data;
+        
       } else if (id == 7) {
+         tempSubcategorList = subcategorList6;
         subcategorList6 = getvaluetypemodel.data;
+       
       } else if (id == 8) {
+         tempSubcategorList = subcategorList7;
         subcategorList7 = getvaluetypemodel.data;
+      
       } else if (id == 9) {
+        tempSubcategorList = subcategorList8;
         subcategorList8 = getvaluetypemodel.data;
+        
+      }
+      update();
+    } else {
+      Get.rawSnackbar(
+        backgroundColor: Colors.red,
+        messageText: Text(
+          "Something went wrong",
+          style: TextStyle(fontSize: 15, color: kwhite),
+        ),
+      );
+    }
+    update();
+  }
+
+
+
+
+  getsubcatogoryForSubCategory({required dynamic id,required int subId}) async {
+    dio.Response<dynamic> response =
+        await gettypeapiservice.getsubcatogoriestype(id: id.toString());
+
+    if (response.statusCode == 200) {
+      GetSubCatogoryModel getvaluetypemodel =
+          GetSubCatogoryModel.fromJson(response.data);
+      List<Success> tempSubcategorList = [];
+      if (id == 1) {
+        tempSubcategorList = subcategorList0;
+        subcategorList0 = getvaluetypemodel.data;
+
+        tempSubcategorList.forEach((element) {
+        
+          if(element.isSelected){
+
+            for (var i = 0; i < subcategorList0.length; i++) {
+
+              if(subcategorList0[i].id == element.id){
+                subcategorList0[i].isSelected = true;
+              }
+
+              if(subcategorList0[i].id == subId){
+                subcategorList0[i].isSelected = true;
+              }
+             
+            }
+
+          }
+            
+          
+        });
+      } else if (id == 2) {
+         tempSubcategorList = subcategorList1;
+        subcategorList1 = getvaluetypemodel.data;
+        tempSubcategorList.forEach((element) {
+        
+          if(element.isSelected){
+
+            for (var i = 0; i < subcategorList1.length; i++) {
+
+              if(subcategorList1[i].id == element.id){
+                subcategorList1[i].isSelected = true;
+              }
+               if(subcategorList1[i].id == subId){
+                subcategorList1[i].isSelected = true;
+              }
+            }
+
+          }
+            
+          
+        });
+      } else if (id == 3) {
+         tempSubcategorList = subcategorList2;
+        subcategorList2 = getvaluetypemodel.data;
+        tempSubcategorList.forEach((element) {
+        
+          if(element.isSelected){
+
+            for (var i = 0; i < subcategorList0.length; i++) {
+
+              if(subcategorList2[i].id == element.id){
+                subcategorList2[i].isSelected = true;
+              }
+
+                if(subcategorList2[i].id == subId){
+                subcategorList2[i].isSelected = true;
+              }
+             
+            }
+
+          }
+            
+          
+        });
+      } else if (id == 4) {
+         tempSubcategorList = subcategorList3;
+        subcategorList3 = getvaluetypemodel.data;
+        tempSubcategorList.forEach((element) {
+        
+          if(element.isSelected){
+
+            for (var i = 0; i < subcategorList3.length; i++) {
+
+              if(subcategorList3[i].id == element.id){
+                subcategorList3[i].isSelected = true;
+              }
+
+              if(subcategorList3[i].id == subId){
+                subcategorList3[i].isSelected = true;
+              }
+             
+            }
+
+          }
+            
+          
+        });
+      } else if (id == 5) {
+         tempSubcategorList = subcategorList4;
+        subcategorList4 = getvaluetypemodel.data;
+        tempSubcategorList.forEach((element) {
+        
+          if(element.isSelected){
+
+            for (var i = 0; i < subcategorList4.length; i++) {
+
+              if(subcategorList4[i].id == element.id){
+                subcategorList4[i].isSelected = true;
+              }
+
+
+                if(subcategorList4[i].id == subId){
+                subcategorList4[i].isSelected = true;
+              }
+             
+            }
+
+          }
+            
+          
+        });
+      } else if (id == 6) {
+         tempSubcategorList = subcategorList5;
+        subcategorList5 = getvaluetypemodel.data;
+        tempSubcategorList.forEach((element) {
+        
+          if(element.isSelected){
+
+            for (var i = 0; i < subcategorList5.length; i++) {
+              if(subcategorList5[i].id == element.id){
+                subcategorList5[i].isSelected = true;
+              }
+
+                if(subcategorList5[i].id == subId){
+                subcategorList5[i].isSelected = true;
+              }
+             
+            }
+
+          }
+            
+          
+        });
+      } else if (id == 7) {
+         tempSubcategorList = subcategorList6;
+        subcategorList6 = getvaluetypemodel.data;
+        tempSubcategorList.forEach((element) {
+        
+          if(element.isSelected){
+
+            for (var i = 0; i < subcategorList6.length; i++) {
+
+              if(subcategorList6[i].id == element.id){
+                subcategorList6[i].isSelected = true;
+              }
+               if(subcategorList6[i].id == subId){
+                subcategorList6[i].isSelected = true;
+              }
+            }
+
+          }
+            
+          
+        });
+      } else if (id == 8) {
+         tempSubcategorList = subcategorList7;
+        subcategorList7 = getvaluetypemodel.data;
+        tempSubcategorList.forEach((element) {
+        
+          if(element.isSelected){
+
+            for (var i = 0; i < subcategorList7.length; i++) {
+
+              if(subcategorList7[i].id == element.id){
+                subcategorList7[i].isSelected = true;
+              }
+               if(subcategorList7[i].id == subId){
+                subcategorList7[i].isSelected = true;
+              }
+            }
+
+          }
+            
+          
+        });
+      } else if (id == 9) {
+        tempSubcategorList = subcategorList8;
+        subcategorList8 = getvaluetypemodel.data;
+        tempSubcategorList.forEach((element) {
+        
+          if(element.isSelected){
+
+            for (var i = 0; i < subcategorList8.length; i++) {
+
+              if(subcategorList8[i].id == element.id){
+                subcategorList8[i].isSelected = true;
+              }
+               if(subcategorList8[i].id == subId){
+                subcategorList8[i].isSelected = true;
+              }
+            }
+
+          }
+            
+          
+        });
       }
       update();
     } else {
@@ -291,7 +534,7 @@ class TactApiController extends GetxController {
 
     if (response.statusCode == 200) {
       print('status code has sucess store type');
-      getsubcatogory(id: int.parse(categoryid));
+      getsubcatogoryForSubCategory(id: int.parse(categoryid),subId:response.data["data"]["id"]);
     }
     return response.data["data"]["id"];
   }
@@ -452,13 +695,17 @@ class TactApiController extends GetxController {
     update();
   }
 
-  getactivityLocal() async {
+  getactivityLocal({
+     int? cycle,
+     DateTime? cyclestarttime ,
+  }) async {
     activitylistCurrent.clear();
     List<Activitylist> tempActivityList = [];
     List<String> tempCycleList = [];
 
     // tempActivityList = getactivitymodel.data;
     selectedSubCatIdList.forEach((element) {
+      print("Product Title: "+element.title);
       if (tempCycleList.contains(element.title) == false) {
         tempCycleList.add(element.title);
       }
@@ -491,6 +738,30 @@ class TactApiController extends GetxController {
           cycleName: tempCycleList[i],
           cycleTime: tempList.first.toTime);
       activitylistCurrent.add(activityCycleList);
+    }
+
+
+    if(activitylistCurrent.isEmpty){
+        ActivityCycleList activityCycleList = ActivityCycleList(
+                                activityList: [
+                                  Activitylist(
+                                      categoryId: "",
+                                      categoryTitle: "",
+                                      createdAt: DateTime.now(),
+                                      fromTime: "",
+                                      id: -1,
+                                      subCategory: "",
+                                      subTitle: "",
+                                      title: "",
+                                      toTime: "",
+                                      updatedAt: DateTime.now(),
+                                      value: "")
+                                ],
+                                cycleName: "Cycle$cycle",
+                                cycleTime:
+                                    "${cyclestarttime!.hour}:${cyclestarttime.minute}:${cyclestarttime.second}");
+                           activitylistCurrent
+                                .add(activityCycleList);
     }
 
     update();
@@ -560,6 +831,7 @@ class TactApiController extends GetxController {
   sharePdf({
     required String aminDrome,
     required String cppValue,
+    required String etCO2,
     required DateTime cycleTime,
     required int efficiency
   }) async {
@@ -861,6 +1133,18 @@ class TactApiController extends GetxController {
                                 child: pw.Text(
                                   cppValue,
                                   style: pw.TextStyle(color: PdfColors.grey),
+                                ),
+                              ),
+                            if (activitylistCurrent[index]
+                                    .activityList[i]
+                                    .subTitle ==
+                                "EtCO2")
+                              pw.Container(
+                                width: 100,
+                                alignment: pw.Alignment.centerLeft,
+                                child: pw.Text(
+                                  etCO2,
+                                  style: const pw.TextStyle(color: PdfColors.grey),
                                 ),
                               ),
                             if (activitylistCurrent[index]

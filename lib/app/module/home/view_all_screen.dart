@@ -7,12 +7,14 @@ import 'package:get/get.dart';
 class ViewAllScreen extends StatefulWidget {
   String aminDrome;
   String cppValue;
+  String etco2;
   DateTime cycleTime;
   var efficiency;
   ViewAllScreen({
     super.key,
     required this.aminDrome,
     required this.cppValue,
+    required this.etco2,
     required this.cycleTime,
     this.efficiency,
   });
@@ -44,7 +46,8 @@ class _ViewAllScreenState extends State<ViewAllScreen> {
                   aminDrome: widget.aminDrome,
                   cppValue: widget.cppValue,
                   cycleTime: widget.cycleTime,
-                  efficiency: widget.efficiency
+                  efficiency: widget.efficiency,
+                  etCO2: widget.etco2
                   );
             },
             icon: const Icon(Icons.share),
@@ -272,6 +275,17 @@ class _ViewAllScreenState extends State<ViewAllScreen> {
                                 alignment: Alignment.centerLeft,
                                 child: Text(
                                   widget.cppValue,
+                                  style: minfont,
+                                ),
+                              ),
+                            if (tactapiController.activitylistCurrent[index]
+                                    .activityList[i].subTitle ==
+                                "EtCO2")
+                              Container(
+                                width: size.width * 0.28,
+                                alignment: Alignment.centerLeft,
+                                child: Text(
+                                  widget.etco2,
                                   style: minfont,
                                 ),
                               ),

@@ -40,6 +40,7 @@ class _SuccessScreenState extends State<SuccessScreen> {
       aminDrome: selectedOption2,
       cppValue: _currentSliderValue.round().toString(),
       cycleTime: cyclestarttime,
+      etco2: _currentSliderValue.round().toString(),
       efficiency: efficiency,
     ));
   }
