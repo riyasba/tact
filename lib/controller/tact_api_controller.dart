@@ -97,7 +97,6 @@ class TactApiController extends GetxController {
       } else if (id == 9) {
         tempSubcategorList = subcategorList8;
         subcategorList8 = getvaluetypemodel.data;
-        
       }
       update();
     } else {
@@ -137,16 +136,21 @@ class TactApiController extends GetxController {
                 subcategorList0[i].isSelected = true;
               }
 
-              if(subcategorList0[i].id == subId){
-                subcategorList0[i].isSelected = true;
-              }
-             
+              
             }
 
           }
             
           
         });
+
+           for (var i = 0; i < subcategorList0.length; i++) {
+               if(subcategorList0[i].id == subId){
+                subcategorList0[i].isSelected = true;
+              }
+             
+            }
+
       } else if (id == 2) {
          tempSubcategorList = subcategorList1;
         subcategorList1 = getvaluetypemodel.data;
@@ -159,15 +163,20 @@ class TactApiController extends GetxController {
               if(subcategorList1[i].id == element.id){
                 subcategorList1[i].isSelected = true;
               }
-               if(subcategorList1[i].id == subId){
-                subcategorList1[i].isSelected = true;
-              }
+              
             }
 
           }
             
           
         });
+         for (var i = 0; i < subcategorList1.length; i++) {
+
+              
+               if(subcategorList1[i].id == subId){
+                subcategorList1[i].isSelected = true;
+              }
+            }
       } else if (id == 3) {
          tempSubcategorList = subcategorList2;
         subcategorList2 = getvaluetypemodel.data;
@@ -181,9 +190,7 @@ class TactApiController extends GetxController {
                 subcategorList2[i].isSelected = true;
               }
 
-                if(subcategorList2[i].id == subId){
-                subcategorList2[i].isSelected = true;
-              }
+              
              
             }
 
@@ -191,6 +198,15 @@ class TactApiController extends GetxController {
             
           
         });
+
+        for (var i = 0; i < subcategorList0.length; i++) {
+
+           
+                if(subcategorList2[i].id == subId){
+                subcategorList2[i].isSelected = true;
+              }
+             
+            }
       } else if (id == 4) {
          tempSubcategorList = subcategorList3;
         subcategorList3 = getvaluetypemodel.data;
@@ -204,16 +220,18 @@ class TactApiController extends GetxController {
                 subcategorList3[i].isSelected = true;
               }
 
-              if(subcategorList3[i].id == subId){
-                subcategorList3[i].isSelected = true;
-              }
-             
             }
 
           }
             
           
         });
+
+        for (var i = 0; i < subcategorList3.length; i++) {
+              if(subcategorList3[i].id == subId){
+                subcategorList3[i].isSelected = true;
+              }
+        }
       } else if (id == 5) {
          tempSubcategorList = subcategorList4;
         subcategorList4 = getvaluetypemodel.data;
@@ -228,9 +246,7 @@ class TactApiController extends GetxController {
               }
 
 
-                if(subcategorList4[i].id == subId){
-                subcategorList4[i].isSelected = true;
-              }
+               
              
             }
 
@@ -238,6 +254,15 @@ class TactApiController extends GetxController {
             
           
         });
+        for (var i = 0; i < subcategorList4.length; i++) {
+
+             
+
+                if(subcategorList4[i].id == subId){
+                subcategorList4[i].isSelected = true;
+              }
+             
+            }
       } else if (id == 6) {
          tempSubcategorList = subcategorList5;
         subcategorList5 = getvaluetypemodel.data;
@@ -250,9 +275,7 @@ class TactApiController extends GetxController {
                 subcategorList5[i].isSelected = true;
               }
 
-                if(subcategorList5[i].id == subId){
-                subcategorList5[i].isSelected = true;
-              }
+              
              
             }
 
@@ -260,6 +283,15 @@ class TactApiController extends GetxController {
             
           
         });
+
+         for (var i = 0; i < subcategorList5.length; i++) {
+             
+
+                if(subcategorList5[i].id == subId){
+                subcategorList5[i].isSelected = true;
+              }
+             
+            }
       } else if (id == 7) {
          tempSubcategorList = subcategorList6;
         subcategorList6 = getvaluetypemodel.data;
@@ -272,15 +304,21 @@ class TactApiController extends GetxController {
               if(subcategorList6[i].id == element.id){
                 subcategorList6[i].isSelected = true;
               }
-               if(subcategorList6[i].id == subId){
-                subcategorList6[i].isSelected = true;
-              }
+              
             }
 
           }
             
           
         });
+
+         for (var i = 0; i < subcategorList6.length; i++) {
+
+              
+               if(subcategorList6[i].id == subId){
+                subcategorList6[i].isSelected = true;
+              }
+            }
       } else if (id == 8) {
          tempSubcategorList = subcategorList7;
         subcategorList7 = getvaluetypemodel.data;
@@ -293,15 +331,20 @@ class TactApiController extends GetxController {
               if(subcategorList7[i].id == element.id){
                 subcategorList7[i].isSelected = true;
               }
-               if(subcategorList7[i].id == subId){
-                subcategorList7[i].isSelected = true;
-              }
+           
             }
 
           }
             
           
         });
+        for (var i = 0; i < subcategorList7.length; i++) {
+
+              
+               if(subcategorList7[i].id == subId){
+                subcategorList7[i].isSelected = true;
+              }
+            }
       } else if (id == 9) {
         tempSubcategorList = subcategorList8;
         subcategorList8 = getvaluetypemodel.data;
@@ -314,15 +357,21 @@ class TactApiController extends GetxController {
               if(subcategorList8[i].id == element.id){
                 subcategorList8[i].isSelected = true;
               }
-               if(subcategorList8[i].id == subId){
-                subcategorList8[i].isSelected = true;
-              }
+             
             }
 
           }
             
           
         });
+
+        for (var i = 0; i < subcategorList8.length; i++) {
+
+             
+               if(subcategorList8[i].id == subId){
+                subcategorList8[i].isSelected = true;
+              }
+            }
       }
       update();
     } else {

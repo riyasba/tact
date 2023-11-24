@@ -1390,7 +1390,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                   tactapiController.catogorylist[index].index =
                                       0;
                                   tactapiController.update();
-                                }
+                                      }
                                             },
                                               child: Row(
                                                 mainAxisAlignment:
