@@ -900,7 +900,23 @@ class TactApiController extends GetxController {
         end = activitylist.length;
       }
       var sublist = activitylist.sublist(i, end);
-      subLists.add(sublist);
+      int tempActivityListLength = 0;
+      for (var k = 0; k < sublist.length; k++) {
+       tempActivityListLength +=    sublist[i].activityList.length;
+      }
+
+      if(tempActivityListLength > 10){
+        end = i + 3;
+        var sublistt = activitylist.sublist(i, end);
+
+         subLists.add(sublistt);
+          // end = i + 3;
+         var sublist2 = activitylist.sublist(end, end+ 2);
+         subLists.add(sublist2);
+      } else {
+         subLists.add(sublist);
+      }
+      //  subLists.add(sublist);
     }
     print(
         '================================================================================');
@@ -1097,8 +1113,7 @@ class TactApiController extends GetxController {
                                           : subLists[p][index]
                                               .activityList[i]
                                               .value,
-                                      style:
-                                          pw.TextStyle(color: PdfColors.grey),
+                                      style: const pw.TextStyle(color: PdfColors.grey),
                                     ),
                                   ),
                                   pw.SizedBox(
@@ -1111,7 +1126,7 @@ class TactApiController extends GetxController {
                 pw.SizedBox(
                   height: 20,
                 ),
-                for (int index = 0; index < activitylistCurrent.length; index++)
+             if (subLists.length - 1 == p)    for (int index = 0; index < activitylistCurrent.length; index++)
                   pw.Column(
                     children: [
                       pw.Row(
@@ -1126,7 +1141,9 @@ class TactApiController extends GetxController {
                         ],
                       ),
                       pw.SizedBox(height: 10),
-                      for (int i = 0;
+                    pw.Column(
+                      children: [
+                         for (int i = 0;
                           i < activitylistCurrent[index].activityList.length;
                           i++)
                         pw.Row(
@@ -1181,7 +1198,7 @@ class TactApiController extends GetxController {
                                 alignment: pw.Alignment.centerLeft,
                                 child: pw.Text(
                                   cppValue,
-                                  style: pw.TextStyle(color: PdfColors.grey),
+                                  style:const pw.TextStyle(color: PdfColors.grey),
                                 ),
                               ),
                             if (activitylistCurrent[index]
@@ -1209,7 +1226,7 @@ class TactApiController extends GetxController {
                                 alignment: pw.Alignment.centerLeft,
                                 child: pw.Text(
                                   " ",
-                                  style: pw.TextStyle(color: PdfColors.grey),
+                                  style:const pw.TextStyle(color: PdfColors.grey),
                                 ),
                               ),
                             pw.SizedBox(
@@ -1217,6 +1234,8 @@ class TactApiController extends GetxController {
                             ),
                           ],
                         ),
+                      ],
+                     ),
                       pw.SizedBox(height: 40),
                       if (subLists.length - 1 == p)
                         pw.Text(
@@ -1228,8 +1247,10 @@ class TactApiController extends GetxController {
                               color: PdfColors.blue),
                         ),
 
-pw.SizedBox(height: 30,),
+                     pw.SizedBox(height: 30,),
 
+               if (subLists.length - 1 == p)
+               pw.Column(children: [
                if(efficiency >= 0 && efficiency <= 59)
                  pw.Text(
                       'Poor',
@@ -1275,6 +1296,7 @@ pw.SizedBox(height: 30,),
                           fontSize: 27,
                           color: PdfColors.green),
                     ),
+               ],)
                                   //  Text(
                                   //     "Efficiency out of range",
                                   //     textAlign: TextAlign.center,
