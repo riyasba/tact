@@ -16,7 +16,6 @@ import 'package:flutter_application_1/models/store_activity_list_model.dart';
 
 import 'package:google_fonts/google_fonts.dart';
 
-import 'package:just_audio/just_audio.dart';
 
 import 'package:circular_countdown_timer/circular_countdown_timer.dart';
 
@@ -253,7 +252,7 @@ class _HomeScreenState extends State<HomeScreen> {
   audio.AudioPlayer audioPlayer2 = audio.AudioPlayer();
   void playFLASHAudio() async {
     String audioPath =
-        'images/flash_sound.mp3'; // Replace with your audio file path
+        'images/flash_sound_3.mp3'; // Replace with your audio file path
 
     await audioPlayer2.play(
       audio.AssetSource(audioPath),
@@ -261,20 +260,23 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  final player = AudioPlayer();
+  // final player = AudioPlayer();
 
   audio.AudioPlayer audioPlayer = audio.AudioPlayer();
-
-  setListen(int second) async {
+  audio.AudioPlayer player = audio.AudioPlayer();
+   var cycleAudioPath = "images/1.45sec-alarm.mp3";
+   setListen(int second) async {
     if (second == 104) {
-      final duration = await player.setAsset('assets/images/1.45sec-alarm.mp3');
-      player.play();
-    } else if (second == 119) {
-      final duration = await player.setAsset('assets/images/1.45sec-alarm.mp3');
-      player.play();
-
-      await Future.delayed(Duration(seconds: 3));
-      player.stop();
+      // await player.setSourceAsset('');
+      player.play( audio.AssetSource(cycleAudioPath));
+      // await Future.delayed(const Duration(seconds: 3));
+      // player.stop();
+      // player2.stop();
+    }
+     if (second == 119) {
+       player.play(audio.AssetSource(cycleAudioPath));
+      // await Future.delayed(Duration(seconds: 2));
+      // player2.stop();
     }
   }
 
@@ -514,7 +516,6 @@ class _HomeScreenState extends State<HomeScreen> {
                             _startFlashlightTimer();
                             playAudio();
                             audioSoundManage();
-
                             loop();
                             tactapiController.deleteactivityOnStart();
                             tactapiController.setDefaultGroupValue();
@@ -2449,75 +2450,90 @@ class _HomeScreenState extends State<HomeScreen> {
               width: 70,
               decoration: BoxDecoration(
                   color: Colors.black, borderRadius: BorderRadius.circular(16)),
-              child: TextButton(
-                child: Center(
-                  child: Text(
-                    'OK',
-                    style: TextStyle(fontSize: 16, color: kwhite),
+              child: Obx(()=> tactapiController.isCustomizeLoading.isTrue ? Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Container(
+                    height: 30,
+                    width: 30,
+                    child: const CircularProgressIndicator(
+                      
+                    ),
                   ),
-                ),
-                onPressed: () async {
-                  //     print('Entered text: ${textEditingController.text}');
-                  if (textController.text.isNotEmpty) {
-                    //api call
-
-                    int subId = await tactapiController.storesubcatogory(
-                        title: textController.text,
-                        description: 'test',
-                        categoryid: id);
-
-                    // selectedOption =
-                    //     value;
-                    StoreActivityListModel storeActivityListModel =
-                        StoreActivityListModel(
-                            title: "Cycle$cycle",
-                            value: "null",
-                            categoryName:
-                                tactapiController.catogorylist[index].title,
-                            catogoryid: tactapiController.catogorylist[index].id
-                                .toString(),
-                            name: textController.text,
-                            subid: subId.toString(),
-                            startingTime: "");
-
-                    var tempId;
-                    for (int i = 0;
-                        i < tactapiController.selectedSubCatIdList.length;
-                        i++) {
-                      var value2 = tactapiController.selectedSubCatIdList[i];
-                      if (value2.catogoryid ==
-                          storeActivityListModel.catogoryid) {
-                        tempId = i;
+                ],
+              ): TextButton(
+                  child: Center(
+                    child: Text(
+                      'OK',
+                      style: TextStyle(fontSize: 16, color: kwhite),
+                    ),
+                  ),
+                  onPressed: () async {
+                  
+                    // print('Entered text: ${textEditingController.text}');
+                    if (textController.text.isNotEmpty) {
+                      tactapiController.isCustomizeLoading(true);
+                      //api call
+              
+                      int subId = await tactapiController.storesubcatogory(
+                          title: textController.text,
+                          description: 'test',
+                          categoryid: id);
+              
+                      // selectedOption =
+                      //     value;
+                      StoreActivityListModel storeActivityListModel =
+                          StoreActivityListModel(
+                              title: "Cycle$cycle",
+                              value: "null",
+                              categoryName:
+                                  tactapiController.catogorylist[index].title,
+                              catogoryid: tactapiController.catogorylist[index].id
+                                  .toString(),
+                              name: textController.text,
+                              subid: subId.toString(),
+                              startingTime: "");
+              
+                      var tempId;
+                      for (int i = 0;
+                          i < tactapiController.selectedSubCatIdList.length;
+                          i++) {
+                        var value2 = tactapiController.selectedSubCatIdList[i];
+                        if (value2.catogoryid ==
+                            storeActivityListModel.catogoryid) {
+                          tempId = i;
+                        }
                       }
+              
+                      if (tempId != null) {
+                        tactapiController.selectedSubCatIdList.removeAt(tempId);
+                        // Get.rawSnackbar(
+                        //   message: "Removed from list index $tempId"
+                        // );
+                        tactapiController.selectedSubCatIdList
+                            .add(storeActivityListModel);
+                        tactapiController.getactivityLocal();
+                        //   Get.rawSnackbar(
+                        //   message: "Added to list "
+                        // );
+                      } else {
+                        tactapiController.selectedSubCatIdList
+                            .add(storeActivityListModel);
+                        tactapiController.getactivityLocal();
+                        //   Get.rawSnackbar(
+                        //   message: "Added to list "
+                        // );
+                      }
+              
+                      tactapiController.addGroupValue(
+                          int.parse(id), subId.toString());
+              
+                      tactapiController.isCustomizeLoading(false);
+                      tactapiController.update();
                     }
-
-                    if (tempId != null) {
-                      tactapiController.selectedSubCatIdList.removeAt(tempId);
-                      // Get.rawSnackbar(
-                      //   message: "Removed from list index $tempId"
-                      // );
-                      tactapiController.selectedSubCatIdList
-                          .add(storeActivityListModel);
-                      tactapiController.getactivityLocal();
-                      //   Get.rawSnackbar(
-                      //   message: "Added to list "
-                      // );
-                    } else {
-                      tactapiController.selectedSubCatIdList
-                          .add(storeActivityListModel);
-                      tactapiController.getactivityLocal();
-                      //   Get.rawSnackbar(
-                      //   message: "Added to list "
-                      // );
-                    }
-
-                    tactapiController.addGroupValue(
-                        int.parse(id), subId.toString());
-
-                    tactapiController.update();
-                  }
-                  Navigator.of(context).pop();
-                },
+                    Navigator.of(context).pop();
+                  },
+                ),
               ),
             ),
           ],
@@ -2549,7 +2565,7 @@ class _HomeScreenState extends State<HomeScreen> {
             child: TextField(
               controller: textController,
               decoration: InputDecoration(
-                  label: Text(label), border: OutlineInputBorder()),
+                  label: Text(label), border: const OutlineInputBorder()),
               onChanged: (value) {
                 textFieldValue = value;
               },
@@ -2561,75 +2577,89 @@ class _HomeScreenState extends State<HomeScreen> {
               width: 70,
               decoration: BoxDecoration(
                   color: Colors.black, borderRadius: BorderRadius.circular(16)),
-              child: TextButton(
-                child: Center(
-                  child: Text(
-                    'OK',
-                    style: TextStyle(fontSize: 16, color: kwhite),
+              child: Obx(()=> tactapiController.isCustomizeLoading.isTrue ? Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Container(
+                    height: 30,
+                    width: 30,
+                    child: const CircularProgressIndicator(
+                      
+                    ),
                   ),
-                ),
-                onPressed: () async {
-                  //     print('Entered text: ${textEditingController.text}');
-                  if (textController.text.isNotEmpty) {
-                    //api call
-
-                    int subId = await tactapiController.storesubcatogory(
-                        title: textController.text,
-                        description: 'test',
-                        categoryid: id);
-
-                    // selectedOption =
-                    //     value;
-                    StoreActivityListModel storeActivityListModel =
-                        StoreActivityListModel(
-                            title: "Cycle$cycle",
-                            value: "null",
-                            categoryName:
-                                tactapiController.catogorylist[index].title,
-                            catogoryid: tactapiController.catogorylist[index].id
-                                .toString(),
-                            name: textController.text,
-                            subid: subId.toString(),
-                            startingTime: "");
-
-                    var tempId;
-                    for (int i = 0;
-                        i < tactapiController.selectedSubCatIdList.length;
-                        i++) {
-                      var value2 = tactapiController.selectedSubCatIdList[i];
-                      if (value2.catogoryid ==
-                          storeActivityListModel.catogoryid) {
-                        tempId = i;
+                ],
+              ): TextButton(
+                  child: Center(
+                    child: Text(
+                      'OK',
+                      style: TextStyle(fontSize: 16, color: kwhite),
+                    ),
+                  ),
+                  onPressed: () async {
+                    
+                    //     print('Entered text: ${textEditingController.text}');
+                    if (textController.text.isNotEmpty) {
+                      tactapiController.isCustomizeLoading(true);
+                      //api call
+              
+                      int subId = await tactapiController.storesubcatogory(
+                          title: textController.text,
+                          description: 'test',
+                          categoryid: id);
+              
+                      // selectedOption =
+                      //     value;
+                      StoreActivityListModel storeActivityListModel =
+                          StoreActivityListModel(
+                              title: "Cycle$cycle",
+                              value: "null",
+                              categoryName:
+                                  tactapiController.catogorylist[index].title,
+                              catogoryid: tactapiController.catogorylist[index].id
+                                  .toString(),
+                              name: textController.text,
+                              subid: subId.toString(),
+                              startingTime: "");
+              
+                      var tempId;
+                      for (int i = 0;
+                          i < tactapiController.selectedSubCatIdList.length;
+                          i++) {
+                        var value2 = tactapiController.selectedSubCatIdList[i];
+                        if (value2.catogoryid ==
+                            storeActivityListModel.catogoryid) {
+                          tempId = i;
+                        }
                       }
+              
+                      if (tempId != null) {
+                        // tactapiController.selectedSubCatIdList.removeAt(tempId);
+                        // Get.rawSnackbar(
+                        //   message: "Removed from list index $tempId"
+                        // );
+                        tactapiController.selectedSubCatIdList
+                            .add(storeActivityListModel);
+                        tactapiController.getactivityLocal();
+                        //   Get.rawSnackbar(
+                        //   message: "Added to list "
+                        // );
+                      } else {
+                        tactapiController.selectedSubCatIdList
+                            .add(storeActivityListModel);
+                        tactapiController.getactivityLocal();
+                        //   Get.rawSnackbar(
+                        //   message: "Added to list "
+                        // );
+                      }
+              
+                      tactapiController.addGroupValue(
+                          int.parse(id), subId.toString());
+                tactapiController.isCustomizeLoading(false);
+                      tactapiController.update();
                     }
-
-                    if (tempId != null) {
-                      // tactapiController.selectedSubCatIdList.removeAt(tempId);
-                      // Get.rawSnackbar(
-                      //   message: "Removed from list index $tempId"
-                      // );
-                      tactapiController.selectedSubCatIdList
-                          .add(storeActivityListModel);
-                      tactapiController.getactivityLocal();
-                      //   Get.rawSnackbar(
-                      //   message: "Added to list "
-                      // );
-                    } else {
-                      tactapiController.selectedSubCatIdList
-                          .add(storeActivityListModel);
-                      tactapiController.getactivityLocal();
-                      //   Get.rawSnackbar(
-                      //   message: "Added to list "
-                      // );
-                    }
-
-                    tactapiController.addGroupValue(
-                        int.parse(id), subId.toString());
-
-                    tactapiController.update();
-                  }
-                  Navigator.of(context).pop();
-                },
+                    Navigator.of(context).pop();
+                  },
+                ),
               ),
             ),
           ],

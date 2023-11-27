@@ -42,8 +42,7 @@ dependencies:
   flutter_launcher_icons: ^0.13.1
   circular_countdown_timer: ^0.2.3
   torch_light:
-  alarm: 
-  just_audio: ^0.9.35
+  alarm:
   audioplayers: ^5.1.0
   dio: ^5.3.3
   pdf: 
@@ -54,6 +53,7 @@ dependencies:
   http: ^1.1.0
   connectivity_plus: ^3.0.2
   flutter_animate: ^4.1.1+1
+  wakelock_plus: ^1.1.4
   
 
 

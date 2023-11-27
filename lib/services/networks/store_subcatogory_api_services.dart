@@ -19,7 +19,7 @@ class StoreSubCatogoryApiService extends BaseApiServices {
         "title": title,
         "description": description,
         "category_id": categoryid,
-         "app_id" : appId,
+        "app_id" : appId,
       });
       var dio = Dio();
       var response = await dio.post(storesubcatogoryURL,

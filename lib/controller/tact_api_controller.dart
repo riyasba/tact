@@ -54,6 +54,9 @@ class TactApiController extends GetxController {
   RxString overallCprTime = "00:00:00".obs;
   RxString actualTimetotal = "00:00:00".obs;
 
+
+  RxBool isCustomizeLoading = false.obs;
+
   getsubcatogory({required dynamic id}) async {
     dio.Response<dynamic> response =
         await gettypeapiservice.getsubcatogoriestype(id: id.toString());
@@ -100,13 +103,13 @@ class TactApiController extends GetxController {
       }
       update();
     } else {
-      Get.rawSnackbar(
-        backgroundColor: Colors.red,
-        messageText: Text(
-          "Something went wrong",
-          style: TextStyle(fontSize: 15, color: kwhite),
-        ),
-      );
+      // Get.rawSnackbar(
+      //   backgroundColor: Colors.red,
+      //   messageText: Text(
+      //     "Something went wrong",
+      //     style: TextStyle(fontSize: 15, color: kwhite),
+      //   ),
+      // );
     }
     update();
   }
@@ -375,13 +378,13 @@ class TactApiController extends GetxController {
       }
       update();
     } else {
-      Get.rawSnackbar(
-        backgroundColor: Colors.red,
-        messageText: Text(
-          "Something went wrong",
-          style: TextStyle(fontSize: 15, color: kwhite),
-        ),
-      );
+      // Get.rawSnackbar(
+      //   backgroundColor: Colors.red,
+      //   messageText: Text(
+      //     "Something went wrong",
+      //     style: TextStyle(fontSize: 15, color: kwhite),
+      //   ),
+      // );
     }
     update();
   }
@@ -607,13 +610,13 @@ class TactApiController extends GetxController {
       }
       isLoading(false);
     } else {
-      Get.rawSnackbar(
-        backgroundColor: Colors.red,
-        messageText: Text(
-          "Something went wrong",
-          style: TextStyle(fontSize: 15, color: kwhite),
-        ),
-      );
+      // Get.rawSnackbar(
+      //   backgroundColor: Colors.red,
+      //   messageText: Text(
+      //     "Something went wrong",
+      //     style: TextStyle(fontSize: 15, color: kwhite),
+      //   ),
+      // );
     }
     update();
   }
@@ -891,9 +894,7 @@ class TactApiController extends GetxController {
     print("changes --------------------->>");
     print(
         "-----------------------------------------------------------------------------------------------------------------");
-
     print(activitylist.length);
-
     for (var i = 0; i < activitylist.length; i += 6) {
       var end = i + 6;
       if (end > activitylist.length) {
@@ -907,11 +908,16 @@ class TactApiController extends GetxController {
 
       if(tempActivityListLength > 10){
         end = i + 3;
+        print("------------------------------------------>> inside this");
         var sublistt = activitylist.sublist(i, end);
-
+        print("-------------------------------------------------->> after this");
          subLists.add(sublistt);
           // end = i + 3;
-         var sublist2 = activitylist.sublist(end, end+ 2);
+           var tend = end + 2;
+      if (tend > activitylist.length) {
+        tend = activitylist.length;
+      }
+         var sublist2 = activitylist.sublist(end, tend);
          subLists.add(sublist2);
       } else {
          subLists.add(sublist);
@@ -1037,7 +1043,7 @@ class TactApiController extends GetxController {
                         alignment: pw.Alignment.centerLeft,
                         child: pw.Text(
                           actualTimetotal.value,
-                          style: pw.TextStyle(color: PdfColors.grey),
+                          style: const pw.TextStyle(color: PdfColors.grey),
                         ),
                       )
                     ],
@@ -1081,7 +1087,7 @@ class TactApiController extends GetxController {
                                           .activityList[i]
                                           .categoryTitle,
                                       style:
-                                          pw.TextStyle(color: PdfColors.grey),
+                                         const pw.TextStyle(color: PdfColors.grey),
                                     ),
                                   ),
                                   pw.SizedBox(
@@ -1095,7 +1101,7 @@ class TactApiController extends GetxController {
                                           .activityList[i]
                                           .subTitle,
                                       style:
-                                          pw.TextStyle(color: PdfColors.grey),
+                                         const pw.TextStyle(color: PdfColors.grey),
                                     ),
                                   ),
                                   pw.SizedBox(
@@ -1126,8 +1132,11 @@ class TactApiController extends GetxController {
                 pw.SizedBox(
                   height: 20,
                 ),
-             if (subLists.length - 1 == p)    for (int index = 0; index < activitylistCurrent.length; index++)
+             if (subLists.length - 1 == p)  
                   pw.Column(
+                    children: [
+                        for (int index = 0; index < activitylistCurrent.length; index++)
+                      pw.Column(
                     children: [
                       pw.Row(
                         children: [
@@ -1307,9 +1316,304 @@ class TactApiController extends GetxController {
                                   //   ),        
                                     ],
                   )
+                    ],
+                  ),
+
+
+                  
+                   
               ],
             ); // Center
           })); //
+    }
+
+
+
+    if(subLists.isEmpty){
+       pdf.addPage(pw.Page(
+          pageFormat: PdfPageFormat.a4,
+          build: (pw.Context context) {
+            return pw.Column(
+              children: [
+                pw.SizedBox(
+                  height: 10,
+                ),
+                
+                  pw.Row(
+                    mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
+                    children: [
+                      pw.SizedBox(
+                        height: 10,
+                      ),
+                      pw.Container(
+                        width: 110,
+                        alignment: pw.Alignment.centerLeft,
+                        child: pw.Text(
+                          'Overall CPR Time',
+                          style: const pw.TextStyle(color: PdfColors.grey),
+                        ),
+                      ),
+                      pw.SizedBox(
+                        height: 10,
+                      ),
+                      //   if (tactapiController.isNotEmpty)
+                      pw.Container(
+                        width: 100,
+                        alignment: pw.Alignment.centerLeft,
+                        child: pw.Text(
+                          "00:00:00",
+                          style: const pw.TextStyle(color: PdfColors.grey),
+                        ),
+                      ),
+                      pw.SizedBox(
+                        height: 10,
+                      ),
+                      pw.Container(
+                        width: 100,
+                        alignment: pw.Alignment.centerLeft,
+                        child: pw.Text(
+                          overallCprTime.value,
+                          style: const pw.TextStyle(color: PdfColors.grey),
+                        ),
+                      )
+                    ],
+                  ),
+               
+                  pw.SizedBox(
+                    height: 20,
+                  ),
+               
+                  pw.Row(
+                    mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
+                    children: [
+                      pw.SizedBox(
+                        height: 10,
+                      ),
+                      pw.Container(
+                        width: 110,
+                        alignment: pw.Alignment.centerLeft,
+                        child: pw.Text(
+                          'Actual Time',
+                          style: const pw.TextStyle(color: PdfColors.grey),
+                        ),
+                      ),
+                      pw.SizedBox(
+                        height: 10,
+                      ),
+                      //   if (tactapiController.isNotEmpty)
+                      pw.Container(
+                        width: 100,
+                        alignment: pw.Alignment.centerLeft,
+                        child: pw.Text(
+                          actualtime,
+                          style: const pw.TextStyle(color: PdfColors.grey),
+                        ),
+                      ),
+                      pw.SizedBox(
+                        height: 10,
+                      ),
+                      pw.Container(
+                        width: 100,
+                        alignment: pw.Alignment.centerLeft,
+                        child: pw.Text(
+                          actualTimetotal.value,
+                          style: const pw.TextStyle(color: PdfColors.grey),
+                        ),
+                      )
+                    ],
+                  ),
+               
+  
+                  pw.Column(
+                    children: [
+                        for (int index = 0; index < activitylistCurrent.length; index++)
+                      pw.Column(
+                    children: [
+                      pw.Row(
+                        children: [
+                          pw.Text(
+                            "${activitylistCurrent[index].cycleName} - ${cycleTime.hour}:${cycleTime.minute}:${cycleTime.second}",
+                            style: pw.TextStyle(
+                                fontWeight: pw.FontWeight.bold,
+                                fontSize: 18,
+                                color: PdfColors.blue),
+                          ),
+                        ],
+                      ),
+                      pw.SizedBox(height: 10),
+                    pw.Column(
+                      children: [
+                         for (int i = 0;
+                          i < activitylistCurrent[index].activityList.length;
+                          i++)
+                        pw.Row(
+                          mainAxisAlignment: pw.MainAxisAlignment.start,
+                          children: [
+                            pw.Container(
+                              width: 100,
+                              alignment: pw.Alignment.centerLeft,
+                              child: pw.Text(
+                                activitylistCurrent[index]
+                                    .activityList[i]
+                                    .categoryTitle,
+                                style:
+                                    const pw.TextStyle(color: PdfColors.grey),
+                              ),
+                            ),
+                            pw.SizedBox(
+                              height: 10,
+                            ),
+                            pw.Container(
+                              width: 100,
+                              alignment: pw.Alignment.centerLeft,
+                              child: pw.Text(
+                                activitylistCurrent[index]
+                                    .activityList[i]
+                                    .subTitle,
+                                style:
+                                    const pw.TextStyle(color: PdfColors.grey),
+                              ),
+                            ),
+                            pw.SizedBox(
+                              height: 10,
+                            ),
+                            if (activitylistCurrent[index]
+                                    .activityList[i]
+                                    .subTitle ==
+                                "Amiodarone")
+                              pw.Container(
+                                width: 100,
+                                alignment: pw.Alignment.centerLeft,
+                                child: pw.Text(
+                                  aminDrome,
+                                  style: const pw.TextStyle(color: PdfColors.grey),
+                                ),
+                              ),
+                            if (activitylistCurrent[index]
+                                    .activityList[i]
+                                    .subTitle ==
+                                "CPP")
+                              pw.Container(
+                                width: 100,
+                                alignment: pw.Alignment.centerLeft,
+                                child: pw.Text(
+                                  cppValue,
+                                  style:const pw.TextStyle(color: PdfColors.grey),
+                                ),
+                              ),
+                            if (activitylistCurrent[index]
+                                    .activityList[i]
+                                    .subTitle ==
+                                "EtCO2")
+                              pw.Container(
+                                width: 100,
+                                alignment: pw.Alignment.centerLeft,
+                                child: pw.Text(
+                                  etCO2,
+                                  style: const pw.TextStyle(color: PdfColors.grey),
+                                ),
+                              ),
+                            if (activitylistCurrent[index]
+                                        .activityList[i]
+                                        .subTitle ==
+                                    "Amiodarone" &&
+                                activitylistCurrent[index]
+                                        .activityList[i]
+                                        .subTitle !=
+                                    "CPP")
+                              pw.Container(
+                                width: 100,
+                                alignment: pw.Alignment.centerLeft,
+                                child: pw.Text(
+                                  " ",
+                                  style:const pw.TextStyle(color: PdfColors.grey),
+                                ),
+                              ),
+                            pw.SizedBox(
+                              height: 10,
+                            ),
+                          ],
+                        ),
+                      ],
+                     ),
+                      pw.SizedBox(height: 40),
+                    pw.Text(
+                          'Congratulations you have Achieved $efficiency% Efficiency',
+                          textAlign: pw.TextAlign.center,
+                          style: pw.TextStyle(
+                              fontWeight: pw.FontWeight.bold,
+                              fontSize: 25,
+                              color: PdfColors.blue),
+                        ),
+
+                     pw.SizedBox(height: 30,),
+
+               pw.Column(children: [
+               if(efficiency >= 0 && efficiency <= 59)
+                 pw.Text(
+                      'Poor',
+                      textAlign: pw. TextAlign.center,
+                      style: pw. TextStyle(
+                          fontWeight: pw. FontWeight.bold,
+                          fontSize: 27,
+                          color: PdfColors.red),
+                    ),
+             if(efficiency >= 60 && efficiency <= 79)
+                           pw.Text(
+                      'Better',
+                      textAlign: pw. TextAlign.center,
+                      style: pw. TextStyle(
+                          fontWeight: pw. FontWeight.bold,
+                          fontSize: 27,
+                          color: PdfColors.orange),
+                    ),
+               if(efficiency >= 90 && efficiency <= 95)
+                           pw.Text(
+                      'Good',
+                      textAlign: pw. TextAlign.center,
+                      style: pw. TextStyle(
+                          fontWeight: pw. FontWeight.bold,
+                          fontSize: 27,
+                          color: PdfColors.orange),
+                    ),
+                                 if(efficiency >= 80 && efficiency <= 89)
+                               pw.Text(
+                      'Excellent',
+                      textAlign: pw. TextAlign.center,
+                      style: pw. TextStyle(
+                          fontWeight: pw. FontWeight.bold,
+                          fontSize: 27,
+                          color: PdfColors.green),
+                    ),
+                             if(efficiency >= 96 && efficiency <= 100)
+                                     pw.Text(
+                      'Outstanding',
+                      textAlign: pw. TextAlign.center,
+                      style: pw. TextStyle(
+                          fontWeight: pw. FontWeight.bold,
+                          fontSize: 27,
+                          color: PdfColors.green),
+                    ),
+               ],)
+                                  //  Text(
+                                  //     "Efficiency out of range",
+                                  //     textAlign: TextAlign.center,
+                                  //     style: TextStyle(
+                                  //         fontWeight: FontWeight.bold,
+                                  //         fontSize: 27,
+                                  //         color: kblue),
+                                  //   ),        
+                                    ],
+                  )
+                    ],
+                  ),
+
+
+                  
+                   
+              ],
+            ); // Center
+          }));
     }
 
 // On Flutter, use the [path_provider](https://pub.dev/packages/path_provider) library:

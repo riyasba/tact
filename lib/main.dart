@@ -7,6 +7,7 @@ import 'package:flutter_application_1/controller/tact_api_controller.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
+import 'package:wakelock_plus/wakelock_plus.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -20,6 +21,7 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    WakelockPlus.enable();
     return GetMaterialApp(
       builder: (context, child) {
         return StreamBuilder<ConnectivityResult>(
