@@ -5,6 +5,7 @@ import 'package:alarm/alarm.dart';
 
 import 'package:alarm/model/alarm_settings.dart';
 import 'package:flutter_animate/flutter_animate.dart';
+import 'package:flutter_application_1/app/const/app_colors.dart';
 
 import 'package:flutter_application_1/app/module/home/view_all_screen.dart';
 
@@ -128,7 +129,7 @@ class _HomeScreenState extends State<HomeScreen> {
   String? selectedOption;
   String selectedOption2 = '150mg';
   bool _isRunning = true;
-  bool isflashon = false;
+  bool isflashon = true;
   bool isplay1 = false;
   bool isplay = false;
   bool isEnable = false;
@@ -236,12 +237,12 @@ class _HomeScreenState extends State<HomeScreen> {
   Timer? timerCr;
   // Function to start the timer
   void _startFlashlightTimer() {
-    Timer.periodic(
+  timerCr =  Timer.periodic(
       Duration(seconds: 6),
       (timer) {
         setState(
           () {
-            timerCr = timer;
+            // timerCr = timer;
           },
         );
         _handleFlashlight();
@@ -423,7 +424,7 @@ class _HomeScreenState extends State<HomeScreen> {
         return back();
       },
       child: Scaffold(
-        backgroundColor: kwhite,
+        backgroundColor: backgroudColor,
         appBar: PreferredSize(
           preferredSize: const Size.fromHeight(90.0),
           child: Padding(
@@ -579,23 +580,23 @@ class _HomeScreenState extends State<HomeScreen> {
                             children: [
                               GestureDetector(
                                 onTap: () async {
-                                  // if (isflashon == false) {
-                                  //   setState(() {
-                                  //     isflashon = true;
-                                  //   });
-                                  //   print("-----------------> flsh oning");
-                                  //   _enableTorch(context);
-                                  // } else {
-                                  //   setState(() {
-                                  //     isflashon = false;
-                                  //   });
-                                  //   print("------------>. flash off");
-                                  //   _disableTorch(context);
-                                  // }
+                                  if (isflashon == false) {
+                                    setState(() {
+                                      isflashon = true;
+                                    });
+                                    print("-----------------> flsh oning");
+                                    _startFlashlightTimer();
+                                  } else {
+                                    setState(() {
+                                      isflashon = false;
+                                      timerCr!.cancel();
+                                    });
+                                    
+                                  }
                                 },
-                                child: const Icon(Icons.flash_on),
+                                child:  Icon(Icons.flash_on,color: isflashon ? Colors.yellow : Colors.grey,),
                               ),
-                              const Text('Flash'),
+                              const Text('Breath'),
                             ],
                           ),
                           if (isEnable == false)

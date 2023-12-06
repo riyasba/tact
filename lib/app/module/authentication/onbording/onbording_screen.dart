@@ -30,7 +30,7 @@ class OnbordingScreen1 extends StatelessWidget {
       backgroundColor: Colors.white,
       body: Center(
         child: Padding(
-          padding:  EdgeInsets.symmetric(horizontal: 20),
+          padding: const EdgeInsets.symmetric(horizontal: 20),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.center,

@@ -61,66 +61,118 @@ class _SuccessScreenState extends State<SuccessScreen> {
                 child: SvgPicture.asset('assets/images/Group 33.svg'),
               ),
               Text(
-                'Congratulations you have Achieved ${widget.efficiency}% Efficiency',
+                'Congratulations you have Achieved ${widget.efficiency}% Efficiency based on CCF value',
                 textAlign: TextAlign.center,
                 style: TextStyle(
                     fontWeight: FontWeight.bold, fontSize: 25, color: kblue),
               ),
                            ksizedbox30,
-              widget.efficiency >= 0 && widget.efficiency <= 59
-                  ? Text(
-                      'Poor',
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 27,
-                          color: Colors.red),
-                    )
-                  : widget.efficiency >= 60 && widget.efficiency <= 79
-                      ? Text(
-                          "Better",
+             widget.efficiency >= 0 && widget.efficiency <= 59
+                  ? const Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                       Text(
+                          'Needs improvements',
                           textAlign: TextAlign.center,
                           style: TextStyle(
                               fontWeight: FontWeight.bold,
                               fontSize: 27,
-                              color: korange),
-                        )
-                      : widget.efficiency >= 80 && widget.efficiency <= 89
-                          ? Text(
+                              color: Colors.red),
+                        ),
+                         SizedBox(
+                          height: 10,
+                        ),
+                          Text(
+                          'Time taken to complete the activity was excessively High. You need to reduce the time for better results.',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                              fontWeight: FontWeight.w400,
+                              fontSize: 15,
+                              color: Colors.red),
+                        ),
+                    ],
+                  )
+                  : widget.efficiency >= 60 && widget.efficiency <= 79
+                      ? Column(
+                         mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
                               "Good",
                               textAlign: TextAlign.center,
                               style: TextStyle(
                                   fontWeight: FontWeight.bold,
                                   fontSize: 27,
-                                  color: Colors.orange),
-                            )
-                          : widget.efficiency >= 90 && widget.efficiency <= 95
-                              ? Text(
-                                  "Excellent",
+                                  color: korange),
+                            ),
+                            const SizedBox(
+                          height: 10,
+                        ),
+                      Text(
+                          'The time taken to complete the activity was higher. You need to reduce the time for better results.',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                              fontWeight: FontWeight.w400,
+                              fontSize: 15,
+                              color: korange),
+                        ),
+                        ],
+                      )
+                      : widget.efficiency >= 80 && widget.efficiency <= 89
+                          ? const Column(
+                            children: [
+                               Text(
+                                  "Very Good",
                                   textAlign: TextAlign.center,
                                   style: TextStyle(
                                       fontWeight: FontWeight.bold,
                                       fontSize: 27,
-                                      color:Colors.green),
-                                )
-                              : widget.efficiency >= 96 &&
-                                      widget.efficiency <= 100
-                                  ? Text(
-                                      "Outstanding",
+                                      color: Colors.yellow),
+                                ),
+
+                                  SizedBox(
+                          height: 10,
+                        ),
+                      Text(
+                          'Time taken to complete the activity was High. You need to reduce the time for better results.',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                              fontWeight: FontWeight.w400,
+                              fontSize: 15,
+                              color:  Colors.yellow),
+                        ),
+                            ],
+                          )
+                          : widget.efficiency >= 90 && widget.efficiency <= 100
+                              ? const Column(
+                                children: [
+                                   Text(
+                                      "Excellent",
                                       textAlign: TextAlign.center,
                                       style: TextStyle(
                                           fontWeight: FontWeight.bold,
                                           fontSize: 27,
                                           color:Colors.green),
-                                    )
-                                  : Text(
-                                      "Efficiency out of range",
+                                    ),
+                                        SizedBox(
+                          height: 10,
+                           ),
+                           Text(
+                          'Time taken to complete the activity was slightly High. You need to reduce the time for better results.',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                              fontWeight: FontWeight.w400,
+                              fontSize: 15,
+                              color:  Colors.green),
+                              ),
+                                ],
+                              )
+                              : Text("Efficiency out of range",
                                       textAlign: TextAlign.center,
                                       style: TextStyle(
                                           fontWeight: FontWeight.bold,
                                           fontSize: 27,
                                           color: kblue),
-                                    ), 
+                                    ),  
             ],
           ),
         ),

@@ -1248,7 +1248,7 @@ class TactApiController extends GetxController {
                       pw.SizedBox(height: 40),
                       if (subLists.length - 1 == p)
                         pw.Text(
-                          'Congratulations you have Achieved $efficiency% Efficiency',
+                          'Congratulations you have Achieved $efficiency% Efficiency based on CCF value',
                           textAlign: pw.TextAlign.center,
                           style: pw.TextStyle(
                               fontWeight: pw.FontWeight.bold,
@@ -1261,51 +1261,105 @@ class TactApiController extends GetxController {
                if (subLists.length - 1 == p)
                pw.Column(children: [
                if(efficiency >= 0 && efficiency <= 59)
-                 pw.Text(
-                      'Poor',
-                      textAlign: pw. TextAlign.center,
-                      style: pw. TextStyle(
-                          fontWeight: pw. FontWeight.bold,
-                          fontSize: 27,
-                          color: PdfColors.red),
-                    ),
+                 pw.Column(
+                    mainAxisAlignment: pw.MainAxisAlignment.center,
+                    children: [
+                       pw.Text(
+                          'Needs improvements',
+                          textAlign: pw.TextAlign.center,
+                          style: pw.TextStyle(
+                              fontWeight: pw.FontWeight.bold,
+                              fontSize: 27,
+                              color: PdfColors.red),
+                        ),
+                         pw.SizedBox(
+                          height: 10,
+                        ),
+                          pw.Text(
+                          'Time taken to complete the activity was excessively High. You need to reduce the time for better results.',
+                          textAlign: pw.TextAlign.center,
+                          style: const pw.TextStyle(
+                              fontSize: 15,
+                              color: PdfColors.red),
+                        ),
+                    ],
+                  ),
              if(efficiency >= 60 && efficiency <= 79)
-                           pw.Text(
-                      'Better',
-                      textAlign: pw. TextAlign.center,
-                      style: pw. TextStyle(
-                          fontWeight: pw. FontWeight.bold,
-                          fontSize: 27,
-                          color: PdfColors.orange),
-                    ),
-               if(efficiency >= 90 && efficiency <= 95)
-                           pw.Text(
-                      'Good',
-                      textAlign: pw. TextAlign.center,
-                      style: pw. TextStyle(
-                          fontWeight: pw. FontWeight.bold,
-                          fontSize: 27,
-                          color: PdfColors.orange),
-                    ),
-                                 if(efficiency >= 80 && efficiency <= 89)
+                           pw. Column(
+                         mainAxisAlignment: pw.MainAxisAlignment.center,
+                        children: [
+                          pw.Text(
+                              "Good",
+                              textAlign: pw.TextAlign.center,
+                              style: pw.TextStyle(
+                                  fontWeight: pw.FontWeight.bold,
+                                  fontSize: 27,
+                                  color: PdfColors.orange),
+                            ),
+                            pw.SizedBox(
+                          height: 10,
+                        ),
+                      pw.Text(
+                          'The time taken to complete the activity was higher. You need to reduce the time for better results.',
+                          textAlign: pw.TextAlign.center,
+                          style: const pw.TextStyle(
+                              // fontWeight: pw.FontWeight.w400,
+                              fontSize: 15,
+                              color: PdfColors.orange),
+                        ),
+                        ],
+                      ),
+               if(efficiency >= 90 && efficiency <= 100)
+                           pw.Column(
+                            children: [
                                pw.Text(
-                      'Excellent',
-                      textAlign: pw. TextAlign.center,
-                      style: pw. TextStyle(
-                          fontWeight: pw. FontWeight.bold,
-                          fontSize: 27,
-                          color: PdfColors.green),
-                    ),
-                             if(efficiency >= 96 && efficiency <= 100)
-                                     pw.Text(
-                      'Outstanding',
-                      textAlign: pw. TextAlign.center,
-                      style: pw. TextStyle(
-                          fontWeight: pw. FontWeight.bold,
-                          fontSize: 27,
-                          color: PdfColors.green),
-                    ),
-               ],)
+                                  "Excellent",
+                                  textAlign: pw.TextAlign.center,
+                                  style: pw.TextStyle(
+                                      fontWeight: pw.FontWeight.bold,
+                                      fontSize: 27,
+                                      color: PdfColors.green),
+                                ),
+
+                                  pw.SizedBox(
+                          height: 10,
+                        ),
+                      pw.Text(
+                          'Time taken to complete the activity was slightly High. You need to reduce the time for better results.',
+                          textAlign: pw.TextAlign.center,
+                          style: const pw.TextStyle(
+                              // fontWeight: FontWeight.w400,
+                              fontSize: 15,
+                              color:PdfColors.green),
+                        ),
+                            ],
+                          ),
+                                 if(efficiency >= 80 && efficiency <= 89)
+                               pw.Column(
+                            children: [
+                               pw.Text(
+                                  "Very Good",
+                                  textAlign: pw.TextAlign.center,
+                                  style: pw.TextStyle(
+                                      fontWeight: pw.FontWeight.bold,
+                                      fontSize: 27,
+                                      color: PdfColors.yellow),
+                                ),
+
+                                  pw.SizedBox(
+                          height: 10,
+                        ),
+                      pw.Text(
+                          'Time taken to complete the activity was High. You need to reduce the time for better results.',
+                          textAlign: pw.TextAlign.center,
+                          style: const pw.TextStyle(
+                              // fontWeight: pw.FontWeight.w400,
+                              fontSize: 15,
+                              color:  PdfColors.yellow),
+                        ),
+                            ],
+                          ),
+                        ],)
                                   //  Text(
                                   //     "Efficiency out of range",
                                   //     textAlign: TextAlign.center,
@@ -1537,8 +1591,8 @@ class TactApiController extends GetxController {
                       ],
                      ),
                       pw.SizedBox(height: 40),
-                    pw.Text(
-                          'Congratulations you have Achieved $efficiency% Efficiency',
+                        pw.Text(
+                          'Congratulations you have Achieved $efficiency% Efficiency based on CCF value',
                           textAlign: pw.TextAlign.center,
                           style: pw.TextStyle(
                               fontWeight: pw.FontWeight.bold,
@@ -1550,51 +1604,105 @@ class TactApiController extends GetxController {
 
                pw.Column(children: [
                if(efficiency >= 0 && efficiency <= 59)
-                 pw.Text(
-                      'Poor',
-                      textAlign: pw. TextAlign.center,
-                      style: pw. TextStyle(
-                          fontWeight: pw. FontWeight.bold,
-                          fontSize: 27,
-                          color: PdfColors.red),
-                    ),
+                 pw.Column(
+                    mainAxisAlignment: pw.MainAxisAlignment.center,
+                    children: [
+                       pw.Text(
+                          'Needs improvements',
+                          textAlign: pw.TextAlign.center,
+                          style: pw.TextStyle(
+                              fontWeight: pw.FontWeight.bold,
+                              fontSize: 27,
+                              color: PdfColors.red),
+                        ),
+                         pw.SizedBox(
+                          height: 10,
+                        ),
+                          pw.Text(
+                          'Time taken to complete the activity was excessively High. You need to reduce the time for better results.',
+                          textAlign: pw.TextAlign.center,
+                          style: const pw.TextStyle(
+                              fontSize: 15,
+                              color: PdfColors.red),
+                        ),
+                    ],
+                  ),
              if(efficiency >= 60 && efficiency <= 79)
-                           pw.Text(
-                      'Better',
-                      textAlign: pw. TextAlign.center,
-                      style: pw. TextStyle(
-                          fontWeight: pw. FontWeight.bold,
-                          fontSize: 27,
-                          color: PdfColors.orange),
-                    ),
-               if(efficiency >= 90 && efficiency <= 95)
-                           pw.Text(
-                      'Good',
-                      textAlign: pw. TextAlign.center,
-                      style: pw. TextStyle(
-                          fontWeight: pw. FontWeight.bold,
-                          fontSize: 27,
-                          color: PdfColors.orange),
-                    ),
-                                 if(efficiency >= 80 && efficiency <= 89)
+                           pw. Column(
+                         mainAxisAlignment: pw.MainAxisAlignment.center,
+                        children: [
+                          pw.Text(
+                              "Good",
+                              textAlign: pw.TextAlign.center,
+                              style: pw.TextStyle(
+                                  fontWeight: pw.FontWeight.bold,
+                                  fontSize: 27,
+                                  color: PdfColors.orange),
+                            ),
+                            pw.SizedBox(
+                          height: 10,
+                        ),
+                      pw.Text(
+                          'The time taken to complete the activity was higher. You need to reduce the time for better results.',
+                          textAlign: pw.TextAlign.center,
+                          style: const pw.TextStyle(
+                              // fontWeight: pw.FontWeight.w400,
+                              fontSize: 15,
+                              color: PdfColors.orange),
+                        ),
+                        ],
+                      ),
+               if(efficiency >= 90 && efficiency <= 100)
+                           pw.Column(
+                            children: [
                                pw.Text(
-                      'Excellent',
-                      textAlign: pw. TextAlign.center,
-                      style: pw. TextStyle(
-                          fontWeight: pw. FontWeight.bold,
-                          fontSize: 27,
-                          color: PdfColors.green),
-                    ),
-                             if(efficiency >= 96 && efficiency <= 100)
-                                     pw.Text(
-                      'Outstanding',
-                      textAlign: pw. TextAlign.center,
-                      style: pw. TextStyle(
-                          fontWeight: pw. FontWeight.bold,
-                          fontSize: 27,
-                          color: PdfColors.green),
-                    ),
-               ],)
+                                  "Excellent",
+                                  textAlign: pw.TextAlign.center,
+                                  style: pw.TextStyle(
+                                      fontWeight: pw.FontWeight.bold,
+                                      fontSize: 27,
+                                      color: PdfColors.green),
+                                ),
+
+                                  pw.SizedBox(
+                          height: 10,
+                        ),
+                      pw.Text(
+                          'Time taken to complete the activity was slightly High. You need to reduce the time for better results.',
+                          textAlign: pw.TextAlign.center,
+                          style: const pw.TextStyle(
+                              // fontWeight: FontWeight.w400,
+                              fontSize: 15,
+                              color:PdfColors.green),
+                        ),
+                            ],
+                          ),
+                                 if(efficiency >= 80 && efficiency <= 89)
+                               pw.Column(
+                            children: [
+                               pw.Text(
+                                  "Very Good",
+                                  textAlign: pw.TextAlign.center,
+                                  style: pw.TextStyle(
+                                      fontWeight: pw.FontWeight.bold,
+                                      fontSize: 27,
+                                      color: PdfColors.yellow),
+                                ),
+
+                                  pw.SizedBox(
+                          height: 10,
+                        ),
+                      pw.Text(
+                          'Time taken to complete the activity was High. You need to reduce the time for better results.',
+                          textAlign: pw.TextAlign.center,
+                          style: const pw.TextStyle(
+                              // fontWeight: pw.FontWeight.w400,
+                              fontSize: 15,
+                              color:  PdfColors.yellow),
+                        ),
+                            ],
+                          ),
+                        ],)
                                   //  Text(
                                   //     "Efficiency out of range",
                                   //     textAlign: TextAlign.center,
@@ -1609,7 +1717,6 @@ class TactApiController extends GetxController {
                   ),
 
 
-                  
                    
               ],
             ); // Center
