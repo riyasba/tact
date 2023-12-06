@@ -31,7 +31,7 @@ class _ReportDetailsState extends State<ReportDetails> {
     var size = MediaQuery.of(context).size;
     return Scaffold(
       appBar: AppBar(backgroundColor: kblue,
-        title: Text('Report Details'),
+        title: const Text('Report Details'),
         actions: [
           IconButton(
             onPressed: () {
@@ -49,7 +49,7 @@ class _ReportDetailsState extends State<ReportDetails> {
       ),
       body: SingleChildScrollView(
         child: Padding(
-          padding:  EdgeInsets.symmetric(horizontal: 20),
+          padding: const  EdgeInsets.symmetric(horizontal: 20),
           child: GetBuilder<TactApiController>(builder: (_) {
             return Column(
               children: [
@@ -67,7 +67,7 @@ class _ReportDetailsState extends State<ReportDetails> {
                       ),
                     ),
                     ksizedbox10,
-                    //   if (tactapiController.isNotEmpty)
+                    // if (tactapiController.isNotEmpty)
                     Container(
                       width: size.width * 0.28,
                       alignment: Alignment.centerLeft,
@@ -133,7 +133,7 @@ class _ReportDetailsState extends State<ReportDetails> {
                     itemBuilder: (BuildContext context, int index) {
                       return Column(
                         children: [
-    ksizedbox20,                    
+                         ksizedbox20,                    
                           Row(
                             children: [
                               Text(
