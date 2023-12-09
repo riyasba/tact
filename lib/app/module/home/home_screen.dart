@@ -496,7 +496,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             Container(
                               height: 50,
                               width: 80,
-                              color: Colors.white.withOpacity(0.7),
+                              color:backgroudColor.withOpacity(0.7),
                             ),
                         ],
                       ),
@@ -603,7 +603,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             Container(
                               height: 50,
                               width: 40,
-                              color: Colors.white.withOpacity(0.7),
+                              color: backgroudColor.withOpacity(0.7),
                             ),
                         ],
                       )
