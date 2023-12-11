@@ -99,7 +99,7 @@ flutter:
 flutter_icons:
   android: "ic_launcher"
   ios: true
-  image_path: "assets/images/WhatsApp Image 2023-07-13 at 2.32.14 PM.png"
+  image_path: "assets/images/tact_logo.jpg"
 
   # To add custom fonts to your application, add a fonts section here,
   # in this "flutter" section. Each entry in this list should have a

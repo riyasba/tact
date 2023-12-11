@@ -40,18 +40,18 @@ class _ViewAllScreenState extends State<ViewAllScreen> {
         ),
         title: Text('Report Details'),
         actions: [
-          IconButton(
-            onPressed: () {
-              tactapiController.sharePdf(
-                  aminDrome: widget.aminDrome,
-                  cppValue: widget.cppValue,
-                  cycleTime: widget.cycleTime,
-                  efficiency: widget.efficiency ?? 0,
-                  etCO2: widget.etco2
-                  );
-            },
-            icon: const Icon(Icons.share),
-          ),
+          // IconButton(
+          //   onPressed: () {
+          //     tactapiController.sharePdf(
+          //         aminDrome: widget.aminDrome,
+          //         cppValue: widget.cppValue,
+          //         cycleTime: widget.cycleTime,
+          //         efficiency: widget.efficiency ?? 0,
+          //         etCO2: widget.etco2
+          //         );
+          //   },
+          //   icon: const Icon(Icons.share),
+          // ),
         ],
       ),
       body: Padding(

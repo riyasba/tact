@@ -338,8 +338,8 @@ class _HomeScreenState extends State<HomeScreen> {
     }
   }
 
-  double _currentSliderValue = 20;
-  double _currentSliderValueEc2 = 20;
+  double _currentSliderValue = 0;
+  double _currentSliderValueEc2 = 0;
   late List<AlarmSettings> alarms;
   static StreamSubscription? subscription;
 
@@ -1104,7 +1104,6 @@ class _HomeScreenState extends State<HomeScreen> {
                                                                     .activitylistCurrent
                                                                     .add(
                                                                         activityCycleList);
-
                                                                 tactapiController
                                                                     .update();
 
@@ -1114,11 +1113,18 @@ class _HomeScreenState extends State<HomeScreen> {
                                                                 tactapiController
                                                                     .selectedSubCatIdList
                                                                     .clear();
+                                                                   
                                                                 tactapiController
                                                                     .isButtonLoading(
                                                                         false);
+                                                                       
                                                                 tactapiController
                                                                     .update();
+
+                                                                 setState(() {
+                                                                 _currentSliderValue = 0;
+                                                                   _currentSliderValueEc2 = 0;
+                                                                        });
                                                               },
                                                               child: Icon(
                                                                 Icons
