@@ -358,7 +358,7 @@ class _HomeScreenState extends State<HomeScreen> {
       oneSec,
       (Timer timer) {
         tempOverallCtime++;
-       
+       tactapiController.actualTimetotal(_controller2.getTime());
         tactapiController.overallCprTime(formatHHMMSS(tempOverallCtime));
       },
     );
@@ -895,7 +895,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                                 child:
                                                     CircularProgressIndicator(
                                                   color: kyellow,
-                                                ))
+                                                ),)
                                             : Row(
                                                 mainAxisAlignment:
                                                     MainAxisAlignment.center,
@@ -1788,7 +1788,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                                                       .subTitle,
                                                                   subid:
                                                                       value,
-                                                                  startingTime: _controller2
+                                                                  startingTime: _controller
                                                                       .getTime()
                                                                       .toString());
 
