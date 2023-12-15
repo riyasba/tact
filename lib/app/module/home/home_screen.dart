@@ -266,24 +266,29 @@ class _HomeScreenState extends State<HomeScreen> {
   audio.AudioPlayer audioPlayer = audio.AudioPlayer();
   audio.AudioPlayer player = audio.AudioPlayer();
    var cycleAudioPath = "images/1.45sec-alarm.mp3";
+
    setListen(int second) async {
-    if (second == 104) {
+    if (second == 15) {
       // await player.setSourceAsset('');
       player.play( audio.AssetSource(cycleAudioPath));
       // await Future.delayed(const Duration(seconds: 3));
       // player.stop();
       // player2.stop();
     }
-     if (second == 119) {
+     if (second == 1) {
        player.play(audio.AssetSource(cycleAudioPath));
       // await Future.delayed(Duration(seconds: 2));
       // player2.stop();
     }
   }
 
+
+
   void loop() {
     audioPlayer.setReleaseMode(audio.ReleaseMode.loop);
   }
+
+
 
   void playAudio() async {
     String audioPath =
@@ -781,6 +786,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                     ),
                                   ),
                                   CircularCountDownTimer(
+                                    
                                     duration: 120,
                                     initialDuration: 0,
                                     controller: _controller,
@@ -803,8 +809,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                       fontWeight: FontWeight.bold,
                                     ),
                                     textFormat: CountdownTextFormat.HH_MM_SS,
-                                    isReverse: false,
-                                    isReverseAnimation: false,
+                                    isReverse: true,
+                                    isReverseAnimation: true,
                                     isTimerTextShown: true,
                                     autoStart: false,
                                     onStart: () {
@@ -824,7 +830,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                       endtime = _controller.getTime();
                                       print(
                                           '============================endtime========${endtime}=----------------------');
-                                      if (_controller.getTime() == "00:02:00") {
+                                      if (_controller.getTime() == "00:00:00") {
                                         print(
                                             '============================endtime========${endtime}=----------------------???${tactapiController.selectedSubCatIdList.length}');
 
@@ -896,7 +902,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                                 children: [
                                                   isplay == true
                                                       ? _controller.getTime() ==
-                                                              "00:02:00"
+                                                              "00:00:00"
                                                           ? InkWell(
                                                               onTap: () async {
                                                                 tactapiController
