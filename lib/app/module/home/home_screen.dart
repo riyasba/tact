@@ -347,13 +347,14 @@ class _HomeScreenState extends State<HomeScreen> {
   int tempOverallCtime = 0;
 
   void startTimer() {
+    
     const oneSec = Duration(seconds: 1);
     _timer = Timer.periodic(
       oneSec,
       (Timer timer) {
         tempOverallCtime++;
+       
         tactapiController.overallCprTime(formatHHMMSS(tempOverallCtime));
-        tactapiController.actualTimetotal(_controller2.getTime());
       },
     );
   }
@@ -1297,7 +1298,6 @@ class _HomeScreenState extends State<HomeScreen> {
                                           ksizedbox10,
                                           GestureDetector(
                                             onTap: () {
-
                                               var txtControllerrythem =
                                                   TextEditingController();
 
@@ -2476,7 +2476,6 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                   ),
                   onPressed: () async {
-                  
                     // print('Entered text: ${textEditingController.text}');
                     if (textController.text.isNotEmpty) {
                       tactapiController.isCustomizeLoading(true);

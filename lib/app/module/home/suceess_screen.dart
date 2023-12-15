@@ -32,16 +32,16 @@ class _SuccessScreenState extends State<SuccessScreen> {
   toHomePage() async {
     await Future.delayed(const Duration(seconds: 2));
 
-    int efficiency = tactapiController.getEfficiency(
-        actualTime: tactapiController.actualTimetotal.value,
-        overallTime: tactapiController.overallCprTime.value);
+    // int efficiency = tactapiController.getEfficiency(
+    //     actualTime: tactapiController.actualTimetotal.value,
+    //     overallTime: tactapiController.overallCprTime.value);
 
     Get.offAll(ReportDetails(
       aminDrome: selectedOption2,
       cppValue: _currentSliderValue.round().toString(),
       cycleTime: cyclestarttime,
       etco2: _currentSliderValue.round().toString(),
-      efficiency: efficiency,
+      efficiency: widget.efficiency,
     ));
   }
 

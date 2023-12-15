@@ -398,7 +398,7 @@ class _ReportDetailsState extends State<ReportDetails> {
                               fontWeight: FontWeight.w400,
                               fontSize: 15,
                               color:  Colors.green),
-                        ),
+                      ),
                                 ],
                               )
                               : Text("Efficiency out of range",
