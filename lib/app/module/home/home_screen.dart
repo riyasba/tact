@@ -1,31 +1,18 @@
 import 'dart:async';
 import 'dart:io';
-
 import 'package:alarm/alarm.dart';
-
 import 'package:alarm/model/alarm_settings.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_application_1/app/const/app_colors.dart';
-
 import 'package:flutter_application_1/app/module/home/view_all_screen.dart';
-
 import 'package:flutter_application_1/controller/tact_api_controller.dart';
-
 import 'package:flutter_application_1/models/get_activity_model.dart';
-
 import 'package:flutter_application_1/models/store_activity_list_model.dart';
-
 import 'package:google_fonts/google_fonts.dart';
-
-
 import 'package:circular_countdown_timer/circular_countdown_timer.dart';
-
 import 'package:flutter/cupertino.dart';
-
 import 'package:flutter/material.dart';
-
 import 'package:flutter_application_1/app/data/constands/constands.dart';
-
 import 'package:flutter_application_1/app/module/home/ring.dart';
 
 import 'package:flutter_application_1/app/module/home/suceess_screen.dart';
