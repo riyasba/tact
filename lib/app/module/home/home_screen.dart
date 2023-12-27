@@ -378,9 +378,8 @@ class _HomeScreenState extends State<HomeScreen> {
   //                       player.stop();
   //                       _disableTorch(context);
   //                     });
-
-  //             setState(() {
-  //               cycle = 1;
+  //                         setState(() {
+  //                         cycle = 1;
   //                         isplay1 = true;
   //                         isplay = true;
   //                         isEnable = true;
@@ -892,147 +891,61 @@ class _HomeScreenState extends State<HomeScreen> {
                                                               "00:00:00"
                                                           ? InkWell(
                                                               onTap: () async {
-                                                                tactapiController
-                                                                    .isButtonLoading(
-                                                                        true);
-                                                                for (int i = 0;
-                                                                    i <
-                                                                        tactapiController
-                                                                            .selectedSubCatIdList
-                                                                            .length;
-                                                                    i++) {
-                                                                  await Future.delayed(
+                                                                // tactapiController
+                                                                //     .isButtonLoading(
+                                                                //         true);
+
+
+                                                                //these are the migrated
+                                                                 tactapiController.isProcessStarted(true);
+                                                                 print("-------------..>> Selcted sub list value -->> -->> -->> -->> ");
+
+                                                                 print(tactapiController.selectedSubCatIdList.length);
+                                                                 tactapiController.tempShowList.clear();
+                                                                 tactapiController.selectedSubCatIdList.forEach((element) {
+                                                                  
+                                                                 tactapiController.tempShowList.add(element);
+                                                                 }) ;
+                                                                
+                                                                 print("-------------..>> Selcted after asigning list value -->> -->> -->> -->> ");
+
+                                                                 print(tactapiController.tempShowList.length);
+                                                                  tactapiController.tempActivitylistCurrent =  tactapiController
+                                                                    .activitylistCurrent;
+                                                                  if(tactapiController.activitylistCurrent.isNotEmpty){
+                                                                    tactapiController.activitylistCurrent.forEach((element) {
+                                                                      print("cycle tyme ::::::::::::::>>");
+                                                                      element.cycleTime = "${cyclestarttime.hour}:${cyclestarttime.minute}:${cyclestarttime.second}";
+                                                                      tactapiController.activitylist.add(element);
+                                                                    
+                                                                    });
+                                                                     tactapiController
+                                                                    .update();
+                                                                    // tactapiController.activitylist.add(tactapiController.tempActivitylistCurrent.first);
+                                                                  }
+                                                                    tactapiController
+                                                                    .activitylistCurrent.clear();
+                                                                     print("-------------..>> Selcted after asigning list value -->> -->> -->> -->> 2");
+
+                                                                 print(tactapiController.tempShowList.length);
+                                                                  String tempCurrentSliderValue = _currentSliderValue
+                                                                            .round()
+                                                                            .toString();
+                                                               String tempCurrentSliderValueEc2 = _currentSliderValueEc2
+                                                                            .round()
+                                                                            .toString();
+
+                                                                  String tempSelectedOption2 = selectedOption2;
+                                                               int tempCycle = cycle;
+                                                               DateTime tempCycleStartTime = cyclestarttime;
+                                                                  tactapiController.update();
+                                                                  tactapiController
+                                                                    .deletesubcatogory();
+                                                                    await Future.delayed(
                                                                       const Duration(
                                                                           milliseconds:
-                                                                              500));
-
-                                                                  if (tactapiController
-                                                                          .selectedSubCatIdList[
-                                                                              i]
-                                                                          .name ==
-                                                                      "CPP") {
-                                                                    await tactapiController.storeactivity(
-                                                                        appid:
-                                                                            "21346",
-                                                                        value: _currentSliderValue
-                                                                            .round()
-                                                                            .toString(),
-                                                                        c_id: tactapiController
-                                                                            .selectedSubCatIdList[
-                                                                                i]
-                                                                            .catogoryid,
-                                                                        s_id: tactapiController
-                                                                            .selectedSubCatIdList[
-                                                                                i]
-                                                                            .subid,
-                                                                        from_time: tactapiController
-                                                                            .selectedSubCatIdList[
-                                                                                i]
-                                                                            .startingTime,
-                                                                        to_time:
-                                                                            "${cyclestarttime.hour}:${cyclestarttime.minute}:${cyclestarttime.second}",
-                                                                        title:
-                                                                            'Cycle$cycle');
-
-                                                                    print(
-                                                                        '==========================store activitry============${tactapiController.selectedSubCatIdList[i].subid}===============================================');
-                                                                  }else  if (tactapiController
-                                                                          .selectedSubCatIdList[
-                                                                              i]
-                                                                          .name ==
-                                                                      "EtCO2") {
-                                                                    await tactapiController.storeactivity(
-                                                                        appid:
-                                                                            "21346",
-                                                                        value: _currentSliderValueEc2
-                                                                            .round()
-                                                                            .toString(),
-                                                                        c_id: tactapiController
-                                                                            .selectedSubCatIdList[
-                                                                                i]
-                                                                            .catogoryid,
-                                                                        s_id: tactapiController
-                                                                            .selectedSubCatIdList[
-                                                                                i]
-                                                                            .subid,
-                                                                        from_time: tactapiController
-                                                                            .selectedSubCatIdList[
-                                                                                i]
-                                                                            .startingTime,
-                                                                        to_time:
-                                                                            "${cyclestarttime.hour}:${cyclestarttime.minute}:${cyclestarttime.second}",
-                                                                        title:
-                                                                            'Cycle$cycle');
-
-                                                                    print(
-                                                                        '==========================store activitry============${tactapiController.selectedSubCatIdList[i].subid}===============================================');
-                                                                  } else if (tactapiController
-                                                                          .selectedSubCatIdList[
-                                                                              i]
-                                                                          .name ==
-                                                                      "Amiodarone") {
-                                                                    await tactapiController.storeactivity(
-                                                                        value:
-                                                                            selectedOption2,
-                                                                        c_id: tactapiController
-                                                                            .selectedSubCatIdList[
-                                                                                i]
-                                                                            .catogoryid,
-                                                                        s_id: tactapiController
-                                                                            .selectedSubCatIdList[
-                                                                                i]
-                                                                            .subid,
-                                                                        from_time: tactapiController
-                                                                            .selectedSubCatIdList[
-                                                                                i]
-                                                                            .startingTime,
-                                                                        to_time:
-                                                                            "${cyclestarttime.hour}:${cyclestarttime.minute}:${cyclestarttime.second}",
-                                                                        title:
-                                                                            'Cycle$cycle',
-                                                                        appid:
-                                                                            '21346');
-                                                                  } else {
-                                                                    await tactapiController.storeactivity(
-                                                                        value: tactapiController.selectedSubCatIdList[i].value,
-                                                                        c_id: tactapiController.selectedSubCatIdList[i].catogoryid,
-                                                                        s_id: tactapiController.selectedSubCatIdList[i].subid,
-                                                                        from_time: "00:00:00",
-                                                                        // tactapiController
-                                                                        //     .selectedSubCatIdList[i]
-                                                                        //     .startingTime,
-                                                                        to_time: "${cyclestarttime.hour}:${cyclestarttime.minute}:${cyclestarttime.second}",
-                                                                        title: 'Cycle$cycle',
-                                                                        appid: '21346');
-                                                                  }
-
-                                                                  // Get.rawSnackbar(
-                                                                  //   message: "Stored Cycle - ${tactapiController
-                                                                  //         .selectedSubCatIdList[i].name}"
-                                                                  // );
-                                                                }
-
-                                                                if (tactapiController
-                                                                    .selectedSubCatIdList
-                                                                    .isEmpty) {
-                                                                  await tactapiController.storeactivity(
-                                                                      value: "empty",
-                                                                      c_id: "1",
-                                                                      s_id: "2",
-                                                                      from_time: "00:00:00",
-                                                                      // tactapiController
-                                                                      //     .selectedSubCatIdList[i]
-                                                                      //     .startingTime,
-                                                                      to_time: "${cyclestarttime.hour}:${cyclestarttime.minute}:${cyclestarttime.second}",
-                                                                      title: 'Cycle$cycle',
-                                                                      appid: '21346');
-                                                                }
-
-                                                                await Future.delayed(
-                                                                    const Duration(
-                                                                        milliseconds:
-                                                                            500));
-                                                                setState(() {
+                                                                              100));
+                                                                     setState(() {
                                                                   cycle++;
                                                                   //     iscycleStart = true;
                                                                   cyclestarttime =
@@ -1041,29 +954,23 @@ class _HomeScreenState extends State<HomeScreen> {
                                                                   isreaload =
                                                                       false;
                                                                 });
+                                                                 setState(() {
+                                                                 _currentSliderValue = 0;
+                                                                   _currentSliderValueEc2 = 0;
+                                                                        });
                                                                 _controller
                                                                     .restart();
                                                                 tactapiController
                                                                     .setDefaultGroupValue();
-                                                                tactapiController
-                                                                    .activitylistCurrent
-                                                                    .clear();
-                                                                // ActivityCycleList
-                                                                //     activityCycleList =
-                                                                //     ActivityCycleList(
-                                                                //         activityList: [],
-                                                                //         cycleName:
-                                                                //             "Cycle$cycle",
-                                                                //         cycleTime:
-                                                                //             "${cyclestarttime.hour}:${cyclestarttime.minute}:${cyclestarttime.second}");
-                                                                // tactapiController
-                                                                //     .activitylistCurrent
-                                                                //     .add(activityCycleList);
-                                                                // player.stop();
-                                                                // playAudio();
-                                                                // loop();
+                                                                    await Future.delayed(
+                                                                      const Duration(
+                                                                          milliseconds:
+                                                                              100));
+                                                               
+                                                                     print("-------------..>> Selcted after asigning list value -->> -->> -->> -->> 3");
 
-                                                                ActivityCycleList
+                                                                 print(tactapiController.tempShowList.length);
+                                                                    ActivityCycleList
                                                                     activityCycleList =
                                                                     ActivityCycleList(
                                                                         activityList: [
@@ -1100,25 +1007,188 @@ class _HomeScreenState extends State<HomeScreen> {
                                                                         activityCycleList);
                                                                 tactapiController
                                                                     .update();
-
-                                                                tactapiController
-                                                                    .deletesubcatogory();
+                                                             
                                                                 //   tactapiController.getsubcatogory(id: id)
                                                                 tactapiController
                                                                     .selectedSubCatIdList
                                                                     .clear();
+print("----------------------------------->> this is the temp list state as of now ::::>>");
+print(tactapiController
+                                                                            .tempShowList
+                                                                            .length);
+
+
+
+                                                                
+                                                                for (int i = 0;
+                                                                    i <
+                                                                        tactapiController
+                                                                            .tempShowList
+                                                                            .length;
+                                                                    i++) {
+                                                                  await Future.delayed(
+                                                                      const Duration(
+                                                                          milliseconds:
+                                                                              100));
+
+                                                                  if (tactapiController
+                                                                          .tempShowList[
+                                                                              i]
+                                                                          .name ==
+                                                                      "CPP") {
+                                                                    await tactapiController.storeactivity(
+                                                                        appid:
+                                                                            "21346",
+                                                                        value: tempCurrentSliderValue,
+                                                                        c_id: tactapiController
+                                                                            .tempShowList[
+                                                                                i]
+                                                                            .catogoryid,
+                                                                        s_id: tactapiController
+                                                                            .tempShowList[
+                                                                                i]
+                                                                            .subid,
+                                                                        from_time: tactapiController
+                                                                            .tempShowList[
+                                                                                i]
+                                                                            .startingTime,
+                                                                        to_time:
+                                                                            "${tempCycleStartTime.hour}:${tempCycleStartTime.minute}:${tempCycleStartTime.second}",
+                                                                        title:
+                                                                            'Cycle$tempCycle');
+
+                                                                    print(
+                                                                        '==========================store activitry============${tactapiController.tempShowList[i].subid}===============================================');
+                                                                  }else  if (tactapiController
+                                                                          .tempShowList[
+                                                                              i]
+                                                                          .name ==
+                                                                      "EtCO2") {
+                                                                    await tactapiController.storeactivity(
+                                                                        appid:
+                                                                            "21346",
+                                                                        value:tempCurrentSliderValueEc2,
+                                                                        c_id: tactapiController
+                                                                            .tempShowList[
+                                                                                i]
+                                                                            .catogoryid,
+                                                                        s_id: tactapiController
+                                                                            .tempShowList[
+                                                                                i]
+                                                                            .subid,
+                                                                        from_time: tactapiController
+                                                                            .tempShowList[
+                                                                                i]
+                                                                            .startingTime,
+                                                                        to_time:
+                                                                            "${tempCycleStartTime.hour}:${tempCycleStartTime.minute}:${tempCycleStartTime.second}",
+                                                                        title:
+                                                                            'Cycle$tempCycle');
+
+                                                                    print(
+                                                                        '==========================store activitry============${tactapiController.tempShowList[i].subid}===============================================');
+                                                                  } else if (tactapiController
+                                                                          .tempShowList[
+                                                                              i]
+                                                                          .name ==
+                                                                      "Amiodarone") {
+                                                                    await tactapiController.storeactivity(
+                                                                        value:
+                                                                            tempSelectedOption2,
+                                                                        c_id: tactapiController
+                                                                            .tempShowList[
+                                                                                i]
+                                                                            .catogoryid,
+                                                                        s_id: tactapiController
+                                                                            .tempShowList[
+                                                                                i]
+                                                                            .subid,
+                                                                        from_time: tactapiController
+                                                                            .tempShowList[
+                                                                                i]
+                                                                            .startingTime,
+                                                                        to_time:
+                                                                            "${tempCycleStartTime.hour}:${tempCycleStartTime.minute}:${tempCycleStartTime.second}",
+                                                                        title:
+                                                                            'Cycle$tempCycle',
+                                                                        appid:
+                                                                            '21346');
+                                                                  } else {
+                                                                    await tactapiController.storeactivity(
+                                                                        value: tactapiController.tempShowList[i].value,
+                                                                        c_id: tactapiController.tempShowList[i].catogoryid,
+                                                                        s_id: tactapiController.tempShowList[i].subid,
+                                                                        from_time: "00:00:00",
+                                                                        // tactapiController
+                                                                        //     .tempShowList[i]
+                                                                        //     .startingTime,
+                                                                        to_time: "${tempCycleStartTime.hour}:${tempCycleStartTime.minute}:${tempCycleStartTime.second}",
+                                                                        title: 'Cycle$tempCycle',
+                                                                        appid: '21346');
+                                                                  }
+
+                                                                  // Get.rawSnackbar(
+                                                                  //   message: "Stored Cycle - ${tactapiController
+                                                                  //         .tempShowList[i].name}"
+                                                                  // );
+                                                                }
+
+                                                                if (tactapiController
+                                                                    .tempShowList
+                                                                    .isEmpty) {
+                                                                  await tactapiController.storeactivity(
+                                                                      value: "empty",
+                                                                      c_id: "1",
+                                                                      s_id: "2",
+                                                                      from_time: "00:00:00",
+                                                                      // tactapiController
+                                                                      //     .tempShowList[i]
+                                                                      //     .startingTime,
+                                                                      to_time: "${tempCycleStartTime.hour}:${tempCycleStartTime.minute}:${tempCycleStartTime.second}",
+                                                                      title: 'Cycle$tempCycle',
+                                                                      appid: '21346');
+                                                                }
+
+                                                                await Future.delayed(
+                                                                    const Duration(
+                                                                        milliseconds:
+                                                                            500));
+
+                                                                //cycle restart set state functions
+                                                                // ActivityCycleList
+                                                                //     activityCycleList =
+                                                                //     ActivityCycleList(
+                                                                //         activityList: [],
+                                                                //         cycleName:
+                                                                //             "Cycle$cycle",
+                                                                //         cycleTime:
+                                                                //             "${cyclestarttime.hour}:${cyclestarttime.minute}:${cyclestarttime.second}");
+                                                                // tactapiController
+                                                                //     .activitylistCurrent
+                                                                //     .add(activityCycleList);
+                                                                // player.stop();
+                                                                // playAudio();
+                                                                // loop();
+
+                                                                
+
+                                                                // tactapiController
+                                                                //     .deletesubcatogory();
+                                                                // //   tactapiController.getsubcatogory(id: id)
+                                                                // tactapiController
+                                                                //     .selectedSubCatIdList
+                                                                //     .clear();
                                                                    
                                                                 tactapiController
                                                                     .isButtonLoading(
+                                                                        false);
+                                                                         tactapiController
+                                                                    .isProcessStarted(
                                                                         false);
                                                                        
                                                                 tactapiController
                                                                     .update();
 
-                                                                 setState(() {
-                                                                 _currentSliderValue = 0;
-                                                                   _currentSliderValueEc2 = 0;
-                                                                        });
                                                               },
                                                               child: Icon(
                                                                 Icons
@@ -1132,7 +1202,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                                                 setState(() {
                                                                   isplay =
                                                                       false;
-                                                                  //         iscycleStart = false;
+                                                                  //iscycleStart = false;
                                                                   //isplay1 = false;
                                                                 });
                                                                 //audioPlayer.stop();
@@ -1266,7 +1336,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                       0;
                                   tactapiController.update();
                                 }
-                                            },
+                          },
                                             child: Row(
                                               mainAxisAlignment:
                                                   MainAxisAlignment
@@ -1470,11 +1540,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                                                         .id)[
                                                                     index2]
                                                                 .isSelected = false;
-
-
-
                                                                 }else{
-
                                                                   tactapiController
                                                                 .getDatList(
                                                                     tactapiController
@@ -2014,17 +2080,6 @@ class _HomeScreenState extends State<HomeScreen> {
                       child: Container(
                         height: 50,
                         width: 140,
-                        child: Center(
-                          child: Text(
-                            'ROSC Achieved',
-                            style: GoogleFonts.poppins(
-                              textStyle: TextStyle(
-                                  color: kwhite,
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w600),
-                            ),
-                          ),
-                        ),
                         decoration: BoxDecoration(
                           color: kOrange,
                           borderRadius: BorderRadius.circular(16),
@@ -2035,6 +2090,17 @@ class _HomeScreenState extends State<HomeScreen> {
                               Color(0xffE77D7D),
                               Color.fromARGB(255, 229, 182, 182),
                             ],
+                          ),
+                        ),
+                        child: Center(
+                          child: Text(
+                            'ROSC Achieved',
+                            style: GoogleFonts.poppins(
+                              textStyle: TextStyle(
+                                  color: kwhite,
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w600),
+                            ),
                           ),
                         ),
                       ),

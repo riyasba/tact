@@ -26,7 +26,10 @@ class TactApiController extends GetxController {
   RxBool isLoading = false.obs;
   RxBool isButtonLoading = false.obs;
 
+  RxBool isProcessStarted = false.obs;
+
   List<StoreActivityListModel> selectedSubCatIdList = [];
+  List<StoreActivityListModel> tempShowList = [];
 
   List<Success> subcategorList0 = [];
   List<Success> subcategorList1 = [];
@@ -625,12 +628,14 @@ class TactApiController extends GetxController {
 
   List<ActivityCycleList> activitylist = [];
   List<ActivityCycleList> activitylistCurrent = [];
+  List<ActivityCycleList> tempActivitylistCurrent = [];
   var actualtime = '00:00:00';
   var endingtime = '00:00:00';
   getactivity({required String appid}) async {
    
-    isLoading(true);
-    activitylist.clear();
+    // isLoading(true);
+    // activitylist.clear();
+    List<ActivityCycleList> _activitylist = [];
     dio.Response<dynamic> response =
         await getactivityapiservice.getactivityapi(appid: appid);
     isLoading(false);
@@ -663,7 +668,7 @@ class TactApiController extends GetxController {
       print("----------------------------->>>>>>>>");
       print(tempCycleList.length);
 
-      activitylist.clear();
+      // activitylist.clear();
       for (var i = 0; i < tempCycleList.length; i++) {
         print(
             '------------------------->>>>>>>>>>>>>>>>>>>>>>>>>>>>****************************************************************************************************************************');
@@ -678,9 +683,10 @@ class TactApiController extends GetxController {
             activityList: tempList,
             cycleName: tempCycleList[i],
             cycleTime: tempList.first.toTime);
-        activitylist.add(activityCycleList);
+        _activitylist.add(activityCycleList);
       }
-      activitylistCurrent.clear();
+      activitylist = _activitylist;
+      // activitylistCurrent.clear();
       update();
     }
     // actualtime = getactivitymodel.actualTime;
