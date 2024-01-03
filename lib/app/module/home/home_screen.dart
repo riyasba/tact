@@ -907,7 +907,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                                                  tactapiController.tempShowList.add(element);
                                                                  }) ;
                                                                 
-                                                                 print("-------------..>> Selcted after asigning list value -->> -->> -->> -->> ");
+                                                                 print(" -------------..>> Selcted after asigning list value -->> -->> -->> -->> ");
 
                                                                  print(tactapiController.tempShowList.length);
                                                                   tactapiController.tempActivitylistCurrent =  tactapiController
