@@ -26,6 +26,7 @@ class OnbordingScreen1 extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var size = MediaQuery.of(context).size;
     return Scaffold(
       backgroundColor: Colors.white,
       body: Center(
@@ -62,8 +63,6 @@ class OnbordingScreen1 extends StatelessWidget {
               ksizedbox30,
               InkWell(onTap: () async{
 
-
-
                final prefs = await SharedPreferences.getInstance();
       await prefs.setString("auth_token",generateRandomString(10));
 
@@ -79,7 +78,7 @@ class OnbordingScreen1 extends StatelessWidget {
                     ),
                   ),
                   height: 60,
-                  width: double.infinity,
+                  width: 300,
                   decoration: BoxDecoration(
                     color: Colors.black,
                     borderRadius: BorderRadius.circular(16),

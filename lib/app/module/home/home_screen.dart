@@ -564,7 +564,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             ),
                           ),
                         ),
-                      kwidth5,
+                      // kwidth5,
                       Stack(
                         children: [
                           Column(
@@ -637,6 +637,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           child: Padding(
                             padding: const EdgeInsets.all(15.0),
                             child: Column(
+                              mainAxisAlignment: MainAxisAlignment.spaceAround,
                               children: [
                                 const Text(
                                   'Actual Time',
@@ -762,6 +763,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             child: Padding(
                               padding: const EdgeInsets.all(15.0),
                               child: Column(
+                                mainAxisAlignment: MainAxisAlignment.spaceAround,
                                 children: [
                                   Text(
                                     '2 min Alarm',
