@@ -904,7 +904,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                                                   await Future.delayed(
                                                                       const Duration(
                                                                           milliseconds:
-                                                                              500));
+                                                                              50));
 
                                                                   if (tactapiController
                                                                           .selectedSubCatIdList[
@@ -1031,7 +1031,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                                                 await Future.delayed(
                                                                     const Duration(
                                                                         milliseconds:
-                                                                            500));
+                                                                            50));
                                                                 setState(() {
                                                                   cycle++;
                                                                   //     iscycleStart = true;
